@@ -1,2 +1,2 @@
-# Event-Logger-.NET
-A secure Event Logger built in .NET
+# Event Logger - .NET
+An Event Logger that focuses on communication and file security built in .NET
