@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Helpers
 {
-    public static class AESKeyEncryption
+    public static class RSAKeyEncryption
     {
         public static string Encrypt(string key, X509Certificate2 certificate)
         {
