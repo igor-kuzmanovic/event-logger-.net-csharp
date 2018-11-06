@@ -15,6 +15,23 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IDSService", "IDSService\ID
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers", "Helpers\Helpers.csproj", "{7AA0406C-B7B3-4AD0-BB6C-633C8CC58E0E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Certificates", "Certificates", "{ADA52EE4-3B43-44AC-B8DD-8C37853DCEB8}"
+	ProjectSection(SolutionItems) = preProject
+		RootCA.cer = RootCA.cer
+		RootCA.pvk = RootCA.pvk
+		WCFClient.cer = WCFClient.cer
+		WCFClient.pfx = WCFClient.pfx
+		WCFClient.pvk = WCFClient.pvk
+		WCFService.cer = WCFService.cer
+		WCFService.pfx = WCFService.pfx
+		WCFService.pvk = WCFService.pvk
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{B12D2579-8592-4697-A4C9-D09D5FF396EF}"
+	ProjectSection(SolutionItems) = preProject
+		ConfigurationGuide.html = ConfigurationGuide.html
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
