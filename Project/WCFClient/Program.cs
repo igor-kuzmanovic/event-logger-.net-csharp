@@ -10,6 +10,13 @@ namespace WCFClient
     {
         static void Main(string[] args)
         {
+            using (WCFServiceClient client = new WCFServiceClient())
+            {
+                
+            }
+
+            Console.WriteLine("Press any key to exit...");
+            Console.ReadKey(true);
         }
     }
 }
