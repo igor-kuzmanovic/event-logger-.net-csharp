@@ -12,14 +12,25 @@ namespace WCFClient
     {
         private IWCFService channel;
 
-        public WCFServiceClient() : this("WCFService_Endpoint")
-        {
-
-        }
+        public WCFServiceClient() : this("WCFService_Endpoint") { }
 
         public WCFServiceClient(string endpointConfigurationName) : base(endpointConfigurationName)
         {
             channel = CreateChannel();
+        }
+
+        public string CheckIn()
+        {
+            string result = string.Empty;
+            try
+            {
+                result = channel.CheckIn();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[CheckIn] ERROR = {0}", e.Message);
+            }
+            return result;
         }
 
         public void Add()

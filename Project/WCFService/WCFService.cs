@@ -9,6 +9,11 @@ namespace WCFService
 {
     internal class WCFService : IWCFService
     {
+        public string CheckIn()
+        {
+            throw new NotImplementedException();
+        }
+
         public void Add()
         {
             throw new NotImplementedException();

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Security;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,8 +19,10 @@ namespace WCFService
             {
                 host.Open();
 
-                Console.WriteLine("Press any key to exit...");
-                Console.ReadKey(true);
+                Console.WriteLine("Service is ready");
+
+                SecureString securePrivateKey = GetPrivateKey();
+                securePrivateKey.MakeReadOnly();
             }
             catch (Exception e)
             {
@@ -27,8 +31,41 @@ namespace WCFService
             }
             finally
             {
+                Console.WriteLine("Press any key to close the service...");
+                Console.ReadKey(true);
+
                 host.Close();
             }
+
+            Console.WriteLine("Press any key to exit...");
+            Console.ReadKey(true);
+        }
+
+        private static SecureString GetPrivateKey()
+        {
+            SecureString privateKey = new SecureString();
+            ConsoleKeyInfo keyInfo;
+
+            Console.Write("Enter the private key: ");
+
+            do
+            {
+                keyInfo = Console.ReadKey(true);
+                if (keyInfo.Key == ConsoleKey.Backspace && privateKey.Length > 0)
+                {
+                    privateKey.RemoveAt(privateKey.Length - 1);
+                    Console.Write("\b \b");
+                }
+                else if (char.IsLetterOrDigit(keyInfo.KeyChar))
+                {
+                    privateKey.AppendChar(keyInfo.KeyChar);
+                    Console.Write("*");
+                }
+            } while (keyInfo.Key != ConsoleKey.Enter);
+
+            Console.WriteLine();
+
+            return privateKey;
         }
     }
 }

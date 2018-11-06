@@ -25,6 +25,7 @@ namespace Helpers
         public static byte[] Encrypt(byte[] keyData, X509Certificate2 certificate)
         {
             RSACryptoServiceProvider csp = (RSACryptoServiceProvider)certificate.PrivateKey;
+
             if (csp == null)
             {
                 throw new Exception("Unable to obtain the private key from the provided certificate.");
@@ -51,6 +52,7 @@ namespace Helpers
         public static byte[] Decrypt(byte[] encryptedKeyData, X509Certificate2 certificate)
         {
             RSACryptoServiceProvider csp = (RSACryptoServiceProvider)certificate.PublicKey.Key;
+
             if (csp == null)
             {
                 throw new Exception("Unable to obtain the public key from the provided certificate.");
