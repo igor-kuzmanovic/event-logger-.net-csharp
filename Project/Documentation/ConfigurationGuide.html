@@ -24,7 +24,8 @@
 		<h3>WCF Client Configuration</h3>
 		<ul>
 			<li><pre><code>cd C:\Program Files (x86)\Windows Kits\10\bin\10.0.17134.0\x64</code></pre></li>
-			<li>Insert Client's roles after 'OU=' and delimit them with '|' and no spaces</li>
+            <li>(Optional) Replace the Client's name after 'CN=...'</li>
+			<li>(Optional) Insert Client's roles after 'OU=...' and delimit them with '|' and no spaces</li>
 			<li><pre><code>makecert -sv ~path~\WCFClient.pvk -iv ~path~\RootCA.pvk -n "CN=WCFClient, OU=Client|Moderator|Administrator" -pe -ic ~path~\RootCA.cer ~path~\WCFClient.cer -sr localmachine -ss My -sky exchange</code></pre></li>
 			<li>Create a private key: 'client'</li>
 			<li>Input the private key: 'client'</li>

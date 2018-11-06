@@ -17,19 +17,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers", "Helpers\Helpers.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Certificates", "Certificates", "{ADA52EE4-3B43-44AC-B8DD-8C37853DCEB8}"
 	ProjectSection(SolutionItems) = preProject
-		RootCA.cer = RootCA.cer
-		RootCA.pvk = RootCA.pvk
-		WCFClient.cer = WCFClient.cer
-		WCFClient.pfx = WCFClient.pfx
-		WCFClient.pvk = WCFClient.pvk
-		WCFService.cer = WCFService.cer
-		WCFService.pfx = WCFService.pfx
-		WCFService.pvk = WCFService.pvk
+		Certificates\RootCA.cer = Certificates\RootCA.cer
+		Certificates\RootCA.pvk = Certificates\RootCA.pvk
+		Certificates\WCFClient.cer = Certificates\WCFClient.cer
+		Certificates\WCFClient.pfx = Certificates\WCFClient.pfx
+		Certificates\WCFClient.pvk = Certificates\WCFClient.pvk
+		Certificates\WCFService.cer = Certificates\WCFService.cer
+		Certificates\WCFService.pfx = Certificates\WCFService.pfx
+		Certificates\WCFService.pvk = Certificates\WCFService.pvk
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{B12D2579-8592-4697-A4C9-D09D5FF396EF}"
 	ProjectSection(SolutionItems) = preProject
-		ConfigurationGuide.html = ConfigurationGuide.html
+		Documentation\ConfigurationGuide.html = Documentation\ConfigurationGuide.html
 	EndProjectSection
 EndProject
 Global
