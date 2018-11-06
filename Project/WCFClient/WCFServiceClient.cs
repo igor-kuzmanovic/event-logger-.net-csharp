@@ -10,7 +10,7 @@ namespace WCFClient
 {
     internal class WCFServiceClient : ChannelFactory<IWCFService>, IWCFService, IDisposable
     {
-        private IWCFService channel;
+        private readonly IWCFService channel;
 
         public WCFServiceClient() : this("WCFService_Endpoint") { }
 

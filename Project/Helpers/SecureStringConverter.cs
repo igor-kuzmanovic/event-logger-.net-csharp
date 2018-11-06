@@ -12,7 +12,7 @@ namespace Helpers
     {
         public static SecureString ToSecureString(byte[] valueData)
         {
-            string value = valueData.ToString();
+            string value = Encoding.Unicode.GetString(valueData);
             Array.Clear(valueData, 0, valueData.Length);
 
             SecureString secureValue = ToSecureString(value);
@@ -31,7 +31,7 @@ namespace Helpers
 
         public static string ToString(byte[] valueData)
         {
-            string value = valueData.ToString();
+            string value = Encoding.Unicode.GetString(valueData);
             Array.Clear(valueData, 0, valueData.Length);
 
             return value;
@@ -43,7 +43,6 @@ namespace Helpers
             string value = Marshal.PtrToStringUni(valuePointer);
 
             Marshal.ZeroFreeGlobalAllocUnicode(valuePointer);
-            secureValue.Dispose();
 
             return value;
         }

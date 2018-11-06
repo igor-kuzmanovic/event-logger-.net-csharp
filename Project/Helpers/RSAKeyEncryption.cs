@@ -10,26 +10,9 @@ namespace Helpers
 {
     public static class RSAKeyEncryption
     {
-        public static string Encrypt(string key, X509Certificate2 certificate)
-        {
-            byte[] keyData = Encoding.Unicode.GetBytes(key);
-            key = string.Empty;
-
-            byte[] encryptedKeyData = Encrypt(keyData, certificate);
-            string encryptedKey = encryptedKeyData.ToString();
-            Array.Clear(encryptedKeyData, 0, encryptedKeyData.Length);
-
-            return encryptedKey;
-        }
-
         public static byte[] Encrypt(byte[] keyData, X509Certificate2 certificate)
         {
-            RSACryptoServiceProvider csp = (RSACryptoServiceProvider)certificate.PrivateKey;
-
-            if (csp == null)
-            {
-                throw new Exception("Unable to obtain the private key from the provided certificate.");
-            }
+            RSACryptoServiceProvider csp = certificate.PublicKey.Key as RSACryptoServiceProvider;
 
             byte[] encryptedKeyData = csp.Encrypt(keyData, false);
             Array.Clear(keyData, 0, keyData.Length);
@@ -37,31 +20,38 @@ namespace Helpers
             return encryptedKeyData;
         }
 
-        public static string Decrypt(string encryptedKey, X509Certificate2 certificate)
+        public static string Encrypt(string key, X509Certificate2 certificate)
         {
-            byte[] encryptedKeyData = Encoding.Unicode.GetBytes(encryptedKey);
-            encryptedKey = string.Empty;
+            byte[] keyData = Encoding.Unicode.GetBytes(key);
+            key = string.Empty;
 
-            byte[] keyData = Decrypt(encryptedKeyData, certificate);
-            string key = keyData.ToString();
+            byte[] encryptedKeyData = Encrypt(keyData, certificate);
+            string encryptedKey = Convert.ToBase64String(encryptedKeyData);
             Array.Clear(encryptedKeyData, 0, encryptedKeyData.Length);
 
-            return key;
+            return encryptedKey;
         }
 
         public static byte[] Decrypt(byte[] encryptedKeyData, X509Certificate2 certificate)
         {
-            RSACryptoServiceProvider csp = (RSACryptoServiceProvider)certificate.PublicKey.Key;
-
-            if (csp == null)
-            {
-                throw new Exception("Unable to obtain the public key from the provided certificate.");
-            }
+            RSACryptoServiceProvider csp = certificate.PrivateKey as RSACryptoServiceProvider;
 
             byte[] decryptedKeyData = csp.Decrypt(encryptedKeyData, false);
             Array.Clear(encryptedKeyData, 0, encryptedKeyData.Length);
 
             return decryptedKeyData;
+        }
+
+        public static string Decrypt(string encryptedKey, X509Certificate2 certificate)
+        {
+            byte[] encryptedKeyData = Convert.FromBase64String(encryptedKey);
+            encryptedKey = string.Empty;
+
+            byte[] keyData = Decrypt(encryptedKeyData, certificate);
+            string key = Encoding.Unicode.GetString(keyData);
+            Array.Clear(encryptedKeyData, 0, encryptedKeyData.Length);
+
+            return key;
         }
     }
 }

@@ -13,6 +13,8 @@ namespace WCFService
     {
         static void Main(string[] args)
         {
+            WCFService.Start();
+
             ServiceHost host = new ServiceHost(typeof(WCFService));
 
             try
@@ -20,9 +22,8 @@ namespace WCFService
                 host.Open();
 
                 Console.WriteLine("Service is ready");
-
-                SecureString securePrivateKey = GetPrivateKey();
-                securePrivateKey.MakeReadOnly();
+                Console.WriteLine("Press any key to close the service...");
+                Console.ReadKey(true);
             }
             catch (Exception e)
             {
@@ -31,41 +32,12 @@ namespace WCFService
             }
             finally
             {
-                Console.WriteLine("Press any key to close the service...");
-                Console.ReadKey(true);
-
                 host.Close();
+                WCFService.Stop();
             }
 
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey(true);
-        }
-
-        private static SecureString GetPrivateKey()
-        {
-            SecureString privateKey = new SecureString();
-            ConsoleKeyInfo keyInfo;
-
-            Console.Write("Enter the private key: ");
-
-            do
-            {
-                keyInfo = Console.ReadKey(true);
-                if (keyInfo.Key == ConsoleKey.Backspace && privateKey.Length > 0)
-                {
-                    privateKey.RemoveAt(privateKey.Length - 1);
-                    Console.Write("\b \b");
-                }
-                else if (char.IsLetterOrDigit(keyInfo.KeyChar))
-                {
-                    privateKey.AppendChar(keyInfo.KeyChar);
-                    Console.Write("*");
-                }
-            } while (keyInfo.Key != ConsoleKey.Enter);
-
-            Console.WriteLine();
-
-            return privateKey;
         }
     }
 }

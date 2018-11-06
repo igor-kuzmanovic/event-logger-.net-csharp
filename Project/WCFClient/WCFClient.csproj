@@ -51,6 +51,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Helpers\Helpers.csproj">
+      <Project>{7AA0406C-B7B3-4AD0-BB6C-633C8CC58E0E}</Project>
+      <Name>Helpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WCFServiceCommon\WCFServiceCommon.csproj">
       <Project>{dc8d5ee6-8d0b-4dd7-96bd-bba08404865b}</Project>
       <Name>WCFServiceCommon</Name>
