@@ -19,7 +19,7 @@ namespace WCFClient
 
             using (WCFServiceClient client = new WCFServiceClient())
             {
-                Console.WriteLine(RSAKeyEncryption.Decrypt(client.CheckIn(), client.Credentials.ClientCertificate.Certificate));
+                Console.WriteLine(RSAEncrypter.Decrypt(client.CheckIn(), client.Credentials.ClientCertificate.Certificate));
             }
 
             Console.WriteLine("Press any key to exit...");

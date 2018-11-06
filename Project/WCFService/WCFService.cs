@@ -20,7 +20,7 @@ namespace WCFService
         {
             X509Certificate2 certificate = ((X509CertificateClaimSet)OperationContext.Current.ServiceSecurityContext.AuthorizationContext.ClaimSets[0]).X509Certificate;
 
-            return RSAKeyEncryption.Encrypt(SecureStringConverter.ToString(securePrivateKey), certificate);
+            return Encoding.Unicode.GetString(RSAEncrypter.Encrypt(SecureStringConverter.ToString(securePrivateKey), certificate));
         }
 
         public void Add()

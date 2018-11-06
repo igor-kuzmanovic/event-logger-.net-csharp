@@ -41,7 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="RSAKeyEncryption.cs" />
+    <Compile Include="AESEncrypter.cs" />
+    <Compile Include="RSAEncrypter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecureStringConverter.cs" />
   </ItemGroup>

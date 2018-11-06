@@ -16,13 +16,14 @@ namespace Helpers
             Array.Clear(valueData, 0, valueData.Length);
 
             SecureString secureValue = ToSecureString(value);
+            value = string.Empty;
+
             return secureValue;
         }
 
         public static SecureString ToSecureString(string value)
         {
             SecureString secureValue = new SecureString();
-
             Array.ForEach(value.ToCharArray(), (c) => secureValue.AppendChar(c));
             value = string.Empty;
 
@@ -41,7 +42,6 @@ namespace Helpers
         {
             IntPtr valuePointer = Marshal.SecureStringToGlobalAllocUnicode(secureValue);
             string value = Marshal.PtrToStringUni(valuePointer);
-
             Marshal.ZeroFreeGlobalAllocUnicode(valuePointer);
 
             return value;
