@@ -8,7 +8,7 @@ using WCFServiceCommon;
 
 namespace WCFClient
 {
-    internal class WCFServiceClient : ChannelFactory<IWCFService>, IWCFServiceClient
+    internal class WCFServiceClient : ChannelFactory<IWCFService>, IWCFService, IDisposable
     {
         private IWCFService channel;
 
@@ -84,12 +84,20 @@ namespace WCFClient
 
         public void Dispose()
         {
-            if (channel != null)
+            try
             {
-                channel = null;
+                if (State != CommunicationState.Faulted)
+                {
+                    Close();
+                }
             }
-
-            Close();
+            finally
+            {
+                if (State != CommunicationState.Closed)
+                {
+                    Abort();
+                }
+            }
         }
     }
 }
