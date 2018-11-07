@@ -40,7 +40,6 @@ namespace Helpers
                 encryptedTextWithIV = new byte[encryptedText.Length + csp.IV.Length];
                 Array.Copy(csp.IV, encryptedTextWithIV, csp.IV.Length);
                 Array.Copy(encryptedText, 0, encryptedTextWithIV, encryptedText.Length, csp.IV.Length);
-                Array.Clear(encryptedText, 0, encryptedText.Length);
             }
 
             return encryptedTextWithIV;
@@ -59,7 +58,6 @@ namespace Helpers
 
                 encryptedText = new byte[encryptedTextWithIV.Length - csp.IV.Length];
                 Array.Copy(encryptedTextWithIV, csp.IV.Length, encryptedText, 0, encryptedText.Length);
-                Array.Clear(encryptedTextWithIV, 0, encryptedTextWithIV.Length);
 
                 using (ICryptoTransform decryptor = csp.CreateDecryptor(csp.Key, csp.IV))
                 {
@@ -75,8 +73,6 @@ namespace Helpers
                     }
                 }
             }
-
-            Array.Clear(encryptedText, 0, encryptedText.Length);
 
             return text;
         }

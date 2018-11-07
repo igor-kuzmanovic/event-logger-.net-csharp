@@ -17,7 +17,6 @@ namespace Helpers
 
             byte[] valueData = Encoding.ASCII.GetBytes(value);
             byte[] encryptedValueData = csp.Encrypt(valueData, true);
-            Array.Clear(valueData, 0, valueData.Length);
 
             return encryptedValueData;
         }
@@ -27,10 +26,7 @@ namespace Helpers
             RSACryptoServiceProvider csp = certificate.PrivateKey as RSACryptoServiceProvider;
 
             byte[] valueData = csp.Decrypt(encryptedValueData, true);
-            Array.Clear(encryptedValueData, 0, encryptedValueData.Length);
-
             string value = Encoding.ASCII.GetString(valueData);
-            Array.Clear(valueData, 0, valueData.Length);
 
             return value;
         }

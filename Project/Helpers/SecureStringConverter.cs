@@ -13,10 +13,7 @@ namespace Helpers
         public static SecureString ToSecureString(byte[] valueData)
         {
             string value = Encoding.ASCII.GetString(valueData);
-            Array.Clear(valueData, 0, valueData.Length);
-
             SecureString secureValue = ToSecureString(value);
-            value = string.Empty;
 
             return secureValue;
         }
@@ -25,7 +22,6 @@ namespace Helpers
         {
             SecureString secureValue = new SecureString();
             Array.ForEach(value.ToCharArray(), (c) => secureValue.AppendChar(c));
-            value = string.Empty;
 
             return secureValue;
         }
@@ -33,7 +29,6 @@ namespace Helpers
         public static string ToString(byte[] valueData)
         {
             string value = Encoding.ASCII.GetString(valueData);
-            Array.Clear(valueData, 0, valueData.Length);
 
             return value;
         }
@@ -41,7 +36,7 @@ namespace Helpers
         public static string ToString(SecureString secureValue)
         {
             IntPtr valuePointer = Marshal.SecureStringToGlobalAllocAnsi(secureValue);
-            string value = Marshal.PtrToStringUni(valuePointer);
+            string value = Marshal.PtrToStringAnsi(valuePointer);
             Marshal.ZeroFreeGlobalAllocAnsi(valuePointer);
 
             return value;
@@ -50,7 +45,6 @@ namespace Helpers
         public static byte[] ToBytes(string value)
         {
             byte[] valueData = Encoding.ASCII.GetBytes(value);
-            value = string.Empty;
 
             return valueData;
         }
@@ -59,7 +53,6 @@ namespace Helpers
         {
             string value = ToString(secureValue);
             byte[] valueData = Encoding.ASCII.GetBytes(value);
-            value = string.Empty;
            
             return valueData;
         }
