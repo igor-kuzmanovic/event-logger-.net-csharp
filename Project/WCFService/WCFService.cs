@@ -16,11 +16,9 @@ namespace WCFService
     {
         private static SecureString securePrivateKey;
 
-        public string CheckIn()
+        public void CheckIn()
         {
-            X509Certificate2 certificate = ((X509CertificateClaimSet)OperationContext.Current.ServiceSecurityContext.AuthorizationContext.ClaimSets[0]).X509Certificate;
-
-            return Encoding.Unicode.GetString(RSAEncrypter.Encrypt(SecureStringConverter.ToString(securePrivateKey), certificate));
+            throw new NotImplementedException();
         }
 
         public void Add()

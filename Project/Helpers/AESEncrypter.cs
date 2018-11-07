@@ -10,33 +10,18 @@ namespace Helpers
 {
     public static class AESEncrypter
     {
-        public static byte[] Encrypt(byte[] valueData, byte[] keyData)
+        public static byte[] Encrypt(string text, string key)
         {
-            string value = Encoding.Unicode.GetString(valueData);
-            Array.Clear(valueData, 0, valueData.Length);
-
-            byte[] encryptedValueDataWithIV = Encrypt(value, keyData);
-            value = string.Empty;
-            Array.Clear(keyData, 0, keyData.Length);
-
-            return encryptedValueDataWithIV;
-        }
-
-        public static byte[] Encrypt(string value, byte[] keyData)
-        {
-            byte[] encryptedValueData = null;
-            byte[] encryptedValueDataWithIV = null;
+            byte[] encryptedText = null;
+            byte[] encryptedTextWithIV = null;
 
             using (AesCryptoServiceProvider csp = new AesCryptoServiceProvider())
             {
                 csp.Mode = CipherMode.CBC;
-
-                csp.Key = keyData;
-                Array.Clear(keyData, 0, keyData.Length);
-
+                csp.Key = Encoding.ASCII.GetBytes(key).Concat(new byte[32 - Encoding.ASCII.GetByteCount(key)]).ToArray();
                 csp.GenerateIV();
 
-                using (ICryptoTransform encryptor = csp.CreateEncryptor())
+                using (ICryptoTransform encryptor = csp.CreateEncryptor(csp.Key, csp.IV))
                 {
                     using (MemoryStream memoryStream = new MemoryStream())
                     {
@@ -44,76 +29,56 @@ namespace Helpers
                         {
                             using (StreamWriter streamWriter = new StreamWriter(cryptoStream))
                             {
-                                streamWriter.Write(value);
+                                streamWriter.Write(text);
                             }
 
-                            encryptedValueData = memoryStream.ToArray();
+                            encryptedText = memoryStream.ToArray();
                         }
                     }
                 }
 
-                encryptedValueDataWithIV = new byte[encryptedValueData.Length + csp.IV.Length];
-                Array.Copy(csp.IV, 0, encryptedValueDataWithIV, 0, csp.IV.Length);
-                Array.Copy(encryptedValueData, csp.IV.Length + 1, encryptedValueDataWithIV, 0, encryptedValueData.Length);
-                Array.Clear(encryptedValueData, 0, encryptedValueData.Length);
+                encryptedTextWithIV = new byte[encryptedText.Length + csp.IV.Length];
+                Array.Copy(csp.IV, encryptedTextWithIV, csp.IV.Length);
+                Array.Copy(encryptedText, 0, encryptedTextWithIV, encryptedText.Length, csp.IV.Length);
+                Array.Clear(encryptedText, 0, encryptedText.Length);
             }
 
-            value = string.Empty;
-            Array.Clear(keyData, 0, keyData.Length);
-
-            return encryptedValueDataWithIV;
+            return encryptedTextWithIV;
         }
 
-        public static string Decrypt(string encryptedValueWithIV, byte[] keyData)
+        public static string Decrypt(byte[] encryptedTextWithIV, string key)
         {
-            byte[] encryptedValueDataWithIV = Encoding.Unicode.GetBytes(encryptedValueWithIV);
-            encryptedValueWithIV = string.Empty;
-
-            string value = Decrypt(encryptedValueDataWithIV, keyData);
-            Array.Clear(encryptedValueDataWithIV, 0, encryptedValueDataWithIV.Length);
-            Array.Clear(keyData, 0, keyData.Length);
-
-            return value;
-        }
-
-        public static string Decrypt(byte[] encryptedValueDataWithIV, byte[] keyData)
-        {
-            string value = string.Empty;
-            byte[] encryptedValueData = null;
+            string text = string.Empty;
+            byte[] encryptedText = null;
 
             using (AesCryptoServiceProvider csp = new AesCryptoServiceProvider())
             {
                 csp.Mode = CipherMode.CBC;
+                csp.Key = Encoding.ASCII.GetBytes(key).Concat(new byte[32 - Encoding.ASCII.GetByteCount(key)]).ToArray();
+                csp.IV = encryptedTextWithIV.Take(csp.BlockSize / 8).ToArray();
 
-                csp.Key = keyData;
-                Array.Clear(keyData, 0, keyData.Length);
+                encryptedText = new byte[encryptedTextWithIV.Length - csp.IV.Length];
+                Array.Copy(encryptedTextWithIV, csp.IV.Length, encryptedText, 0, encryptedText.Length);
+                Array.Clear(encryptedTextWithIV, 0, encryptedTextWithIV.Length);
 
-                csp.IV = new byte[csp.BlockSize / 8];
-                Array.Copy(encryptedValueDataWithIV, 0, csp.IV, 0, csp.IV.Length);
-
-                encryptedValueData = new byte[encryptedValueDataWithIV.Length - csp.IV.Length];
-                Array.Copy(encryptedValueDataWithIV, 0, encryptedValueData, 0, encryptedValueData.Length);
-                Array.Clear(encryptedValueDataWithIV, 0, encryptedValueDataWithIV.Length);
-
-                using (ICryptoTransform decryptor = csp.CreateDecryptor())
+                using (ICryptoTransform decryptor = csp.CreateDecryptor(csp.Key, csp.IV))
                 {
-                    using (MemoryStream memoryStream = new MemoryStream(encryptedValueDataWithIV))
+                    using (MemoryStream memoryStream = new MemoryStream(encryptedText))
                     {
                         using (CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
                         {
                             using (StreamReader streamReader = new StreamReader(cryptoStream))
                             {
-                                value = streamReader.ReadToEnd();
+                                text = streamReader.ReadToEnd();
                             }
                         }
                     }
                 }
             }
 
-            Array.Clear(encryptedValueData, 0, encryptedValueData.Length);
-            Array.Clear(keyData, 0, keyData.Length);
+            Array.Clear(encryptedText, 0, encryptedText.Length);
 
-            return value;
+            return text;
         }
     }
 }

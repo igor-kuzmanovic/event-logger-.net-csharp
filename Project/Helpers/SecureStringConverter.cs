@@ -12,7 +12,7 @@ namespace Helpers
     {
         public static SecureString ToSecureString(byte[] valueData)
         {
-            string value = Encoding.Unicode.GetString(valueData);
+            string value = Encoding.ASCII.GetString(valueData);
             Array.Clear(valueData, 0, valueData.Length);
 
             SecureString secureValue = ToSecureString(value);
@@ -32,7 +32,7 @@ namespace Helpers
 
         public static string ToString(byte[] valueData)
         {
-            string value = Encoding.Unicode.GetString(valueData);
+            string value = Encoding.ASCII.GetString(valueData);
             Array.Clear(valueData, 0, valueData.Length);
 
             return value;
@@ -40,16 +40,16 @@ namespace Helpers
 
         public static string ToString(SecureString secureValue)
         {
-            IntPtr valuePointer = Marshal.SecureStringToGlobalAllocUnicode(secureValue);
+            IntPtr valuePointer = Marshal.SecureStringToGlobalAllocAnsi(secureValue);
             string value = Marshal.PtrToStringUni(valuePointer);
-            Marshal.ZeroFreeGlobalAllocUnicode(valuePointer);
+            Marshal.ZeroFreeGlobalAllocAnsi(valuePointer);
 
             return value;
         }
 
         public static byte[] ToBytes(string value)
         {
-            byte[] valueData = Encoding.Unicode.GetBytes(value);
+            byte[] valueData = Encoding.ASCII.GetBytes(value);
             value = string.Empty;
 
             return valueData;
@@ -58,7 +58,7 @@ namespace Helpers
         public static byte[] ToBytes(SecureString secureValue)
         {
             string value = ToString(secureValue);
-            byte[] valueData = Encoding.Unicode.GetBytes(value);
+            byte[] valueData = Encoding.ASCII.GetBytes(value);
             value = string.Empty;
            
             return valueData;

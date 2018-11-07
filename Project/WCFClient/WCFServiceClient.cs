@@ -19,18 +19,16 @@ namespace WCFClient
             channel = CreateChannel();
         }
 
-        public string CheckIn()
+        public void CheckIn()
         {
-            string result = string.Empty;
             try
             {
-                result = channel.CheckIn();
+                channel.CheckIn();
             }
             catch (Exception e)
             {
                 Console.WriteLine("[CheckIn] ERROR = {0}", e.Message);
             }
-            return result;
         }
 
         public void Add()

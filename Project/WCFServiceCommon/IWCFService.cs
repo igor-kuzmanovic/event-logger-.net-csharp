@@ -11,7 +11,7 @@ namespace WCFServiceCommon
     public interface IWCFService
     {
         [OperationContract]
-        string CheckIn();
+        void CheckIn();
 
         [OperationContract]
         void Add();
