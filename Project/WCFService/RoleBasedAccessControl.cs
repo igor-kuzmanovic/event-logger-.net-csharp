@@ -59,7 +59,7 @@ namespace WCFService
 
             if (subjectName.Any(s => s.Contains("OU=")))
             {
-                string[] organizationalUnits = subjectName.First(s => s.StartsWith("OU=")).Substring("OU=".Length).Split('|', StringSplitOptions.RemoveEmptyEntries);
+                string[] organizationalUnits = subjectName.First(s => s.StartsWith("OU=")).Substring("OU=".Length).Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (string organizationalUnit in organizationalUnits)
                 {
