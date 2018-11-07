@@ -13,7 +13,8 @@ namespace WCFService
     {
         static void Main(string[] args)
         {
-            WCFService.PrivateKey = InputPrivateKey();
+            SecureString privateKey = InputPrivateKey();
+            WCFService.PrivateKey = privateKey;
 
             ServiceHost host = new ServiceHost(typeof(WCFService));
 
@@ -38,6 +39,7 @@ namespace WCFService
             finally
             {
                 host.Close();
+                privateKey.Dispose();
             }
 
             Console.WriteLine("Press any key to exit...");
