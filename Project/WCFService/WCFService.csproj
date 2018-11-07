@@ -50,6 +50,7 @@
     <Compile Include="RoleBasedAccessControl.cs" />
     <Compile Include="Roles.cs" />
     <Compile Include="WCFService.cs" />
+    <Compile Include="IDSServiceClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -58,6 +59,10 @@
     <ProjectReference Include="..\Helpers\Helpers.csproj">
       <Project>{7AA0406C-B7B3-4AD0-BB6C-633C8CC58E0E}</Project>
       <Name>Helpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IDSServiceCommon\IDSServiceCommon.csproj">
+      <Project>{BF8F6688-2902-4406-9294-6DCA1CF40E1B}</Project>
+      <Name>IDSServiceCommon</Name>
     </ProjectReference>
     <ProjectReference Include="..\WCFServiceCommon\WCFServiceCommon.csproj">
       <Project>{DC8D5EE6-8D0B-4DD7-96BD-BBA08404865B}</Project>

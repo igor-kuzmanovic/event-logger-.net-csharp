@@ -22,6 +22,11 @@ namespace WCFService
                 host.Open();
                 Console.WriteLine("Service is ready");
 
+                using (IDSServiceClient client = new IDSServiceClient())
+                {
+                    client.Alarm();
+                }
+
                 Console.WriteLine("Press any key to close the service...");
                 Console.ReadKey(true);
             }
