@@ -1,6 +1,7 @@
 ﻿using Helpers;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IdentityModel.Claims;
 using System.Linq;
 using System.Security;
@@ -18,34 +19,61 @@ namespace WCFService
 
         public byte[] CheckIn()
         {
-            X509Certificate2 clientCertificate = ((X509CertificateClaimSet)OperationContext.Current.ServiceSecurityContext.AuthorizationContext.ClaimSets[0]).X509Certificate;
+            X509Certificate2 clientCertificate = GetUserCertificate();
 
             return RSAEncrypter.Encrypt(SecureStringConverter.ToString(securePrivateKey), clientCertificate);
         }
 
         public void Add()
         {
-            throw new NotImplementedException();
+            X509Certificate2 clientCertificate = GetUserCertificate();
+
+            if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Add))
+            {
+                Console.WriteLine("[Add] Denied");
+            }
         }
 
         public void Update()
         {
-            throw new NotImplementedException();
+            X509Certificate2 clientCertificate = GetUserCertificate();
+
+            if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Update))
+            {
+                Console.WriteLine("[Update] Denied");
+            }
         }
 
         public void Delete()
         {
-            throw new NotImplementedException();
+            X509Certificate2 clientCertificate = GetUserCertificate();
+
+            if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Delete))
+            {
+                Console.WriteLine("[Delete] Denied");
+            }
+
+            return;
         }
 
         public void Read()
         {
-            throw new NotImplementedException();
+            X509Certificate2 clientCertificate = GetUserCertificate();
+
+            if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Read))
+            {
+                Console.WriteLine("[Read] Denied");
+            }
         }
 
         public void ReadAll()
         {
-            throw new NotImplementedException();
+            X509Certificate2 clientCertificate = GetUserCertificate();
+
+            if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Read))
+            {
+                Console.WriteLine("[ReadAll] Denied");
+            }
         }
 
         public static void Start()
@@ -90,6 +118,11 @@ namespace WCFService
             Console.WriteLine();
 
             return privateKey;
+        }
+
+        private X509Certificate2 GetUserCertificate()
+        {
+            return ((X509CertificateClaimSet)OperationContext.Current.ServiceSecurityContext.AuthorizationContext.ClaimSets[0]).X509Certificate;
         }
     }
 }
