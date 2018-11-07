@@ -11,24 +11,24 @@ namespace Helpers
 {
     public static class RSAEncrypter
     {
-        public static byte[] Encrypt(string value, X509Certificate2 certificate)
+        public static byte[] Encrypt(string text, X509Certificate2 certificate)
         {
             RSACryptoServiceProvider csp = certificate.PublicKey.Key as RSACryptoServiceProvider;
 
-            byte[] valueData = Encoding.ASCII.GetBytes(value);
-            byte[] encryptedValueData = csp.Encrypt(valueData, true);
+            byte[] textBytes = Encoding.ASCII.GetBytes(text);
+            byte[] encryptedText = csp.Encrypt(textBytes, true);
 
-            return encryptedValueData;
+            return encryptedText;
         }
 
-        public static string Decrypt(byte[] encryptedValueData, X509Certificate2 certificate)
+        public static string Decrypt(byte[] encryptedText, X509Certificate2 certificate)
         {
             RSACryptoServiceProvider csp = certificate.PrivateKey as RSACryptoServiceProvider;
 
-            byte[] valueData = csp.Decrypt(encryptedValueData, true);
-            string value = Encoding.ASCII.GetString(valueData);
+            byte[] textBytes = csp.Decrypt(encryptedText, true);
+            string text = Encoding.ASCII.GetString(textBytes);
 
-            return value;
+            return text;
         }
     }
 }
