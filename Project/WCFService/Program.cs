@@ -13,7 +13,7 @@ namespace WCFService
     {
         static void Main(string[] args)
         {
-            WCFService.Start();
+            WCFService.PrivateKey = InputPrivateKey();
 
             ServiceHost host = new ServiceHost(typeof(WCFService));
 
@@ -38,11 +38,37 @@ namespace WCFService
             finally
             {
                 host.Close();
-                WCFService.Stop();
             }
 
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey(true);
+        }
+
+        private static SecureString InputPrivateKey()
+        {
+            SecureString privateKey = new SecureString();
+            ConsoleKeyInfo keyInfo;
+
+            Console.Write("Enter the private key: ");
+
+            do
+            {
+                keyInfo = Console.ReadKey(true);
+                if (keyInfo.Key == ConsoleKey.Backspace && privateKey.Length > 0)
+                {
+                    privateKey.RemoveAt(privateKey.Length - 1);
+                    Console.Write("\b \b");
+                }
+                else if (char.IsLetterOrDigit(keyInfo.KeyChar))
+                {
+                    privateKey.AppendChar(keyInfo.KeyChar);
+                    Console.Write("*");
+                }
+            } while (keyInfo.Key != ConsoleKey.Enter);
+
+            Console.WriteLine();
+
+            return privateKey;
         }
     }
 }

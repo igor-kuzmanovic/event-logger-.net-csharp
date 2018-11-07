@@ -15,18 +15,18 @@ namespace WCFService
 {
     internal class WCFService : IWCFService
     {
-        private static SecureString securePrivateKey;
+        public static SecureString PrivateKey { get; set; }
 
         public byte[] CheckIn()
         {
-            X509Certificate2 clientCertificate = GetUserCertificate();
+            X509Certificate2 clientCertificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
-            return RSAEncrypter.Encrypt(SecureStringConverter.ToString(securePrivateKey), clientCertificate);
+            return RSAEncrypter.Encrypt(SecureStringConverter.ToString(PrivateKey), clientCertificate);
         }
 
         public void Add()
         {
-            X509Certificate2 clientCertificate = GetUserCertificate();
+            X509Certificate2 clientCertificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
             if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Add))
             {
@@ -36,7 +36,7 @@ namespace WCFService
 
         public void Update()
         {
-            X509Certificate2 clientCertificate = GetUserCertificate();
+            X509Certificate2 clientCertificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
             if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Update))
             {
@@ -46,7 +46,7 @@ namespace WCFService
 
         public void Delete()
         {
-            X509Certificate2 clientCertificate = GetUserCertificate();
+            X509Certificate2 clientCertificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
             if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Delete))
             {
@@ -58,7 +58,7 @@ namespace WCFService
 
         public void Read()
         {
-            X509Certificate2 clientCertificate = GetUserCertificate();
+            X509Certificate2 clientCertificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
             if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Read))
             {
@@ -68,61 +68,12 @@ namespace WCFService
 
         public void ReadAll()
         {
-            X509Certificate2 clientCertificate = GetUserCertificate();
+            X509Certificate2 clientCertificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
             if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Read))
             {
                 Console.WriteLine("[ReadAll] Denied");
             }
-        }
-
-        public static void Start()
-        {
-            if (securePrivateKey == null)
-            {
-                securePrivateKey = InputPrivateKey();
-                securePrivateKey.MakeReadOnly();
-            }
-        }
-
-        public static void Stop()
-        {
-            if (securePrivateKey != null)
-            {
-                securePrivateKey.Dispose();
-            }
-        }
-
-        private static SecureString InputPrivateKey()
-        {
-            SecureString privateKey = new SecureString();
-            ConsoleKeyInfo keyInfo;
-
-            Console.Write("Enter the private key: ");
-
-            do
-            {
-                keyInfo = Console.ReadKey(true);
-                if (keyInfo.Key == ConsoleKey.Backspace && privateKey.Length > 0)
-                {
-                    privateKey.RemoveAt(privateKey.Length - 1);
-                    Console.Write("\b \b");
-                }
-                else if (char.IsLetterOrDigit(keyInfo.KeyChar))
-                {
-                    privateKey.AppendChar(keyInfo.KeyChar);
-                    Console.Write("*");
-                }
-            } while (keyInfo.Key != ConsoleKey.Enter);
-
-            Console.WriteLine();
-
-            return privateKey;
-        }
-
-        private X509Certificate2 GetUserCertificate()
-        {
-            return ((X509CertificateClaimSet)OperationContext.Current.ServiceSecurityContext.AuthorizationContext.ClaimSets[0]).X509Certificate;
         }
     }
 }
