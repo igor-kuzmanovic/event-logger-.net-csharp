@@ -41,6 +41,11 @@ namespace WCFService
                     Close();
                 }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine("[ERROR] {0}", e.Message);
+                Console.WriteLine("[StackTrace] {0}", e.StackTrace);
+            }
             finally
             {
                 if (State != CommunicationState.Closed)

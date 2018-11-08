@@ -11,6 +11,11 @@ namespace Helpers
 {
     public static class SecurityHelper
     {
+        public static X509Certificate2 GetUserCertificate(ChannelFactory client)
+        {
+            return client.Credentials.ClientCertificate.Certificate;
+        }
+
         public static X509Certificate2 GetUserCertificate(OperationContext context)
         {
             return ((X509CertificateClaimSet)context.ServiceSecurityContext.AuthorizationContext.ClaimSets[0]).X509Certificate;

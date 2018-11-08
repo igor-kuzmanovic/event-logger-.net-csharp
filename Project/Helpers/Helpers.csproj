@@ -46,7 +46,7 @@
     <Compile Include="AESEncrypter.cs" />
     <Compile Include="RSAEncrypter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SecureStringConverter.cs" />
+    <Compile Include="StringConverter.cs" />
     <Compile Include="SecurityHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

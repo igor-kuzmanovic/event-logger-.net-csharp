@@ -26,71 +26,75 @@ namespace WCFClient
             {
                 result = channel.CheckIn();
             }
-            catch (Exception e)
+            catch (FaultException e)
             {
                 Console.WriteLine("[CheckIn] ERROR = {0}", e.Message);
             }
             return result;
         }
 
-        public void Add()
+        public void Add(string entry)
         {
             try
             {
-                channel.Add();
+                channel.Add(entry);
             }
-            catch (Exception e)
+            catch (FaultException e)
             {
                 Console.WriteLine("[Add] ERROR = {0}", e.Message);
             }
         }
 
-        public void Update()
+        public void Update(int entryId, string entry)
         {
             try
             {
-                channel.Update();
+                channel.Update(entryId, entry);
             }
-            catch (Exception e)
+            catch (FaultException e)
             {
                 Console.WriteLine("[Update] ERROR = {0}", e.Message);
             }
         }
 
-        public void Delete()
+        public void Delete(int entryId)
         {
             try
             {
-                channel.Delete();
+                channel.Delete(entryId);
             }
-            catch (Exception e)
+            catch (FaultException e)
             {
                 Console.WriteLine("[Delete] ERROR = {0}", e.Message);
             }
         }
 
-        public void Read()
+        public Tuple<int, string> Read(int entryId)
         {
+            Tuple<int, string> result = null;
             try
             {
-                channel.Read();
+                result = channel.Read(entryId);
             }
-            catch (Exception e)
+            catch (FaultException e)
             {
                 Console.WriteLine("[Read] ERROR = {0}", e.Message);
             }
+            return result;
         }
 
-        public void ReadAll()
+        public Dictionary<int, string> ReadAll()
         {
+            Dictionary<int, string> result = null;
             try
             {
-                channel.ReadAll();
+                result = channel.ReadAll();
             }
-            catch (Exception e)
+            catch (FaultException e)
             {
                 Console.WriteLine("[ReadAll] ERROR = {0}", e.Message);
             }
+            return result;
         }
 
         public void Dispose()
@@ -101,6 +105,11 @@ namespace WCFClient
                 {
                     Close();
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[ERROR] {0}", e.Message);
+                Console.WriteLine("[StackTrace] {0}", e.StackTrace);
             }
             finally
             {

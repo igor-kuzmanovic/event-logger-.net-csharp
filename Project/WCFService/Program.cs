@@ -13,7 +13,7 @@ namespace WCFService
     {
         static void Main(string[] args)
         {
-            SecureString privateKey = InputPrivateKey();
+            SecureString privateKey = InputHelper.InputPrivateKey();
             WCFService.PrivateKey = privateKey;
 
             ServiceHost host = new ServiceHost(typeof(WCFService));
@@ -23,13 +23,7 @@ namespace WCFService
                 host.Open();
                 Console.WriteLine("Service is ready");
 
-                using (IDSServiceClient client = new IDSServiceClient())
-                {
-                    client.Alarm();
-                }
-
-                Console.WriteLine("Press any key to close the service...");
-                Console.ReadKey(true);
+                while (Console.ReadKey(true).Key != ConsoleKey.Escape) { }
             }
             catch (Exception e)
             {
@@ -44,33 +38,6 @@ namespace WCFService
 
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey(true);
-        }
-
-        private static SecureString InputPrivateKey()
-        {
-            SecureString privateKey = new SecureString();
-            ConsoleKeyInfo keyInfo;
-
-            Console.Write("Enter the private key: ");
-
-            do
-            {
-                keyInfo = Console.ReadKey(true);
-                if (keyInfo.Key == ConsoleKey.Backspace && privateKey.Length > 0)
-                {
-                    privateKey.RemoveAt(privateKey.Length - 1);
-                    Console.Write("\b \b");
-                }
-                else if (char.IsLetterOrDigit(keyInfo.KeyChar))
-                {
-                    privateKey.AppendChar(keyInfo.KeyChar);
-                    Console.Write("*");
-                }
-            } while (keyInfo.Key != ConsoleKey.Enter);
-
-            Console.WriteLine();
-
-            return privateKey;
         }
     }
 }

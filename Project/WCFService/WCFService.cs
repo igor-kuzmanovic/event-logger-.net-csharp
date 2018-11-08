@@ -21,59 +21,71 @@ namespace WCFService
         {
             X509Certificate2 clientCertificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
-            return RSAEncrypter.Encrypt(SecureStringConverter.ToString(PrivateKey), clientCertificate);
+            return RSAEncrypter.Encrypt(StringConverter.ToString(PrivateKey), clientCertificate);
         }
 
-        public void Add()
+        public void Add(string entry)
         {
             X509Certificate2 clientCertificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
             if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Add))
             {
-                Console.WriteLine("[Add] Denied");
+                throw new FaultException("Unauthorized");
             }
+
+            Console.WriteLine("Added a new entry");
         }
 
-        public void Update()
+        public void Update(int entryId, string entry)
         {
             X509Certificate2 clientCertificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
             if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Update))
             {
-                Console.WriteLine("[Update] Denied");
+                throw new FaultException("Unauthorized");
             }
+
+            Console.WriteLine("Updated {0} entry", entryId);
         }
 
-        public void Delete()
+        public void Delete(int entryId)
         {
             X509Certificate2 clientCertificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
             if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Delete))
             {
-                Console.WriteLine("[Delete] Denied");
+                throw new FaultException("Unauthorized");
             }
 
-            return;
+            Console.WriteLine("Deleted {0} entry", entryId);
         }
 
-        public void Read()
+        public KeyValuePair<int, string> Read(int entryId)
         {
             X509Certificate2 clientCertificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
             if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Read))
             {
-                Console.WriteLine("[Read] Denied");
+                throw new FaultException("Unauthorized");
             }
+
+            Console.WriteLine("Read {0} entry", entryId);
+
+            return new KeyValuePair<int, string>(0, string.Empty);
         }
 
-        public void ReadAll()
+        public Dictionary<int, string> ReadAll()
         {
             X509Certificate2 clientCertificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
             if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Read))
             {
-                Console.WriteLine("[ReadAll] Denied");
+                throw new FaultException("Unauthorized");
             }
+
+            Console.WriteLine("Read all entries");
+
+            return new Dictionary<int, string>();
         }
     }
 }

@@ -14,18 +14,18 @@ namespace WCFServiceCommon
         byte[] CheckIn();
 
         [OperationContract]
-        void Add();
+        void Add(string entry);
 
         [OperationContract]
-        void Update();
+        void Update(int entryId, string entry);
 
         [OperationContract]
-        void Delete();
+        void Delete(int entryId);
 
         [OperationContract]
-        void Read();
+        KeyValuePair<int, string> Read(int entryId);
 
         [OperationContract]
-        void ReadAll();
+        Dictionary<int, string> ReadAll();
     }
 }
