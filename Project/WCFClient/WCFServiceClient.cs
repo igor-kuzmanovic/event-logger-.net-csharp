@@ -69,9 +69,9 @@ namespace WCFClient
             }
         }
 
-        public Tuple<int, string> Read(int entryId)
+        public KeyValuePair<int, string> Read(int entryId)
         {
-            Tuple<int, string> result = null;
+            KeyValuePair<int, string> result = new KeyValuePair<int, string>(0, string.Empty);
             try
             {
                 result = channel.Read(entryId);
