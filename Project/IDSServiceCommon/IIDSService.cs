@@ -11,6 +11,6 @@ namespace IDSServiceCommon
     public interface IIDSService
     {
         [OperationContract]
-        void Alarm();
+        void Alarm(string message);
     }
 }

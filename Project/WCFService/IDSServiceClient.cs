@@ -20,11 +20,11 @@ namespace WCFService
             channel = CreateChannel();
         }
 
-        public void Alarm()
+        public void Alarm(string message)
         {
             try
             {
-                channel.Alarm();
+                channel.Alarm(message);
             }
             catch (Exception e)
             {

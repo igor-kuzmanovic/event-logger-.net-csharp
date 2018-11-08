@@ -13,11 +13,9 @@ namespace IDSService
 {
     internal class IDSService : IIDSService
     {
-        public void Alarm()
+        public void Alarm(string message)
         {
-            string user = OperationContext.Current.ServiceSecurityContext.WindowsIdentity.Name;
-
-            Console.WriteLine("[{0}] Alarm!", user);
+            Console.WriteLine("[ALARM] {0}", message);
         }
     }
 }

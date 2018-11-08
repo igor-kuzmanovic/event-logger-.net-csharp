@@ -9,10 +9,12 @@ namespace WCFService
 {
     internal static class RoleBasedAccessControl
     {
-        private static readonly Dictionary<Roles, HashSet<Permissions>> rolePermissions = new Dictionary<Roles, HashSet<Permissions>>();
+        private static readonly Dictionary<Roles, HashSet<Permissions>> rolePermissions;
 
         static RoleBasedAccessControl()
         {
+            rolePermissions = new Dictionary<Roles, HashSet<Permissions>>();
+
             rolePermissions.Add(Roles.Client, new HashSet<Permissions>()
             {
                 Permissions.Read,
@@ -28,7 +30,7 @@ namespace WCFService
             rolePermissions.Add(Roles.Administrator, new HashSet<Permissions>()
             {
                 Permissions.Read,
-                Permissions.Delete
+                //Permissions.Delete
             });
         }
 

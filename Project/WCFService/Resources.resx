@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Alarm" xml:space="preserve">
-    <value>User {0} failed to authorize too many times</value>
+    <value>Entry {0} has too many failed modification attempts</value>
   </data>
   <data name="AuthenticationSuccess" xml:space="preserve">
     <value>User {0} successfully authenticated</value>

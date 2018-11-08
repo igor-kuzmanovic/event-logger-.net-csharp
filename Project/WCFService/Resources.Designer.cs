@@ -61,7 +61,7 @@ namespace WCFService {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User {0} failed to authorize too many times.
+        ///   Looks up a localized string similar to Entry {0} has too many failed modification attempts.
         /// </summary>
         internal static string Alarm {
             get {

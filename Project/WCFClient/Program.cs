@@ -22,23 +22,6 @@ namespace WCFClient
                 securePrivateKey = StringConverter.ToSecureString(RSAEncrypter.Decrypt(client.CheckIn(), SecurityHelper.GetUserCertificate(client)));
                 Console.WriteLine("Private key retrieved from the service");
 
-                client.Add(string.Format(ResourceHelper.GetString("Event1"), "Value 1"));
-                client.Add(string.Format(ResourceHelper.GetString("Event2"), "Value 1", "Value 2"));
-                client.Add(string.Format(ResourceHelper.GetString("Event3"), "Value 1", "Value 2", "Value 3"));
-
-                client.Update(1, string.Format(ResourceHelper.GetString("Event1"), "Value 1"));
-                client.Update(2, string.Format(ResourceHelper.GetString("Event2"), "Value 1", "Value 2"));
-                client.Update(3, string.Format(ResourceHelper.GetString("Event3"), "Value 1", "Value 2", "Value 3"));
-
-                client.Delete(1);
-                client.Delete(2);
-                client.Delete(3);
-
-                client.Read(1);
-                client.Read(2);
-                client.Read(3);
-
-                client.ReadAll();
             }
 
             securePrivateKey.Dispose();
