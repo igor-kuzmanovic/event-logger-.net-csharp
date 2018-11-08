@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WCFClient {
+namespace WCFService {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace WCFClient {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Events {
+    internal class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Events() {
+        internal Resources() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace WCFClient {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WCFClient.Events", typeof(Events).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WCFService.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,29 +61,38 @@ namespace WCFClient {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An example event containing value {0}.
+        ///   Looks up a localized string similar to User {0} failed to authorize too many times.
         /// </summary>
-        internal static string Event1 {
+        internal static string Alarm {
             get {
-                return ResourceManager.GetString("Event1", resourceCulture);
+                return ResourceManager.GetString("Alarm", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An example event containing value {0} and value {1}.
+        ///   Looks up a localized string similar to User {0} successfully authenticated.
         /// </summary>
-        internal static string Event2 {
+        internal static string AuthenticationSuccess {
             get {
-                return ResourceManager.GetString("Event2", resourceCulture);
+                return ResourceManager.GetString("AuthenticationSuccess", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An example event containing value {0} and value {1} and value {2}.
+        ///   Looks up a localized string similar to User {0} failed to authorize for {1}, lacks {2} permission.
         /// </summary>
-        internal static string Event3 {
+        internal static string AuthorizationFailure {
             get {
-                return ResourceManager.GetString("Event3", resourceCulture);
+                return ResourceManager.GetString("AuthorizationFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User {0} successfully authorized for {1}.
+        /// </summary>
+        internal static string AuthorizationSuccess {
+            get {
+                return ResourceManager.GetString("AuthorizationSuccess", resourceCulture);
             }
         }
     }

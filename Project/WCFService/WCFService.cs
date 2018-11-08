@@ -21,6 +21,8 @@ namespace WCFService
         {
             X509Certificate2 clientCertificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
+            EventLogger.AuthenticationSuccess(SecurityHelper.GetUserUsername(clientCertificate));
+
             return RSAEncrypter.Encrypt(StringConverter.ToString(PrivateKey), clientCertificate);
         }
 
@@ -30,10 +32,12 @@ namespace WCFService
 
             if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Add))
             {
+                EventLogger.AuthorizationFailure(SecurityHelper.GetUserUsername(clientCertificate), "Add", Permissions.Add.ToString());
+
                 throw new FaultException("Unauthorized");
             }
 
-            Console.WriteLine("Added a new entry");
+            EventLogger.AuthorizationSuccess(SecurityHelper.GetUserUsername(clientCertificate), "Add");
         }
 
         public void Update(int entryId, string entry)
@@ -42,10 +46,12 @@ namespace WCFService
 
             if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Update))
             {
+                EventLogger.AuthorizationFailure(SecurityHelper.GetUserUsername(clientCertificate), "Update", Permissions.Update.ToString());
+
                 throw new FaultException("Unauthorized");
             }
 
-            Console.WriteLine("Updated {0} entry", entryId);
+            EventLogger.AuthorizationSuccess(SecurityHelper.GetUserUsername(clientCertificate), "Update");
         }
 
         public void Delete(int entryId)
@@ -54,38 +60,44 @@ namespace WCFService
 
             if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Delete))
             {
+                EventLogger.AuthorizationFailure(SecurityHelper.GetUserUsername(clientCertificate), "Delete", Permissions.Delete.ToString());
+
                 throw new FaultException("Unauthorized");
             }
 
-            Console.WriteLine("Deleted {0} entry", entryId);
+            EventLogger.AuthorizationSuccess(SecurityHelper.GetUserUsername(clientCertificate), "Delete");
         }
 
-        public KeyValuePair<int, string> Read(int entryId)
+        public object Read(int entryId)
         {
             X509Certificate2 clientCertificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
             if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Read))
             {
+                EventLogger.AuthorizationFailure(SecurityHelper.GetUserUsername(clientCertificate), "Read", Permissions.Read.ToString());
+
                 throw new FaultException("Unauthorized");
             }
 
-            Console.WriteLine("Read {0} entry", entryId);
+            EventLogger.AuthorizationSuccess(SecurityHelper.GetUserUsername(clientCertificate), "Read");
 
-            return new KeyValuePair<int, string>(0, string.Empty);
+            return new object();
         }
 
-        public Dictionary<int, string> ReadAll()
+        public HashSet<object> ReadAll()
         {
             X509Certificate2 clientCertificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
             if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Read))
             {
+                EventLogger.AuthorizationFailure(SecurityHelper.GetUserUsername(clientCertificate), "ReadAll", Permissions.Read.ToString());
+
                 throw new FaultException("Unauthorized");
             }
 
-            Console.WriteLine("Read all entries");
+            EventLogger.AuthorizationSuccess(SecurityHelper.GetUserUsername(clientCertificate), "ReadAll");
 
-            return new Dictionary<int, string>();
+            return new HashSet<object>();
         }
     }
 }

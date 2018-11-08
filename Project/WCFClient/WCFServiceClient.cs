@@ -69,9 +69,9 @@ namespace WCFClient
             }
         }
 
-        public KeyValuePair<int, string> Read(int entryId)
+        public object Read(int entryId)
         {
-            KeyValuePair<int, string> result = new KeyValuePair<int, string>(0, string.Empty);
+            object result = null;
             try
             {
                 result = channel.Read(entryId);
@@ -83,9 +83,9 @@ namespace WCFClient
             return result;
         }
 
-        public Dictionary<int, string> ReadAll()
+        public HashSet<object> ReadAll()
         {
-            Dictionary<int, string> result = null;
+            HashSet<object> result = null;
             try
             {
                 result = channel.ReadAll();
