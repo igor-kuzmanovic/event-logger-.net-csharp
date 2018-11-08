@@ -9,12 +9,10 @@ namespace WCFService
 {
     internal static class RoleBasedAccessControl
     {
-        private static readonly Dictionary<Roles, HashSet<Permissions>> rolePermissions = Initialize();
+        private static readonly Dictionary<Roles, HashSet<Permissions>> rolePermissions = new Dictionary<Roles, HashSet<Permissions>>();
 
-        private static Dictionary<Roles, HashSet<Permissions>> Initialize()
+        static RoleBasedAccessControl()
         {
-            Dictionary<Roles, HashSet<Permissions>> rolePermissions = new Dictionary<Roles, HashSet<Permissions>>();
-
             rolePermissions.Add(Roles.Client, new HashSet<Permissions>()
             {
                 Permissions.Read,
@@ -32,8 +30,6 @@ namespace WCFService
                 Permissions.Read,
                 Permissions.Delete
             });
-
-            return rolePermissions;
         }
 
         public static bool UserHasPermission(X509Certificate2 user, Permissions permission)

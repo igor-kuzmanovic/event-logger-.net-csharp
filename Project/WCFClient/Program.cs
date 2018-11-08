@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Resources;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,19 +22,13 @@ namespace WCFClient
                 securePrivateKey = StringConverter.ToSecureString(RSAEncrypter.Decrypt(client.CheckIn(), SecurityHelper.GetUserCertificate(client)));
                 Console.WriteLine("Private key retrieved from the service");
 
-                using (ResXResourceSet resx = new ResXResourceSet(@"..\..\Resources.resx"))
-                {
-                    client.Add(string.Format(resx.GetString("Event1"), "Value 1"));
-                    client.Add(string.Format(resx.GetString("Event2"), "Value 1", "Value 2"));
-                    client.Add(string.Format(resx.GetString("Event3"), "Value 1", "Value 2", "Value 3"));
-                }
+                client.Add(string.Format(ResourceHelper.GetString("Event1"), "Value 1"));
+                client.Add(string.Format(ResourceHelper.GetString("Event2"), "Value 1", "Value 2"));
+                client.Add(string.Format(ResourceHelper.GetString("Event3"), "Value 1", "Value 2", "Value 3"));
 
-                using (ResXResourceSet resx = new ResXResourceSet(@"..\..\Resources.resx"))
-                {
-                    client.Update(1, string.Format(resx.GetString("Event1"), "Value 1"));
-                    client.Update(2, string.Format(resx.GetString("Event2"), "Value 1", "Value 2"));
-                    client.Update(3, string.Format(resx.GetString("Event3"), "Value 1", "Value 2", "Value 3"));
-                }
+                client.Update(1, string.Format(ResourceHelper.GetString("Event1"), "Value 1"));
+                client.Update(2, string.Format(ResourceHelper.GetString("Event2"), "Value 1", "Value 2"));
+                client.Update(3, string.Format(ResourceHelper.GetString("Event3"), "Value 1", "Value 2", "Value 3"));
 
                 client.Delete(1);
                 client.Delete(2);

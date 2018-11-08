@@ -24,7 +24,7 @@
 		<h3>WCF Client Configuration</h3>
 		<ul>
 			<li><pre><code>cd C:\Program Files (x86)\Windows Kits\10\bin\10.0.17134.0\x64</code></pre></li>
-            <li>(Optional) Replace the Client's name after 'CN=...'</li>
+            		<li>(Optional) Replace the Client's name after 'CN=...'</li>
 			<li>(Optional) Insert Client's roles after 'OU=...' and delimit them with '|' and no spaces</li>
 			<li><pre><code>makecert -sv ~path~\WCFClient.pvk -iv ~path~\RootCA.pvk -n "CN=WCFClient, OU=Client|Moderator|Administrator" -pe -ic ~path~\RootCA.cer ~path~\WCFClient.cer -sr localmachine -ss My -sky exchange</code></pre></li>
 			<li>Create a private key: 'client'</li>
@@ -33,7 +33,7 @@
 			<li><pre><code>pvk2pfx /pvk ~path~\WCFClient.pvk /pi client /spc ~path~\WCFClient.cer /pfx ~path~\WCFClient.pfx</code></pre></li>
 			<li>Insert .pfx into 'Personal' on the Client side</li>
 			<li>(Non-Admin) Create a user called 'WCFClient'</li>
-		    <li>(Non-Admin) Input the WCFClient's password: 'wcfclient'</li>
+		    	<li>(Non-Admin) Input the WCFClient's password: 'wcfclient'</li>
 			<li>(Non-Admin) <pre><code>cd C:\Program Files (x86)\Windows Resource Kits\Tools</code></pre></li>
 			<li>(Non-Admin) <pre><code>winhttpcertcfg -g -c LOCAL_MACHINE\My -s WCFClient -a WCFClient</code></pre></li>
 		</ul>
@@ -45,13 +45,14 @@
 			<li><pre><code>makecert -sv ~path~\WCFService.pvk -iv ~path~\RootCA.pvk -n "CN=WCFService" -pe -ic ~path~\RootCA.cer ~path~\WCFService.cer -sr localmachine -ss My -sky exchange</code></pre></li>
 			<li>Create a private key: 'service'</li>
 			<li>Input the private key: 'service'</li>
-            <li>Input the Root's password: 'root'</li>
+            		<li>Input the Root's password: 'root'</li>
 			<li><pre><code>pvk2pfx /pvk ~path~\WCFService.pvk /pi service /spc ~path~\WCFService.cer /pfx ~path~\WCFService.pfx</code></pre></li>
 			<li>Insert .pfx into 'Personal' on the Service side</li>
 			<li>Create a user called 'WCFService'</li>	
 			<li>Input the WCFService's password: 'wcfservice'</li>
 			<li>(Non-Admin) <pre><code>cd C:\Program Files (x86)\Windows Resource Kits\Tools</code></pre></li>
 			<li>(Non-Admin) <pre><code>winhttpcertcfg -g -c LOCAL_MACHINE\My -s WCFService -a WCFService</code></pre></li>
+			<li>(IMPORTANT) Start WCFService.exe once as an Administrator to create a custom event log</li>
 		</ul>
 		<br>
 		

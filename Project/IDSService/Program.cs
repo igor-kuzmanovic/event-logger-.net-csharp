@@ -18,8 +18,7 @@ namespace IDSService
                 host.Open();
                 Console.WriteLine("Service is ready");
 
-                Console.WriteLine("Press any key to close the service...");
-                Console.ReadKey(true);
+                while (Console.ReadKey(true).Key != ConsoleKey.Escape) { }
             }
             catch (Exception e)
             {
