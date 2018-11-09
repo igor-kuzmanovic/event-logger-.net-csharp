@@ -20,7 +20,7 @@ namespace WCFService
             return RSAEncrypter.Encrypt(StringConverter.ToString(PrivateKey), certificate);
         }
 
-        public void Add(string entry)
+        public void Add(string content)
         {
             X509Certificate2 certificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
@@ -32,39 +32,45 @@ namespace WCFService
             }
 
             EventLogger.AuthorizationSuccess(SecurityHelper.GetName(certificate), "Add");
+
+            DatabaseHelper.Add(certificate.SerialNumber, content);
         }
 
-        public void Update(int entryId, string entry)
+        public bool Update(int entryID, string content)
         {
             X509Certificate2 certificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
             if (!RoleBasedAccessControl.UserHasPermission(certificate, Permissions.Update))
             {
                 EventLogger.AuthorizationFailure(SecurityHelper.GetName(certificate), "Update", Permissions.Update.ToString());
-                EventLogger.Alarm(entryId);
+                EventLogger.Alarm(entryID);
 
                 throw new FaultException("Unauthorized");
             }
 
             EventLogger.AuthorizationSuccess(SecurityHelper.GetName(certificate), "Update");
+
+            return DatabaseHelper.Update(entryID, certificate.SerialNumber, content);
         }
 
-        public void Delete(int entryId)
+        public bool Delete(int entryID)
         {
             X509Certificate2 certificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
             if (!RoleBasedAccessControl.UserHasPermission(certificate, Permissions.Delete))
             {
                 EventLogger.AuthorizationFailure(SecurityHelper.GetName(certificate), "Delete", Permissions.Delete.ToString());
-                EventLogger.Alarm(entryId);
+                EventLogger.Alarm(entryID);
 
                 throw new FaultException("Unauthorized");
             }
 
             EventLogger.AuthorizationSuccess(SecurityHelper.GetName(certificate), "Delete");
+
+            return DatabaseHelper.Delete(entryID);
         }
 
-        public object Read(int entryId, byte[] key)
+        public EventEntry Read(int entryID, byte[] key)
         {
             X509Certificate2 certificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
@@ -77,10 +83,10 @@ namespace WCFService
 
             EventLogger.AuthorizationSuccess(SecurityHelper.GetName(certificate), "Read");
 
-            return new object();
+            return DatabaseHelper.Read(entryID);
         }
 
-        public HashSet<object> ReadAll(byte[] key)
+        public HashSet<EventEntry> ReadAll(byte[] key)
         {
             X509Certificate2 certificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
@@ -93,7 +99,7 @@ namespace WCFService
 
             EventLogger.AuthorizationSuccess(SecurityHelper.GetName(certificate), "ReadAll");
 
-            return new HashSet<object>();
+            return DatabaseHelper.ReadAll();
         }
     }
 }

@@ -30,11 +30,11 @@ namespace WCFClient
             return result;
         }
 
-        public void Add(string entry)
+        public void Add(string content)
         {
             try
             {
-                channel.Add(entry);
+                channel.Add(content);
             }
             catch (FaultException e)
             {
@@ -42,36 +42,40 @@ namespace WCFClient
             }
         }
 
-        public void Update(int entryId, string entry)
+        public bool Update(int entryID, string content)
         {
+            bool result = false;
             try
             {
-                channel.Update(entryId, entry);
+                result = channel.Update(entryID, content);
             }
             catch (FaultException e)
             {
                 Console.WriteLine("[Update] ERROR = {0}", e.Message);
             }
+            return result;
         }
 
-        public void Delete(int entryId)
+        public bool Delete(int entryID)
         {
+            bool result = false;
             try
             {
-                channel.Delete(entryId);
+                result = channel.Delete(entryID);
             }
             catch (FaultException e)
             {
                 Console.WriteLine("[Delete] ERROR = {0}", e.Message);
             }
+            return result;
         }
 
-        public object Read(int entryId, byte[] key)
+        public EventEntry Read(int entryID, byte[] key)
         {
-            object result = null;
+            EventEntry result = null;
             try
             {
-                result = channel.Read(entryId, key);
+                result = channel.Read(entryID, key);
             }
             catch (FaultException e)
             {
@@ -80,9 +84,9 @@ namespace WCFClient
             return result;
         }
 
-        public HashSet<object> ReadAll(byte[] key)
+        public HashSet<EventEntry> ReadAll(byte[] key)
         {
-            HashSet<object> result = null;
+            HashSet<EventEntry> result = null;
             try
             {
                 result = channel.ReadAll(key);

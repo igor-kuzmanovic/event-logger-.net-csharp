@@ -1,10 +1,11 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 
 namespace WCFServiceCommon
 {
     public class EventEntry
     {
-        public string EntityID { get; set; }
+        public string ID { get; set; }
         public string UserID { get; set; }
         public string Timestamp { get; set; }
         public string Content { get; set; }
@@ -15,21 +16,29 @@ namespace WCFServiceCommon
         {
             string pattern = @"\[([^\[\]]+)\]";
             string[] entityData = null;
-            int ctr = 0;
+            int counter = 0;
             foreach (Match m in Regex.Matches(serializedEntry, pattern))
             {
-                entityData[ctr++] = m.Groups[1].Value;
+                entityData[counter++] = m.Groups[1].Value;
             }
 
-            EntityID = entityData[0];
+            ID = entityData[0];
             UserID = entityData[1];
             Timestamp = entityData[2];
             Content = entityData[3];
         }
 
-        public EventEntry(string entityID, string userID, string timestamp, string content)
+        public EventEntry(int id, string userID, DateTime timestamp, string content)
         {
-            EntityID = entityID;
+            ID = id.ToString();
+            UserID = userID;
+            Timestamp = timestamp.ToString("MM.d.yyyy - h:m:s");
+            Content = content;
+        }
+
+        public EventEntry(string id, string userID, string timestamp, string content)
+        {
+            ID = id;
             UserID = userID;
             Timestamp = timestamp;
             Content = content;
@@ -37,7 +46,7 @@ namespace WCFServiceCommon
 
         public override string ToString()
         {
-            return $"[{EntityID}][{UserID}][{Timestamp}][{Content}]";
+            return $"[{ID}][{UserID}][{Timestamp}][{Content}]";
         }
     }
 }

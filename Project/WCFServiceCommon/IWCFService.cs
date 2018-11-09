@@ -10,18 +10,18 @@ namespace WCFServiceCommon
         byte[] CheckIn();
 
         [OperationContract]
-        void Add(string entry);
+        void Add(string content);
 
         [OperationContract]
-        void Update(int entryId, string entry);
+        bool Update(int entryID, string content);
 
         [OperationContract]
-        void Delete(int entryId);
+        bool Delete(int entryID);
 
         [OperationContract]
-        object Read(int entryId, byte[] key);
+        EventEntry Read(int entryID, byte[] key);
 
         [OperationContract]
-        HashSet<object> ReadAll(byte[] key);
+        HashSet<EventEntry> ReadAll(byte[] key);
     }
 }

@@ -45,7 +45,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AESEncrypter.cs" />
-    <Compile Include="DatabaseHelper.cs" />
     <Compile Include="InputHelper.cs" />
     <Compile Include="ResourceHelper.cs" />
     <Compile Include="RSAEncrypter.cs" />

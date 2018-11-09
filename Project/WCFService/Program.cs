@@ -11,6 +11,7 @@ namespace WCFService
         {
             SecureString privateKey = InputHelper.InputPrivateKey();
             WCFService.PrivateKey = privateKey;
+            DatabaseHelper.PrivateKey = privateKey;
 
             ServiceHost host = new ServiceHost(typeof(WCFService));
 
