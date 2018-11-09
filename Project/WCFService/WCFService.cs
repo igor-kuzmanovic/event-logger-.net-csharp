@@ -19,85 +19,85 @@ namespace WCFService
 
         public byte[] CheckIn()
         {
-            X509Certificate2 clientCertificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
+            X509Certificate2 certificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
-            EventLogger.AuthenticationSuccess(SecurityHelper.GetUserUsername(clientCertificate));
+            EventLogger.AuthenticationSuccess(SecurityHelper.GetUsername(certificate));
 
-            return RSAEncrypter.Encrypt(StringConverter.ToString(PrivateKey), clientCertificate);
+            return RSAEncrypter.Encrypt(StringConverter.ToString(PrivateKey), certificate);
         }
 
         public void Add(string entry)
         {
-            X509Certificate2 clientCertificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
+            X509Certificate2 certificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
-            if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Add))
+            if (!RoleBasedAccessControl.UserHasPermission(certificate, Permissions.Add))
             {
-                EventLogger.AuthorizationFailure(SecurityHelper.GetUserUsername(clientCertificate), "Add", Permissions.Add.ToString());
+                EventLogger.AuthorizationFailure(SecurityHelper.GetUsername(certificate), "Add", Permissions.Add.ToString());
 
                 throw new FaultException("Unauthorized");
             }
 
-            EventLogger.AuthorizationSuccess(SecurityHelper.GetUserUsername(clientCertificate), "Add");
+            EventLogger.AuthorizationSuccess(SecurityHelper.GetUsername(certificate), "Add");
         }
 
         public void Update(int entryId, string entry)
         {
-            X509Certificate2 clientCertificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
+            X509Certificate2 certificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
-            if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Update))
+            if (!RoleBasedAccessControl.UserHasPermission(certificate, Permissions.Update))
             {
-                EventLogger.AuthorizationFailure(SecurityHelper.GetUserUsername(clientCertificate), "Update", Permissions.Update.ToString());
+                EventLogger.AuthorizationFailure(SecurityHelper.GetUsername(certificate), "Update", Permissions.Update.ToString());
                 EventLogger.Alarm(entryId);
 
                 throw new FaultException("Unauthorized");
             }
 
-            EventLogger.AuthorizationSuccess(SecurityHelper.GetUserUsername(clientCertificate), "Update");
+            EventLogger.AuthorizationSuccess(SecurityHelper.GetUsername(certificate), "Update");
         }
 
         public void Delete(int entryId)
         {
-            X509Certificate2 clientCertificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
+            X509Certificate2 certificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
-            if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Delete))
+            if (!RoleBasedAccessControl.UserHasPermission(certificate, Permissions.Delete))
             {
-                EventLogger.AuthorizationFailure(SecurityHelper.GetUserUsername(clientCertificate), "Delete", Permissions.Delete.ToString());
+                EventLogger.AuthorizationFailure(SecurityHelper.GetUsername(certificate), "Delete", Permissions.Delete.ToString());
                 EventLogger.Alarm(entryId);
 
                 throw new FaultException("Unauthorized");
             }
 
-            EventLogger.AuthorizationSuccess(SecurityHelper.GetUserUsername(clientCertificate), "Delete");
+            EventLogger.AuthorizationSuccess(SecurityHelper.GetUsername(certificate), "Delete");
         }
 
-        public object Read(int entryId)
+        public object Read(int entryId, byte[] key)
         {
-            X509Certificate2 clientCertificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
+            X509Certificate2 certificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
-            if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Read))
+            if (StringConverter.ToString(key) != StringConverter.ToString(PrivateKey))
             {
-                EventLogger.AuthorizationFailure(SecurityHelper.GetUserUsername(clientCertificate), "Read", Permissions.Read.ToString());
+                EventLogger.AuthorizationFailure(SecurityHelper.GetUsername(certificate), "Read");
 
                 throw new FaultException("Unauthorized");
             }
 
-            EventLogger.AuthorizationSuccess(SecurityHelper.GetUserUsername(clientCertificate), "Read");
+            EventLogger.AuthorizationSuccess(SecurityHelper.GetUsername(certificate), "Read");
 
             return new object();
         }
 
-        public HashSet<object> ReadAll()
+        public HashSet<object> ReadAll(byte[] key)
         {
-            X509Certificate2 clientCertificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
+            X509Certificate2 certificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
-            if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Read))
+            if (StringConverter.ToString(key) != StringConverter.ToString(PrivateKey))
             {
-                EventLogger.AuthorizationFailure(SecurityHelper.GetUserUsername(clientCertificate), "ReadAll", Permissions.Read.ToString());
+                EventLogger.AuthorizationFailure(SecurityHelper.GetUsername(certificate), "ReadAll");
 
                 throw new FaultException("Unauthorized");
             }
 
-            EventLogger.AuthorizationSuccess(SecurityHelper.GetUserUsername(clientCertificate), "ReadAll");
+            EventLogger.AuthorizationSuccess(SecurityHelper.GetUsername(certificate), "ReadAll");
 
             return new HashSet<object>();
         }

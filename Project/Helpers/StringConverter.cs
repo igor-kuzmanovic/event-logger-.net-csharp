@@ -10,51 +10,51 @@ namespace Helpers
 {
     public static class StringConverter
     {
-        public static SecureString ToSecureString(byte[] valueData)
+        public static SecureString ToSecureString(byte[] textBytes)
         {
-            string value = Encoding.ASCII.GetString(valueData);
-            SecureString secureValue = ToSecureString(value);
+            string text = Encoding.ASCII.GetString(textBytes);
+            SecureString secureText = ToSecureString(text);
 
-            return secureValue;
+            return secureText;
         }
 
-        public static SecureString ToSecureString(string value)
+        public static SecureString ToSecureString(string text)
         {
-            SecureString secureValue = new SecureString();
-            Array.ForEach(value.ToCharArray(), (c) => secureValue.AppendChar(c));
+            SecureString secureText = new SecureString();
+            Array.ForEach(text.ToCharArray(), (c) => secureText.AppendChar(c));
 
-            return secureValue;
+            return secureText;
         }
 
-        public static string ToString(byte[] valueData)
+        public static string ToString(byte[] textBytes)
         {
-            string value = Encoding.ASCII.GetString(valueData);
+            string text = Encoding.ASCII.GetString(textBytes);
 
-            return value;
+            return text;
         }
 
-        public static string ToString(SecureString secureValue)
+        public static string ToString(SecureString secureText)
         {
-            IntPtr valuePointer = Marshal.SecureStringToGlobalAllocAnsi(secureValue);
-            string value = Marshal.PtrToStringAnsi(valuePointer);
-            Marshal.ZeroFreeGlobalAllocAnsi(valuePointer);
+            IntPtr pointer = Marshal.SecureStringToGlobalAllocAnsi(secureText);
+            string text = Marshal.PtrToStringAnsi(pointer);
+            Marshal.ZeroFreeGlobalAllocAnsi(pointer);
 
-            return value;
+            return text;
         }
 
-        public static byte[] ToBytes(string value)
+        public static byte[] ToBytes(string text)
         {
-            byte[] valueData = Encoding.ASCII.GetBytes(value);
+            byte[] textBytes = Encoding.ASCII.GetBytes(text);
 
-            return valueData;
+            return textBytes;
         }
 
-        public static byte[] ToBytes(SecureString secureValue)
+        public static byte[] ToBytes(SecureString secureText)
         {
-            string value = ToString(secureValue);
-            byte[] valueData = Encoding.ASCII.GetBytes(value);
+            string text = ToString(secureText);
+            byte[] textBytes = Encoding.ASCII.GetBytes(text);
            
-            return valueData;
+            return textBytes;
         }
     }
 }

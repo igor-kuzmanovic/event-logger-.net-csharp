@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -17,54 +18,40 @@ namespace WCFService
 
             rolePermissions.Add(Roles.Client, new HashSet<Permissions>()
             {
-                Permissions.Read,
                 Permissions.Add
             });
 
             rolePermissions.Add(Roles.Moderator, new HashSet<Permissions>()
             {
-                Permissions.Read,
                 Permissions.Update
             });
 
             rolePermissions.Add(Roles.Administrator, new HashSet<Permissions>()
             {
-                Permissions.Read,
-                //Permissions.Delete
+                Permissions.Delete
             });
         }
 
         public static bool UserHasPermission(X509Certificate2 user, Permissions permission)
         {
+            bool result = false;
+
             HashSet<Roles> roles = GetUserRoles(user);
+            result = roles.Any(role => RoleHasPermission(role, permission));
 
-            foreach (Roles role in roles)
-            {
-                if (RoleHasPermission(role, permission))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return result;
         }
 
         private static HashSet<Roles> GetUserRoles(X509Certificate2 user)
         {
             HashSet<Roles> roles = new HashSet<Roles>();
+            HashSet<string> organizationalUnits = SecurityHelper.GetOrganizationalUnits(user);
 
-            string[] subjectName = user.SubjectName.Name.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (subjectName.Any(s => s.Contains("OU=")))
+            foreach (string organizationalUnit in organizationalUnits)
             {
-                string[] organizationalUnits = subjectName.First(s => s.StartsWith("OU=")).Substring("OU=".Length).Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
-
-                foreach (string organizationalUnit in organizationalUnits)
+                if (Enum.TryParse(organizationalUnit, out Roles role))
                 {
-                    if (Enum.TryParse(organizationalUnit, out Roles role))
-                    {
-                        roles.Add(role);
-                    }
+                    roles.Add(role);
                 }
             }
 

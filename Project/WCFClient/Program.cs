@@ -12,19 +12,19 @@ namespace WCFClient
     {
         static void Main(string[] args)
         {
-            SecureString securePrivateKey = new SecureString();
+            SecureString privateKey = new SecureString();
 
             Console.WriteLine("Press any key to start...");
             Console.ReadKey(true);
 
             using (WCFServiceClient client = new WCFServiceClient())
             {
-                securePrivateKey = StringConverter.ToSecureString(RSAEncrypter.Decrypt(client.CheckIn(), SecurityHelper.GetUserCertificate(client)));
+                privateKey = StringConverter.ToSecureString(RSAEncrypter.Decrypt(client.CheckIn(), SecurityHelper.GetCertificate(client)));
                 Console.WriteLine("Private key retrieved from the service");
 
+                client.Read(1, StringConverter.ToBytes(privateKey));
+                client.ReadAll(StringConverter.ToBytes(privateKey));
             }
-
-            securePrivateKey.Dispose();
 
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey(true);

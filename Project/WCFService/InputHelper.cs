@@ -31,7 +31,7 @@ namespace WCFService
                 }
             } while (keyInfo.Key != ConsoleKey.Enter);
 
-            Console.WriteLine();
+            Console.Clear();
 
             return privateKey;
         }

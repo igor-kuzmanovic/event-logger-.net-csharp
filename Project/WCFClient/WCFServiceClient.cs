@@ -70,12 +70,12 @@ namespace WCFClient
             }
         }
 
-        public object Read(int entryId)
+        public object Read(int entryId, byte[] key)
         {
             object result = null;
             try
             {
-                result = channel.Read(entryId);
+                result = channel.Read(entryId, key);
             }
             catch (FaultException e)
             {
@@ -84,12 +84,12 @@ namespace WCFClient
             return result;
         }
 
-        public HashSet<object> ReadAll()
+        public HashSet<object> ReadAll(byte[] key)
         {
             HashSet<object> result = null;
             try
             {
-                result = channel.ReadAll();
+                result = channel.ReadAll(key);
             }
             catch (FaultException e)
             {

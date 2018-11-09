@@ -6,9 +6,15 @@ using System.Threading.Tasks;
 
 namespace WCFService
 {
+    internal enum Roles
+    {
+        Client,
+        Moderator,
+        Administrator
+    }
+
     internal enum Permissions
     {
-        Read,
         Add,
         Update,
         Delete

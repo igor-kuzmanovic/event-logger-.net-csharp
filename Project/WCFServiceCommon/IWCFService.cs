@@ -23,9 +23,9 @@ namespace WCFServiceCommon
         void Delete(int entryId);
 
         [OperationContract]
-        object Read(int entryId);
+        object Read(int entryId, byte[] key);
 
         [OperationContract]
-        HashSet<object> ReadAll();
+        HashSet<object> ReadAll(byte[] key);
     }
 }

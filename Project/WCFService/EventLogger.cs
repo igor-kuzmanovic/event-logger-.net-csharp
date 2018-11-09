@@ -15,8 +15,8 @@ namespace WCFService
     {
         private readonly static string source = "WCFService";
         private readonly static string logName = "WCFServiceLog";
-        private readonly static int attemptLimit = 5;
-        private readonly static TimeSpan attemptTimeSpan = new TimeSpan(0, 0, 10);
+        private readonly static int attemptLimit = 2;
+        private readonly static TimeSpan attemptTimeSpan = new TimeSpan(0, 0, 1);
 
         private readonly static ConcurrentDictionary<int, int> attempts;
         private readonly static Timer timer;
@@ -43,11 +43,7 @@ namespace WCFService
 
         public static void Alarm(int entryId)
         {
-            if (!attempts.ContainsKey(entryId))
-            {
-                attempts.TryAdd(entryId, 0);
-            }
-
+            attempts.TryAdd(entryId, 0);
             attempts[entryId]++;
 
             if (attempts[entryId] > attemptLimit)
@@ -81,7 +77,15 @@ namespace WCFService
         {
             using (EventLog log = new EventLog(logName, Environment.MachineName, source))
             {
-                log.WriteEntry(string.Format(ResourceHelper.GetString("AuthorizationFailure"), username, action, permission), EventLogEntryType.FailureAudit);
+                log.WriteEntry(string.Format(ResourceHelper.GetString("AuthorizationFailurePermission"), username, action, permission), EventLogEntryType.FailureAudit);
+            }
+        }
+
+        public static void AuthorizationFailure(string username, string action)
+        {
+            using (EventLog log = new EventLog(logName, Environment.MachineName, source))
+            {
+                log.WriteEntry(string.Format(ResourceHelper.GetString("AuthorizationFailureKey"), username, action), EventLogEntryType.FailureAudit);
             }
         }
     }

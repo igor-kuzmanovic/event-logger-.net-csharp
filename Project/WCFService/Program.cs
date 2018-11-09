@@ -33,7 +33,6 @@ namespace WCFService
             finally
             {
                 host.Close();
-                privateKey.Dispose();
             }
 
             Console.WriteLine("Press any key to exit...");

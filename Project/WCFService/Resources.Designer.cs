@@ -79,11 +79,20 @@ namespace WCFService {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User {0} failed to authorize for {1}, invalid key.
+        /// </summary>
+        internal static string AuthorizationFailureKey {
+            get {
+                return ResourceManager.GetString("AuthorizationFailureKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User {0} failed to authorize for {1}, lacks {2} permission.
         /// </summary>
-        internal static string AuthorizationFailure {
+        internal static string AuthorizationFailurePermission {
             get {
-                return ResourceManager.GetString("AuthorizationFailure", resourceCulture);
+                return ResourceManager.GetString("AuthorizationFailurePermission", resourceCulture);
             }
         }
         
@@ -93,6 +102,15 @@ namespace WCFService {
         internal static string AuthorizationSuccess {
             get {
                 return ResourceManager.GetString("AuthorizationSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to s.
+        /// </summary>
+        internal static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
     }
