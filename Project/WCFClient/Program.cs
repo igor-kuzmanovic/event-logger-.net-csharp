@@ -21,9 +21,6 @@ namespace WCFClient
             {
                 privateKey = StringConverter.ToSecureString(RSAEncrypter.Decrypt(client.CheckIn(), SecurityHelper.GetCertificate(client)));
                 Console.WriteLine("Private key retrieved from the service");
-
-                client.Read(1, StringConverter.ToBytes(privateKey));
-                client.ReadAll(StringConverter.ToBytes(privateKey));
             }
 
             Console.WriteLine("Press any key to exit...");

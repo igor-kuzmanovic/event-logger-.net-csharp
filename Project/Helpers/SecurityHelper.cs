@@ -37,21 +37,21 @@ namespace Helpers
 
         public static HashSet<string> GetOrganizationalUnits(X509Certificate2 certificate)
         {
-            HashSet<string> OUs = new HashSet<string>();
+            HashSet<string> organizationalUnitSet = new HashSet<string>();
 
-            string[] subjectName = certificate.SubjectName.Name.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] subjectNames = certificate.SubjectName.Name.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-            if (subjectName.Any(s => s.Contains("OU=")))
+            if (subjectNames.Any(s => s.Contains("OU=")))
             {
-                string[] OUArray = subjectName.First(s => s.StartsWith("OU=")).Substring("OU=".Length).Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] organizationalUnits = subjectNames.First(s => s.StartsWith("OU=")).Substring("OU=".Length).Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
 
-                foreach (string OU in OUArray)
+                foreach (string organizationalUnit in organizationalUnits)
                 {
-                    OUs.Add(OU);
+                    organizationalUnitSet.Add(organizationalUnit);
                 }
             }
 
-            return OUs;
+            return organizationalUnitSet;
         }
     }
 }

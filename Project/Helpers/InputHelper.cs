@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Helpers
 {
-    internal static class InputHelper
+    public static class InputHelper
     {
         public static SecureString InputPrivateKey()
         {

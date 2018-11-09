@@ -45,6 +45,7 @@ namespace WCFService
         private static HashSet<Roles> GetUserRoles(X509Certificate2 user)
         {
             HashSet<Roles> roles = new HashSet<Roles>();
+
             HashSet<string> organizationalUnits = SecurityHelper.GetOrganizationalUnits(user);
 
             foreach (string organizationalUnit in organizationalUnits)

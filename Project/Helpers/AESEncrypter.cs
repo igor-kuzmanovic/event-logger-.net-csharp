@@ -12,8 +12,8 @@ namespace Helpers
     {
         public static byte[] Encrypt(string text, string key)
         {
-            byte[] encryptedText = null;
             byte[] encryptedTextWithIV = null;
+            byte[] encryptedText = null;
 
             using (AesCryptoServiceProvider csp = new AesCryptoServiceProvider())
             {
@@ -39,7 +39,7 @@ namespace Helpers
 
                 encryptedTextWithIV = new byte[encryptedText.Length + csp.IV.Length];
                 Array.Copy(csp.IV, encryptedTextWithIV, csp.IV.Length);
-                Array.Copy(encryptedText, 0, encryptedTextWithIV, encryptedText.Length, csp.IV.Length);
+                Array.Copy(encryptedText, 0, encryptedTextWithIV, csp.IV.Length, encryptedText.Length);
             }
 
             return encryptedTextWithIV;

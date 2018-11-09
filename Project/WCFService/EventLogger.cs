@@ -15,9 +15,9 @@ namespace WCFService
     {
         private readonly static string source = "WCFService";
         private readonly static string logName = "WCFServiceLog";
+
         private readonly static int attemptLimit = 2;
         private readonly static TimeSpan attemptTimeSpan = new TimeSpan(0, 0, 1);
-
         private readonly static ConcurrentDictionary<int, int> attempts;
         private readonly static Timer timer;
 
