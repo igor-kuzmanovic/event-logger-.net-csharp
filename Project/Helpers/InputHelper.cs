@@ -5,7 +5,7 @@ using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WCFService
+namespace Helpers
 {
     internal static class InputHelper
     {
