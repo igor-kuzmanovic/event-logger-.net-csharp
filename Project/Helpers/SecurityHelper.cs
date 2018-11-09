@@ -19,18 +19,27 @@ namespace Helpers
             return (context.ServiceSecurityContext.AuthorizationContext.ClaimSets[0] as X509CertificateClaimSet).X509Certificate;
         }
 
-        public static string GetUsername(X509Certificate2 certificate)
+        public static string GetName(X509Certificate2 certificate)
         {
-            string username = string.Empty;
+            string name = string.Empty;
 
             string[] subjectNames = certificate.SubjectName.Name.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (subjectNames.Any(s => s.Contains("CN=")))
             {
-                username = subjectNames.First(s => s.StartsWith("CN=")).Substring("CN=".Length).Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries)[0];
+                name = subjectNames.First(s => s.StartsWith("CN=")).Substring("CN=".Length).Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries)[0];
             }
 
-            return username;
+            return name;
+        }
+
+        public static string GetName(OperationContext context)
+        {
+            string name = string.Empty;
+
+            name = ParseName(context.ServiceSecurityContext.WindowsIdentity.Name);
+
+            return name;
         }
 
         public static HashSet<string> GetOrganizationalUnits(X509Certificate2 certificate)
@@ -50,6 +59,26 @@ namespace Helpers
             }
 
             return organizationalUnitSet;
+        }
+
+        public static string ParseName(string logonName)
+        {
+            string name = string.Empty;
+
+            if (logonName.Contains("@"))
+            {
+                name = logonName.Split('@')[0];
+            }
+            else if (logonName.Contains("\\"))
+            {
+                name = logonName.Split('\\')[1];
+            }
+            else
+            {
+                name = logonName;
+            }
+
+            return name;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace WCFService
         {
             X509Certificate2 certificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
 
-            EventLogger.AuthenticationSuccess(SecurityHelper.GetUsername(certificate));
+            EventLogger.AuthenticationSuccess(SecurityHelper.GetName(certificate));
 
             return RSAEncrypter.Encrypt(StringConverter.ToString(PrivateKey), certificate);
         }
@@ -26,12 +26,12 @@ namespace WCFService
 
             if (!RoleBasedAccessControl.UserHasPermission(certificate, Permissions.Add))
             {
-                EventLogger.AuthorizationFailure(SecurityHelper.GetUsername(certificate), "Add", Permissions.Add.ToString());
+                EventLogger.AuthorizationFailure(SecurityHelper.GetName(certificate), "Add", Permissions.Add.ToString());
 
                 throw new FaultException("Unauthorized");
             }
 
-            EventLogger.AuthorizationSuccess(SecurityHelper.GetUsername(certificate), "Add");
+            EventLogger.AuthorizationSuccess(SecurityHelper.GetName(certificate), "Add");
         }
 
         public void Update(int entryId, string entry)
@@ -40,13 +40,13 @@ namespace WCFService
 
             if (!RoleBasedAccessControl.UserHasPermission(certificate, Permissions.Update))
             {
-                EventLogger.AuthorizationFailure(SecurityHelper.GetUsername(certificate), "Update", Permissions.Update.ToString());
+                EventLogger.AuthorizationFailure(SecurityHelper.GetName(certificate), "Update", Permissions.Update.ToString());
                 EventLogger.Alarm(entryId);
 
                 throw new FaultException("Unauthorized");
             }
 
-            EventLogger.AuthorizationSuccess(SecurityHelper.GetUsername(certificate), "Update");
+            EventLogger.AuthorizationSuccess(SecurityHelper.GetName(certificate), "Update");
         }
 
         public void Delete(int entryId)
@@ -55,13 +55,13 @@ namespace WCFService
 
             if (!RoleBasedAccessControl.UserHasPermission(certificate, Permissions.Delete))
             {
-                EventLogger.AuthorizationFailure(SecurityHelper.GetUsername(certificate), "Delete", Permissions.Delete.ToString());
+                EventLogger.AuthorizationFailure(SecurityHelper.GetName(certificate), "Delete", Permissions.Delete.ToString());
                 EventLogger.Alarm(entryId);
 
                 throw new FaultException("Unauthorized");
             }
 
-            EventLogger.AuthorizationSuccess(SecurityHelper.GetUsername(certificate), "Delete");
+            EventLogger.AuthorizationSuccess(SecurityHelper.GetName(certificate), "Delete");
         }
 
         public object Read(int entryId, byte[] key)
@@ -70,12 +70,12 @@ namespace WCFService
 
             if (StringConverter.ToString(key) != StringConverter.ToString(PrivateKey))
             {
-                EventLogger.AuthorizationFailure(SecurityHelper.GetUsername(certificate), "Read");
+                EventLogger.AuthorizationFailure(SecurityHelper.GetName(certificate), "Read");
 
                 throw new FaultException("Unauthorized");
             }
 
-            EventLogger.AuthorizationSuccess(SecurityHelper.GetUsername(certificate), "Read");
+            EventLogger.AuthorizationSuccess(SecurityHelper.GetName(certificate), "Read");
 
             return new object();
         }
@@ -86,12 +86,12 @@ namespace WCFService
 
             if (StringConverter.ToString(key) != StringConverter.ToString(PrivateKey))
             {
-                EventLogger.AuthorizationFailure(SecurityHelper.GetUsername(certificate), "ReadAll");
+                EventLogger.AuthorizationFailure(SecurityHelper.GetName(certificate), "ReadAll");
 
                 throw new FaultException("Unauthorized");
             }
 
-            EventLogger.AuthorizationSuccess(SecurityHelper.GetUsername(certificate), "ReadAll");
+            EventLogger.AuthorizationSuccess(SecurityHelper.GetName(certificate), "ReadAll");
 
             return new HashSet<object>();
         }

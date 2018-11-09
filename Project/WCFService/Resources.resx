@@ -132,7 +132,4 @@
   <data name="AuthorizationSuccess" xml:space="preserve">
     <value>User {0} successfully authorized for {1}</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value>s</value>
-  </data>
 </root>

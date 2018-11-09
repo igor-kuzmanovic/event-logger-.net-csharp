@@ -1,5 +1,7 @@
-﻿using IDSServiceCommon;
+﻿using Helpers;
+using IDSServiceCommon;
 using System;
+using System.ServiceModel;
 
 namespace IDSService
 {
@@ -7,6 +9,11 @@ namespace IDSService
     {
         public void Alarm(string message)
         {
+            if (SecurityHelper.GetName(OperationContext.Current) != "WCFService")
+            {
+                throw new FaultException("Unauthorized");
+            }
+
             Console.WriteLine("[ALARM] {0}", message);
         }
     }

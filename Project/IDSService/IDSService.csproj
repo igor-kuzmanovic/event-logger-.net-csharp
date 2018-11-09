@@ -51,6 +51,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Helpers\Helpers.csproj">
+      <Project>{7AA0406C-B7B3-4AD0-BB6C-633C8CC58E0E}</Project>
+      <Name>Helpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IDSServiceCommon\IDSServiceCommon.csproj">
       <Project>{BF8F6688-2902-4406-9294-6DCA1CF40E1B}</Project>
       <Name>IDSServiceCommon</Name>

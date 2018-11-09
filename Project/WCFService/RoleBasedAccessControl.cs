@@ -17,25 +17,23 @@ namespace WCFService
                 {
                     Roles.Client,
                     new HashSet<Permissions>()
-            {
-                Permissions.Add
-            }
+                    {
+                        Permissions.Add
+                    }
                 },
-
                 {
                     Roles.Moderator,
                     new HashSet<Permissions>()
-            {
-                Permissions.Update
-            }
+                    {
+                        Permissions.Update
+                    }
                 },
-
                 {
                     Roles.Administrator,
                     new HashSet<Permissions>()
-            {
-                Permissions.Delete
-            }
+                    {
+                        Permissions.Delete
+                    }
                 }
             };
         }
