@@ -1,30 +1,27 @@
 ﻿using Helpers;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Resources;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace WCFService
 {
     internal static class EventLogger
     {
-        private readonly static string source = "WCFService";
-        private readonly static string logName = "WCFServiceLog";
+        private static readonly string source = "WCFService";
+        private static readonly string logName = "WCFServiceLog";
 
-        private readonly static int attemptLimit = 2;
-        private readonly static TimeSpan attemptTimeSpan = new TimeSpan(0, 0, 1);
-        private readonly static ConcurrentDictionary<int, int> attempts;
-        private readonly static Timer timer;
+        private static readonly int attemptLimit = 2;
+        private static readonly TimeSpan attemptTimeSpan = new TimeSpan(0, 0, 1);
+        private static readonly ConcurrentDictionary<int, int> attempts;
+        private static readonly Timer timer;
 
         static EventLogger()
         {
             if (!EventLog.SourceExists(source))
+            {
                 EventLog.CreateEventSource(source, logName);
+            }
 
             attempts = new ConcurrentDictionary<int, int>();
             timer = new Timer(DecreaseAttempts, null, attemptTimeSpan, attemptTimeSpan);

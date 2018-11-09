@@ -1,18 +1,13 @@
 ﻿using Helpers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Security;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WCFService
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             SecureString privateKey = InputHelper.InputPrivateKey();
             WCFService.PrivateKey = privateKey;

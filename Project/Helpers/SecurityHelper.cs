@@ -4,8 +4,6 @@ using System.IdentityModel.Claims;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Helpers
 {
@@ -18,7 +16,7 @@ namespace Helpers
 
         public static X509Certificate2 GetUserCertificate(OperationContext context)
         {
-            return ((X509CertificateClaimSet)context.ServiceSecurityContext.AuthorizationContext.ClaimSets[0]).X509Certificate;
+            return (context.ServiceSecurityContext.AuthorizationContext.ClaimSets[0] as X509CertificateClaimSet).X509Certificate;
         }
 
         public static string GetUsername(X509Certificate2 certificate)

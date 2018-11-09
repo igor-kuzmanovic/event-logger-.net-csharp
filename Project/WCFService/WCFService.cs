@@ -1,14 +1,8 @@
 ﻿using Helpers;
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IdentityModel.Claims;
-using System.Linq;
 using System.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 using WCFServiceCommon;
 
 namespace WCFService

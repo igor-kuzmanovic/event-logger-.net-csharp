@@ -1,16 +1,12 @@
 ﻿using Helpers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WCFClient
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             SecureString privateKey = new SecureString();
 

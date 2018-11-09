@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WCFService
 {
@@ -14,22 +12,32 @@ namespace WCFService
 
         static RoleBasedAccessControl()
         {
-            rolePermissions = new Dictionary<Roles, HashSet<Permissions>>();
-
-            rolePermissions.Add(Roles.Client, new HashSet<Permissions>()
+            rolePermissions = new Dictionary<Roles, HashSet<Permissions>>
+            {
+                {
+                    Roles.Client,
+                    new HashSet<Permissions>()
             {
                 Permissions.Add
-            });
+            }
+                },
 
-            rolePermissions.Add(Roles.Moderator, new HashSet<Permissions>()
+                {
+                    Roles.Moderator,
+                    new HashSet<Permissions>()
             {
                 Permissions.Update
-            });
+            }
+                },
 
-            rolePermissions.Add(Roles.Administrator, new HashSet<Permissions>()
+                {
+                    Roles.Administrator,
+                    new HashSet<Permissions>()
             {
                 Permissions.Delete
-            });
+            }
+                }
+            };
         }
 
         public static bool UserHasPermission(X509Certificate2 user, Permissions permission)
