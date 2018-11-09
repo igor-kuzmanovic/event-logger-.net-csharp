@@ -23,7 +23,7 @@ namespace WCFClient
             {
                 result = channel.CheckIn();
             }
-            catch (FaultException e)
+            catch (Exception e)
             {
                 Console.WriteLine("[CheckIn] ERROR = {0}", e.Message);
             }
@@ -36,7 +36,7 @@ namespace WCFClient
             {
                 channel.Add(content);
             }
-            catch (FaultException e)
+            catch (Exception e)
             {
                 Console.WriteLine("[Add] ERROR = {0}", e.Message);
             }
@@ -49,7 +49,7 @@ namespace WCFClient
             {
                 result = channel.Update(entryID, content);
             }
-            catch (FaultException e)
+            catch (Exception e)
             {
                 Console.WriteLine("[Update] ERROR = {0}", e.Message);
             }
@@ -63,7 +63,7 @@ namespace WCFClient
             {
                 result = channel.Delete(entryID);
             }
-            catch (FaultException e)
+            catch (Exception e)
             {
                 Console.WriteLine("[Delete] ERROR = {0}", e.Message);
             }
@@ -77,7 +77,7 @@ namespace WCFClient
             {
                 result = channel.Read(entryID, key);
             }
-            catch (FaultException e)
+            catch (Exception e)
             {
                 Console.WriteLine("[Read] ERROR = {0}", e.Message);
             }
@@ -91,7 +91,7 @@ namespace WCFClient
             {
                 result = channel.ReadAll(key);
             }
-            catch (FaultException e)
+            catch (Exception e)
             {
                 Console.WriteLine("[ReadAll] ERROR = {0}", e.Message);
             }

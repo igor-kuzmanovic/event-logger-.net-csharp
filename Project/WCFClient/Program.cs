@@ -17,33 +17,38 @@ namespace WCFClient
 
             using (WCFServiceClient client = new WCFServiceClient())
             {
-                privateKey = StringConverter.ToSecureString(RSAEncrypter.Decrypt(client.CheckIn(), SecurityHelper.GetCertificate(client)));
-                Console.WriteLine("Private key retrieved from the service");
+                byte[] key = client.CheckIn();
 
-                Console.WriteLine();
+                if (key != null)
+                {
+                    privateKey = StringConverter.ToSecureString(RSAEncrypter.Decrypt(key, SecurityHelper.GetCertificate(client)));
+                    Console.WriteLine("Private key retrieved from the service");
 
-                client.Add(string.Format(ResourceHelper.GetString("Event1"), 1));
-                client.Add(string.Format(ResourceHelper.GetString("Event2"), 1, 2));
+                    Console.WriteLine();
 
-                HashSet<EventEntry> entries = client.ReadAll(StringConverter.ToBytes(privateKey));
-                foreach (var entry in entries) Console.WriteLine(entry.ToString());
-                Console.WriteLine();
+                    client.Add(string.Format(ResourceHelper.GetString("Event1"), 1));
+                    client.Add(string.Format(ResourceHelper.GetString("Event2"), 1, 2));
 
-                client.Update(1, string.Format(ResourceHelper.GetString("Event3"), 1, 2, 3));
+                    HashSet<EventEntry> entries = client.ReadAll(StringConverter.ToBytes(privateKey));
+                    foreach (var entry in entries) Console.WriteLine(entry.ToString());
+                    Console.WriteLine();
 
-                entries = client.ReadAll(StringConverter.ToBytes(privateKey));
-                foreach (var entry in entries) Console.WriteLine(entry.ToString());
-                Console.WriteLine();
+                    client.Update(1, string.Format(ResourceHelper.GetString("Event3"), 1, 2, 3));
 
-                client.Delete(1);
+                    entries = client.ReadAll(StringConverter.ToBytes(privateKey));
+                    foreach (var entry in entries) Console.WriteLine(entry.ToString());
+                    Console.WriteLine();
 
-                entries = client.ReadAll(StringConverter.ToBytes(privateKey));
-                foreach (var entry in entries) Console.WriteLine(entry.ToString());
-                Console.WriteLine();
+                    client.Delete(1);
 
-                EventEntry e = client.Read(2, StringConverter.ToBytes(privateKey));
-                Console.WriteLine(e.ToString());
-                Console.WriteLine();
+                    entries = client.ReadAll(StringConverter.ToBytes(privateKey));
+                    foreach (var entry in entries) Console.WriteLine(entry.ToString());
+                    Console.WriteLine();
+
+                    EventEntry e = client.Read(2, StringConverter.ToBytes(privateKey));
+                    Console.WriteLine(e.ToString());
+                    Console.WriteLine();
+                }
             }
 
             Console.WriteLine("Press any key to exit...");
