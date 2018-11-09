@@ -1,6 +1,8 @@
 ﻿using Helpers;
 using System;
+using System.Collections.Generic;
 using System.Security;
+using WCFServiceCommon;
 
 namespace WCFClient
 {
@@ -17,6 +19,31 @@ namespace WCFClient
             {
                 privateKey = StringConverter.ToSecureString(RSAEncrypter.Decrypt(client.CheckIn(), SecurityHelper.GetCertificate(client)));
                 Console.WriteLine("Private key retrieved from the service");
+
+                Console.WriteLine();
+
+                client.Add(string.Format(ResourceHelper.GetString("Event1"), 1));
+                client.Add(string.Format(ResourceHelper.GetString("Event2"), 1, 2));
+
+                HashSet<EventEntry> entries = client.ReadAll(StringConverter.ToBytes(privateKey));
+                foreach (var entry in entries) Console.WriteLine(entry.ToString());
+                Console.WriteLine();
+
+                client.Update(1, string.Format(ResourceHelper.GetString("Event3"), 1, 2, 3));
+
+                entries = client.ReadAll(StringConverter.ToBytes(privateKey));
+                foreach (var entry in entries) Console.WriteLine(entry.ToString());
+                Console.WriteLine();
+
+                client.Delete(1);
+
+                entries = client.ReadAll(StringConverter.ToBytes(privateKey));
+                foreach (var entry in entries) Console.WriteLine(entry.ToString());
+                Console.WriteLine();
+
+                EventEntry e = client.Read(2, StringConverter.ToBytes(privateKey));
+                Console.WriteLine(e.ToString());
+                Console.WriteLine();
             }
 
             Console.WriteLine("Press any key to exit...");

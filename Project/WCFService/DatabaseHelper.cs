@@ -12,7 +12,6 @@ namespace WCFService
     {
         public static SecureString PrivateKey { get; set; }
         private static readonly string path = "Database.txt";
-        private static int entityIDCounter = 0;
 
         static DatabaseHelper()
         {
@@ -24,8 +23,13 @@ namespace WCFService
 
         private static List<string> ReadFromFile()
         {
+            List<string> entries = new List<string>();
             byte[] encryptedEntries = File.ReadAllBytes(path);
-            List<string> entries = AESEncrypter.Decrypt(encryptedEntries, StringConverter.ToString(PrivateKey)).Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            if (encryptedEntries.Any())
+            {
+                entries.AddRange(AESEncrypter.Decrypt(encryptedEntries, StringConverter.ToString(PrivateKey)).Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries));
+            }
 
             return entries;
         }
@@ -35,10 +39,35 @@ namespace WCFService
             File.WriteAllBytes(path, AESEncrypter.Encrypt(string.Join("|", entries), StringConverter.ToString(PrivateKey)));
         }
 
+        private static int GetFreeID()
+        {
+            int freeID = 0;
+            List<string> serializedEntries = ReadFromFile();
+            HashSet<int> usedIDs = new HashSet<int>();
+            EventEntry entry = null;
+
+            foreach (string serializedEntry in serializedEntries)
+            {
+                entry = new EventEntry(serializedEntry);
+                usedIDs.Add(int.Parse(entry.ID));
+            }
+
+            for(int i = 1; i < int.MaxValue; i++)
+            {
+                if (!usedIDs.Contains(i))
+                {
+                    freeID = i;
+                    break;
+                }
+            }
+
+            return freeID;
+        }
+
         public static void Add(string userID, string content)
         {
             List<string> serializedEntries = ReadFromFile();
-            EventEntry entry = new EventEntry(entityIDCounter++, userID, DateTime.Now, content);
+            EventEntry entry = new EventEntry(GetFreeID(), userID, DateTime.Now, content);
             serializedEntries.Add(entry.ToString());
             WriteToFile(serializedEntries);
         }

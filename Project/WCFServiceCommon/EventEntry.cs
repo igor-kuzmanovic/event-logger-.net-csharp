@@ -15,8 +15,9 @@ namespace WCFServiceCommon
         public EventEntry(string serializedEntry)
         {
             string pattern = @"\[([^\[\]]+)\]";
-            string[] entityData = null;
+            string[] entityData = new string[4];
             int counter = 0;
+
             foreach (Match m in Regex.Matches(serializedEntry, pattern))
             {
                 entityData[counter++] = m.Groups[1].Value;
