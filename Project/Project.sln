@@ -34,6 +34,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Certificates", "Certificate
 		Certificates\WCFService.cer = Certificates\WCFService.cer
 		Certificates\WCFService.pfx = Certificates\WCFService.pfx
 		Certificates\WCFService.pvk = Certificates\WCFService.pvk
+		Certificates\WCFSystemAdministrator.cer = Certificates\WCFSystemAdministrator.cer
+		Certificates\WCFSystemAdministrator.pfx = Certificates\WCFSystemAdministrator.pfx
+		Certificates\WCFSystemAdministrator.pvk = Certificates\WCFSystemAdministrator.pvk
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{B12D2579-8592-4697-A4C9-D09D5FF396EF}"
