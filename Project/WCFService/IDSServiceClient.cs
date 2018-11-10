@@ -31,21 +31,15 @@ namespace WCFService
         {
             try
             {
-                if (State == CommunicationState.Opened)
-                {
-                    Close();
-                }
+                Close();
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine("[ERROR] {0}", e.Message);
-            }
-            finally
-            {
-                if (State != CommunicationState.Closed)
+                try
                 {
                     Abort();
                 }
+                catch { }
             }
         }
     }

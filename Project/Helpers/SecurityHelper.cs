@@ -20,7 +20,7 @@ namespace Helpers
             return certificate;
         }
 
-        public static X509Certificate2 GetUserCertificate(OperationContext context)
+        public static X509Certificate2 GetCertificate(OperationContext context)
         {
             X509Certificate2 certificate = null;
 
@@ -70,17 +70,17 @@ namespace Helpers
             return organizationalUnitSet;
         }
 
-        public static string ParseName(string logonName)
+        public static string ParseName(string windowsName)
         {
-            string name = logonName;
+            string name = windowsName;
 
-            if (logonName.Contains("@"))
+            if (windowsName.Contains("@"))
             {
-                name = logonName.Split('@')[0];
+                name = windowsName.Split('@')[0];
             }
-            else if (logonName.Contains("\\"))
+            else if (windowsName.Contains("\\"))
             {
-                name = logonName.Split('\\')[1];
+                name = windowsName.Split('\\')[1];
             }
 
             return name;

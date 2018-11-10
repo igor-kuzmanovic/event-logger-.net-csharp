@@ -9,26 +9,33 @@ namespace IDSService
     {
         private static void Main(string[] args)
         {
-            ServiceHost host = null;
-
-            try
+            if (SecurityHelper.GetName(WindowsIdentity.GetCurrent()) == ConfigHelper.GetString("IDSServiceUser"))
             {
-                host = new ServiceHost(typeof(IDSService));
-
-                host.Open();
-                Console.WriteLine("Service is ready");
-
-                while (Console.ReadKey(true).Key != ConsoleKey.Escape) { }
+                Console.WriteLine("Unauthorized");
             }
-            catch (Exception e)
+            else
             {
-                Console.WriteLine("[ERROR] {0}", e.Message);
-            }
-            finally
-            {
-                if (host != null)
+                ServiceHost host = null;
+
+                try
                 {
-                    host.Close();
+                    host = new ServiceHost(typeof(IDSService));
+
+                    host.Open();
+                    Console.WriteLine("Service is ready");
+
+                    while (Console.ReadKey(true).Key != ConsoleKey.Escape) { }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("[ERROR] {0}", e.Message);
+                }
+                finally
+                {
+                    if (host != null)
+                    {
+                        host.Close();
+                    }
                 }
             }
 

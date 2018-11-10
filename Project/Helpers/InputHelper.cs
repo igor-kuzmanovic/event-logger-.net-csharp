@@ -27,6 +27,8 @@ namespace Helpers
                 }
             } while (keyInfo.Key != ConsoleKey.Enter || privateKey.Length == 0);
 
+            Console.Clear();
+
             return privateKey;
         }
     }

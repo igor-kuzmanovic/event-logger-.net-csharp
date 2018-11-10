@@ -13,7 +13,7 @@ namespace WCFService
 
         public byte[] CheckIn()
         {
-            X509Certificate2 certificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
+            X509Certificate2 certificate = SecurityHelper.GetCertificate(OperationContext.Current);
 
             EventLogger.AuthenticationSuccess(SecurityHelper.GetName(certificate));
 
@@ -22,7 +22,7 @@ namespace WCFService
 
         public void Add(string content)
         {
-            X509Certificate2 certificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
+            X509Certificate2 certificate = SecurityHelper.GetCertificate(OperationContext.Current);
 
             if (!RoleBasedAccessControl.UserHasPermission(certificate, Permissions.Add))
             {
@@ -38,7 +38,7 @@ namespace WCFService
 
         public bool Update(int entryID, string content)
         {
-            X509Certificate2 certificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
+            X509Certificate2 certificate = SecurityHelper.GetCertificate(OperationContext.Current);
 
             if (!RoleBasedAccessControl.UserHasPermission(certificate, Permissions.Update))
             {
@@ -55,7 +55,7 @@ namespace WCFService
 
         public bool Delete(int entryID)
         {
-            X509Certificate2 certificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
+            X509Certificate2 certificate = SecurityHelper.GetCertificate(OperationContext.Current);
 
             if (!RoleBasedAccessControl.UserHasPermission(certificate, Permissions.Delete))
             {
@@ -72,7 +72,7 @@ namespace WCFService
 
         public EventEntry Read(int entryID, byte[] key)
         {
-            X509Certificate2 certificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
+            X509Certificate2 certificate = SecurityHelper.GetCertificate(OperationContext.Current);
 
             if (StringConverter.ToString(key) != StringConverter.ToString(PrivateKey))
             {
@@ -88,7 +88,7 @@ namespace WCFService
 
         public HashSet<EventEntry> ReadAll(byte[] key)
         {
-            X509Certificate2 certificate = SecurityHelper.GetUserCertificate(OperationContext.Current);
+            X509Certificate2 certificate = SecurityHelper.GetCertificate(OperationContext.Current);
 
             if (StringConverter.ToString(key) != StringConverter.ToString(PrivateKey))
             {

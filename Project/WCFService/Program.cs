@@ -10,31 +10,37 @@ namespace WCFService
     {
         private static void Main(string[] args)
         {
-            SecureString privateKey = InputHelper.InputPrivateKey();
-            Console.Clear();
-            WCFService.PrivateKey = privateKey;
-            DatabaseHelper.PrivateKey = privateKey;
-
-            ServiceHost host = null;
-
-            try
+            if (SecurityHelper.GetName(WindowsIdentity.GetCurrent()) == ConfigHelper.GetString("WCFServiceUser"))
             {
-                host = new ServiceHost(typeof(WCFService));
-
-                host.Open();
-                Console.WriteLine("Service is ready");
-
-                while (Console.ReadKey(true).Key != ConsoleKey.Escape) { }
+                Console.WriteLine("Unauthorized");
             }
-            catch (Exception e)
+            else
             {
-                Console.WriteLine("[ERROR] {0}", e.Message);
-            }
-            finally
-            {
-                if (host != null)
+                SecureString privateKey = InputHelper.InputPrivateKey();
+                WCFService.PrivateKey = privateKey;
+                DatabaseHelper.PrivateKey = privateKey;
+
+                ServiceHost host = null;
+
+                try
                 {
-                    host.Close();
+                    host = new ServiceHost(typeof(WCFService));
+
+                    host.Open();
+                    Console.WriteLine("Service is ready");
+
+                    while (Console.ReadKey(true).Key != ConsoleKey.Escape) { }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("[ERROR] {0}", e.Message);
+                }
+                finally
+                {
+                    if (host != null)
+                    {
+                        host.Close();
+                    }
                 }
             }
 
