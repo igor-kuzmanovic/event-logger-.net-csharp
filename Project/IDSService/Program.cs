@@ -9,10 +9,12 @@ namespace IDSService
     {
         private static void Main(string[] args)
         {
-            ServiceHost host = new ServiceHost(typeof(IDSService));
+            ServiceHost host = null;
 
             try
             {
+                host = new ServiceHost(typeof(IDSService));
+
                 host.Open();
                 Console.WriteLine("Service is ready");
 
@@ -24,10 +26,13 @@ namespace IDSService
             }
             finally
             {
-                host.Close();
+                if (host != null)
+                {
+                    host.Close();
+                }
             }
 
-            Console.WriteLine("Press any key to exit...");
+            Console.WriteLine("\nPress any key to exit...");
             Console.ReadKey(true);
         }
     }

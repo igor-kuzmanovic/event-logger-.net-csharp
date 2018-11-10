@@ -38,7 +38,7 @@ namespace WCFService
             }
         }
 
-        public static void Alarm(int entryId)
+        public static void IncreaseAttemps(int entryId)
         {
             attempts.TryAdd(entryId, 0);
             attempts[entryId]++;

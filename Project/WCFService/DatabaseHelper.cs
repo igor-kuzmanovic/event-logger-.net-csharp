@@ -25,6 +25,7 @@ namespace WCFService
         private static List<string> ReadFromFile()
         {
             List<string> entries = new List<string>();
+
             byte[] encryptedEntries = File.ReadAllBytes(path);
 
             if (encryptedEntries.Any())
@@ -43,6 +44,7 @@ namespace WCFService
         private static int GetFreeID()
         {
             int freeID = 0;
+
             List<string> serializedEntries = ReadFromFile();
             HashSet<int> usedIDs = new HashSet<int>();
             EventEntry entry = null;
@@ -75,6 +77,8 @@ namespace WCFService
 
         public static bool Update(int entryID, string userID, string content)
         {
+            bool result = false;
+
             List<string> serializedEntries = ReadFromFile();
             EventEntry entry = null;
 
@@ -89,15 +93,18 @@ namespace WCFService
                     serializedEntries.Add(entry.ToString());
                     WriteToFile(serializedEntries);
 
-                    return true;
+                    result = true;
+                    break;
                 }
             }
 
-            return false;
+            return result;
         }
 
         public static bool Delete(int entryID)
         {
+            bool result = false;
+            
             List<string> serializedEntries = ReadFromFile();
             EventEntry entry = null;
 
@@ -110,15 +117,18 @@ namespace WCFService
                     serializedEntries.Remove(serializedEntry);
                     WriteToFile(serializedEntries);
 
-                    return true;
+                    result = true;
+                    break;
                 }
             }
 
-            return false;
+            return result;
         }
 
         public static EventEntry Read(int entryID)
         {
+            EventEntry result = null; 
+
             List<string> serializedEntries = ReadFromFile();
             EventEntry entry = null;
 
@@ -128,16 +138,18 @@ namespace WCFService
 
                 if (entry.ID == entryID.ToString())
                 {
-                    return entry;
+                    result = entry;
+                    break;
                 }
             }
 
-            return null;
+            return result;
         }
 
         public static HashSet<EventEntry> ReadAll()
         {
             HashSet<EventEntry> entries = new HashSet<EventEntry>();
+
             List<string> serializedEntries = ReadFromFile();
 
             foreach (string serializedEntry in serializedEntries)

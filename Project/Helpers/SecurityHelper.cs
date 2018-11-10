@@ -25,7 +25,6 @@ namespace Helpers
             string name = string.Empty;
 
             string[] subjectNames = certificate.SubjectName.Name.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
-
             if (subjectNames.Any(s => s.Contains("CN=")))
             {
                 name = subjectNames.First(s => s.StartsWith("CN=")).Substring("CN=".Length).Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries)[0];
@@ -36,20 +35,12 @@ namespace Helpers
 
         public static string GetName(OperationContext context)
         {
-            string name = string.Empty;
-
-            name = ParseName(context.ServiceSecurityContext.WindowsIdentity.Name);
-
-            return name;
+            return ParseName(context.ServiceSecurityContext.WindowsIdentity.Name);
         }
 
         public static string GetName(WindowsIdentity identity)
         {
-            string name = string.Empty;
-
-            name = ParseName(identity.Name);
-
-            return name;
+            return ParseName(identity.Name);
         }
 
         public static HashSet<string> GetOrganizationalUnits(X509Certificate2 certificate)
@@ -57,7 +48,6 @@ namespace Helpers
             HashSet<string> organizationalUnitSet = new HashSet<string>();
 
             string[] subjectNames = certificate.SubjectName.Name.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
-
             if (subjectNames.Any(s => s.Contains("OU=")))
             {
                 string[] organizationalUnits = subjectNames.First(s => s.StartsWith("OU=")).Substring("OU=".Length).Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
@@ -73,7 +63,7 @@ namespace Helpers
 
         public static string ParseName(string logonName)
         {
-            string name = string.Empty;
+            string name = logonName;
 
             if (logonName.Contains("@"))
             {
@@ -82,10 +72,6 @@ namespace Helpers
             else if (logonName.Contains("\\"))
             {
                 name = logonName.Split('\\')[1];
-            }
-            else
-            {
-                name = logonName;
             }
 
             return name;

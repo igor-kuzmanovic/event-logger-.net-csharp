@@ -11,7 +11,6 @@ namespace Helpers
         public static byte[] Encrypt(string text, string key)
         {
             byte[] encryptedTextWithIV = null;
-            byte[] encryptedText = null;
 
             using (AesCryptoServiceProvider csp = new AesCryptoServiceProvider())
             {
@@ -30,14 +29,13 @@ namespace Helpers
                                 streamWriter.Write(text);
                             }
 
-                            encryptedText = memoryStream.ToArray();
+                            byte[] encryptedText = memoryStream.ToArray();
+                            encryptedTextWithIV = new byte[encryptedText.Length + csp.IV.Length];
+                            Array.Copy(csp.IV, encryptedTextWithIV, csp.IV.Length);
+                            Array.Copy(encryptedText, 0, encryptedTextWithIV, csp.IV.Length, encryptedText.Length);
                         }
                     }
                 }
-
-                encryptedTextWithIV = new byte[encryptedText.Length + csp.IV.Length];
-                Array.Copy(csp.IV, encryptedTextWithIV, csp.IV.Length);
-                Array.Copy(encryptedText, 0, encryptedTextWithIV, csp.IV.Length, encryptedText.Length);
             }
 
             return encryptedTextWithIV;
@@ -46,7 +44,6 @@ namespace Helpers
         public static string Decrypt(byte[] encryptedTextWithIV, string key)
         {
             string text = string.Empty;
-            byte[] encryptedText = null;
 
             using (AesCryptoServiceProvider csp = new AesCryptoServiceProvider())
             {
@@ -54,7 +51,7 @@ namespace Helpers
                 csp.Key = Encoding.ASCII.GetBytes(key).Concat(new byte[32 - Encoding.ASCII.GetByteCount(key)]).ToArray();
                 csp.IV = encryptedTextWithIV.Take(csp.BlockSize / 8).ToArray();
 
-                encryptedText = new byte[encryptedTextWithIV.Length - csp.IV.Length];
+                byte[] encryptedText = new byte[encryptedTextWithIV.Length - csp.IV.Length];
                 Array.Copy(encryptedTextWithIV, csp.IV.Length, encryptedText, 0, encryptedText.Length);
 
                 using (ICryptoTransform decryptor = csp.CreateDecryptor(csp.Key, csp.IV))

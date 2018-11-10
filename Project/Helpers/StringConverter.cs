@@ -9,25 +9,19 @@ namespace Helpers
     {
         public static SecureString ToSecureString(byte[] textBytes)
         {
-            string text = Encoding.ASCII.GetString(textBytes);
-            SecureString secureText = ToSecureString(text);
-
-            return secureText;
+            return ToSecureString(Encoding.ASCII.GetString(textBytes));
         }
 
         public static SecureString ToSecureString(string text)
         {
             SecureString secureText = new SecureString();
-            Array.ForEach(text.ToCharArray(), (c) => secureText.AppendChar(c));
-
+            Array.ForEach(text.ToCharArray(), (c) => secureText.AppendChar(c));  
             return secureText;
         }
 
         public static string ToString(byte[] textBytes)
         {
-            string text = Encoding.ASCII.GetString(textBytes);
-
-            return text;
+            return Encoding.ASCII.GetString(textBytes);
         }
 
         public static string ToString(SecureString secureText)
@@ -35,23 +29,17 @@ namespace Helpers
             IntPtr pointer = Marshal.SecureStringToGlobalAllocAnsi(secureText);
             string text = Marshal.PtrToStringAnsi(pointer);
             Marshal.ZeroFreeGlobalAllocAnsi(pointer);
-
             return text;
         }
 
         public static byte[] ToBytes(string text)
         {
-            byte[] textBytes = Encoding.ASCII.GetBytes(text);
-
-            return textBytes;
+            return Encoding.ASCII.GetBytes(text);
         }
 
         public static byte[] ToBytes(SecureString secureText)
         {
-            string text = ToString(secureText);
-            byte[] textBytes = Encoding.ASCII.GetBytes(text);
-
-            return textBytes;
+            return Encoding.ASCII.GetBytes(ToString(secureText));
         }
     }
 }

@@ -43,7 +43,7 @@ namespace WCFService
             if (!RoleBasedAccessControl.UserHasPermission(certificate, Permissions.Update))
             {
                 EventLogger.AuthorizationFailure(SecurityHelper.GetName(certificate), "Update", Permissions.Update.ToString());
-                EventLogger.Alarm(entryID);
+                EventLogger.IncreaseAttemps(entryID);
 
                 throw new FaultException("Unauthorized");
             }
@@ -60,7 +60,7 @@ namespace WCFService
             if (!RoleBasedAccessControl.UserHasPermission(certificate, Permissions.Delete))
             {
                 EventLogger.AuthorizationFailure(SecurityHelper.GetName(certificate), "Delete", Permissions.Delete.ToString());
-                EventLogger.Alarm(entryID);
+                EventLogger.IncreaseAttemps(entryID);
 
                 throw new FaultException("Unauthorized");
             }

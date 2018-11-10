@@ -11,13 +11,16 @@ namespace WCFService
         private static void Main(string[] args)
         {
             SecureString privateKey = InputHelper.InputPrivateKey();
+            Console.Clear();
             WCFService.PrivateKey = privateKey;
             DatabaseHelper.PrivateKey = privateKey;
 
-            ServiceHost host = new ServiceHost(typeof(WCFService));
+            ServiceHost host = null;
 
             try
             {
+                host = new ServiceHost(typeof(WCFService));
+
                 host.Open();
                 Console.WriteLine("Service is ready");
 
@@ -29,10 +32,13 @@ namespace WCFService
             }
             finally
             {
-                host.Close();
+                if (host != null)
+                {
+                    host.Close();
+                }
             }
 
-            Console.WriteLine("Press any key to exit...");
+            Console.WriteLine("\nPress any key to exit...");
             Console.ReadKey(true);
         }
     }

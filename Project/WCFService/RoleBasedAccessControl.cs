@@ -42,8 +42,7 @@ namespace WCFService
         {
             bool result = false;
 
-            HashSet<Roles> roles = GetUserRoles(user);
-            result = roles.Any(role => RoleHasPermission(role, permission));
+            result = GetUserRoles(user).Any(role => RoleHasPermission(role, permission));
 
             return result;
         }
@@ -52,9 +51,7 @@ namespace WCFService
         {
             HashSet<Roles> roles = new HashSet<Roles>();
 
-            HashSet<string> organizationalUnits = SecurityHelper.GetOrganizationalUnits(user);
-
-            foreach (string organizationalUnit in organizationalUnits)
+            foreach (string organizationalUnit in SecurityHelper.GetOrganizationalUnits(user))
             {
                 if (Enum.TryParse(organizationalUnit, out Roles role))
                 {
