@@ -12,12 +12,21 @@ namespace Helpers
     {
         public static X509Certificate2 GetCertificate(ChannelFactory factory)
         {
-            return factory.Credentials.ClientCertificate.Certificate;
+            X509Certificate2 certificate = null;
+
+            // Get the certificate from the client's channel factory object (a service proxy)
+            certificate = factory.Credentials.ClientCertificate.Certificate;
+
+            return certificate;
         }
 
         public static X509Certificate2 GetUserCertificate(OperationContext context)
         {
-            return (context.ServiceSecurityContext.AuthorizationContext.ClaimSets[0] as X509CertificateClaimSet).X509Certificate;
+            X509Certificate2 certificate = null;
+
+            certificate = (context.ServiceSecurityContext.AuthorizationContext.ClaimSets[0] as X509CertificateClaimSet).X509Certificate;
+
+            return certificate;
         }
 
         public static string GetName(X509Certificate2 certificate)

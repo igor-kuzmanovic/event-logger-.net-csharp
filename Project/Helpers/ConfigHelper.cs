@@ -6,7 +6,11 @@ namespace Helpers
     {
         public static string GetString(string name)
         {
-            return ConfigurationManager.AppSettings.GetValues(name)[0];
+            string result = string.Empty;
+
+            result = ConfigurationManager.AppSettings.GetValues(name)[0];
+
+            return result;
         }
     }
 }

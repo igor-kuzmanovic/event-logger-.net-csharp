@@ -25,7 +25,7 @@ namespace Helpers
                     privateKey.AppendChar(keyInfo.KeyChar);
                     Console.Write("*");
                 }
-            } while (keyInfo.Key != ConsoleKey.Enter);
+            } while (keyInfo.Key != ConsoleKey.Enter || privateKey.Length == 0);
 
             return privateKey;
         }

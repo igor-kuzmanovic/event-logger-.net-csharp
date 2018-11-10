@@ -18,7 +18,7 @@ namespace Helpers
                 csp.Key = Encoding.ASCII.GetBytes(key).Concat(new byte[32 - Encoding.ASCII.GetByteCount(key)]).ToArray();
                 csp.GenerateIV();
 
-                using (ICryptoTransform encryptor = csp.CreateEncryptor(csp.Key, csp.IV))
+                using (ICryptoTransform encryptor = csp.CreateEncryptor())
                 {
                     using (MemoryStream memoryStream = new MemoryStream())
                     {
@@ -54,7 +54,7 @@ namespace Helpers
                 byte[] encryptedText = new byte[encryptedTextWithIV.Length - csp.IV.Length];
                 Array.Copy(encryptedTextWithIV, csp.IV.Length, encryptedText, 0, encryptedText.Length);
 
-                using (ICryptoTransform decryptor = csp.CreateDecryptor(csp.Key, csp.IV))
+                using (ICryptoTransform decryptor = csp.CreateDecryptor())
                 {
                     using (MemoryStream memoryStream = new MemoryStream(encryptedText))
                     {
