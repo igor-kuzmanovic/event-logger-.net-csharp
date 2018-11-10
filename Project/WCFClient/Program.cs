@@ -14,6 +14,7 @@ namespace WCFClient
 
             Console.WriteLine("Press any key to start...");
             Console.ReadKey(true);
+            Console.Clear();
 
             using (WCFServiceClient client = new WCFServiceClient())
             {
@@ -22,32 +23,38 @@ namespace WCFClient
                 if (key != null)
                 {
                     privateKey = StringConverter.ToSecureString(RSAEncrypter.Decrypt(key, SecurityHelper.GetCertificate(client)));
+                    Array.Clear(key, 0, key.Length);
                     Console.WriteLine("Private key retrieved from the service");
 
-                    Console.WriteLine();
-
-                    client.Add(string.Format(ResourceHelper.GetString("Event1"), 1));
-                    client.Add(string.Format(ResourceHelper.GetString("Event2"), 1, 2));
+                    Console.WriteLine("\nStarting tests...\n");
 
                     HashSet<EventEntry> entries = client.ReadAll(StringConverter.ToBytes(privateKey));
                     foreach (var entry in entries) Console.WriteLine(entry.ToString());
-                    Console.WriteLine();
 
+                    Console.WriteLine("\nTesting [Add]\n");
+                    client.Add(string.Format(ResourceHelper.GetString("Event1"), 1));
+                    client.Add(string.Format(ResourceHelper.GetString("Event2"), 1, 2));
+
+                    entries = client.ReadAll(StringConverter.ToBytes(privateKey));
+                    foreach (var entry in entries) Console.WriteLine(entry.ToString());
+
+                    Console.WriteLine("\nTesting [Update]\n");
                     client.Update(1, string.Format(ResourceHelper.GetString("Event3"), 1, 2, 3));
 
                     entries = client.ReadAll(StringConverter.ToBytes(privateKey));
                     foreach (var entry in entries) Console.WriteLine(entry.ToString());
-                    Console.WriteLine();
 
+                    Console.WriteLine("\nTesting [Delete]\n");
                     client.Delete(1);
 
                     entries = client.ReadAll(StringConverter.ToBytes(privateKey));
                     foreach (var entry in entries) Console.WriteLine(entry.ToString());
-                    Console.WriteLine();
 
+                    Console.WriteLine("\nTesting [Read]\n");
                     EventEntry e = client.Read(2, StringConverter.ToBytes(privateKey));
                     Console.WriteLine(e.ToString());
-                    Console.WriteLine();
+
+                    Console.WriteLine("\nTests finished\n");
                 }
             }
 
