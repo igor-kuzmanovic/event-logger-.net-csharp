@@ -98,6 +98,20 @@ namespace WCFClient
             return result;
         }
 
+        public byte[] ReadFile()
+        {
+            byte[] result = null;
+            try
+            {
+                result = channel.ReadFile();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[ReadFile] ERROR = {0}", e.Message);
+            }
+            return result;
+        }
+
         public void Dispose()
         {
             try

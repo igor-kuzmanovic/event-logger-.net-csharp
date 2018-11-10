@@ -43,7 +43,7 @@ namespace WCFService
             attempts.TryAdd(entryId, 0);
             attempts[entryId]++;
 
-            if (attempts[entryId] > attemptLimit)
+            if (attempts[entryId] >= attemptLimit)
             {
                 using (IDSServiceClient client = new IDSServiceClient())
                 {

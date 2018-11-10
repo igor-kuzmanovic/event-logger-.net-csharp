@@ -146,5 +146,10 @@ namespace WCFService
 
             return entries;
         }
+
+        public static byte[] ReadFile()
+        {
+            return File.ReadAllBytes(path);
+        }
     }
 }

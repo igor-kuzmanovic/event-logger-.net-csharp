@@ -101,5 +101,10 @@ namespace WCFService
 
             return DatabaseHelper.ReadAll();
         }
+
+        public byte[] ReadFile()
+        {
+            return DatabaseHelper.ReadFile();
+        }
     }
 }

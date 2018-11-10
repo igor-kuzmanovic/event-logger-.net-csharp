@@ -23,5 +23,8 @@ namespace WCFServiceCommon
 
         [OperationContract]
         HashSet<EventEntry> ReadAll(byte[] key);
+
+        [OperationContract]
+        byte[] ReadFile();
     }
 }

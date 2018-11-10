@@ -1,6 +1,7 @@
 ﻿using Helpers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security;
 using WCFServiceCommon;
 
@@ -53,6 +54,21 @@ namespace WCFClient
                     Console.WriteLine("\nTesting [Read]\n");
                     EventEntry e = client.Read(2, StringConverter.ToBytes(privateKey));
                     Console.WriteLine(e.ToString());
+
+                    Console.WriteLine("\nTesting [ReadFile]\n");
+                    List<string> serializedEntries = new List<string>();
+                    byte[] encryptedEntries = client.ReadFile();
+                    if (encryptedEntries.Any())
+                    {
+                        serializedEntries.AddRange(AESEncrypter.Decrypt(encryptedEntries, StringConverter.ToString(privateKey)).Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries));
+                    }
+                    entries.Clear();
+                    foreach (string serializedEntry in serializedEntries)
+                    {
+                        entries.Add(new EventEntry(serializedEntry));
+                    }
+                    foreach (var entry in entries) Console.WriteLine(entry.ToString());
+
 
                     Console.WriteLine("\nTests finished\n");
                 }
