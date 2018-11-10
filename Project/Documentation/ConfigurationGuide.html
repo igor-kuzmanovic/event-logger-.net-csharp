@@ -4,6 +4,18 @@
 	</head>
 	<body>
 		<h2>Configuration Guide</h2>
+
+        <h3>Existing Certificates</h3>
+        <ul>
+            <li>RootCA - Certification authority for all certificates</li>
+            <li>WCFService - WCFService certificate</li>
+            <li>WCFClient - WCFClient certificate with 'Client' role</li>
+            <li>WCFModerator - WCFClient certificate with 'Moderator' role</li>
+            <li>WCFAdministrator - WCFClient certificate with 'Administrator' role</li>
+            <li>WCFSystemAdministrator - WCFClient certificate with 'Client', 'Moderator' and 'Administrator' roles</li>
+            <li>WCFBadClient - WCFClient self-signed certificate with 'Client', 'Moderator' and 'Administrator' roles</li>
+        </ul>
+        <br>
 		
 		<h3>Path Configuration</h3>
 		<ul>
@@ -26,7 +38,7 @@
 			<li><pre><code>cd C:\Program Files (x86)\Windows Kits\10\bin\10.0.17134.0\x64</code></pre></li>
             		<li>(Optional) Replace the Client's name after 'CN=...'</li>
 			<li>(Optional) Insert Client's roles after 'OU=...' and delimit them with '|' and no spaces</li>
-			<li><pre><code>makecert -sv ~path~\WCFClient.pvk -iv ~path~\RootCA.pvk -n "CN=WCFClient, OU=Client|Moderator|Administrator" -pe -ic ~path~\RootCA.cer ~path~\WCFClient.cer -sr localmachine -ss My -sky exchange</code></pre></li>
+			<li><pre><code>makecert -sv ~path~\WCFClient.pvk -iv ~path~\RootCA.pvk -n "CN=WCFClient, OU=Client" -pe -ic ~path~\RootCA.cer ~path~\WCFClient.cer -sr localmachine -ss My -sky exchange</code></pre></li>
 			<li>Create a private key: 'client'</li>
 			<li>Input the private key: 'client'</li>
 			<li>Input the Root's password: 'root'</li>

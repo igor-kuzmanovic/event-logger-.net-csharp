@@ -6,7 +6,7 @@ namespace Helpers
     {
         public static string GetString(string name)
         {
-            using (ResXResourceSet resx = new ResXResourceSet(@"..\..\Resources.resx"))
+            using (ResXResourceSet resx = new ResXResourceSet(@"Resources.resx"))
             {
                 return resx.GetString(name);
             }
