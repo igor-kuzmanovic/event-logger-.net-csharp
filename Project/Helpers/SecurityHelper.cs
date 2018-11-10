@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Claims;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Principal;
 using System.ServiceModel;
 
 namespace Helpers
@@ -38,6 +39,15 @@ namespace Helpers
             string name = string.Empty;
 
             name = ParseName(context.ServiceSecurityContext.WindowsIdentity.Name);
+
+            return name;
+        }
+
+        public static string GetName(WindowsIdentity identity)
+        {
+            string name = string.Empty;
+
+            name = ParseName(identity.Name);
 
             return name;
         }

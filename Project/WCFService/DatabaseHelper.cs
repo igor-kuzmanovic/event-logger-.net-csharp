@@ -10,8 +10,9 @@ namespace WCFService
 {
     internal static class DatabaseHelper
     {
+        private static readonly string path = ConfigHelper.GetString("DatabasePath");
+
         public static SecureString PrivateKey { get; set; }
-        private static readonly string path = "Database.txt";
 
         static DatabaseHelper()
         {

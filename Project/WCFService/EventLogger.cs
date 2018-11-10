@@ -8,11 +8,11 @@ namespace WCFService
 {
     internal static class EventLogger
     {
-        private static readonly string source = "WCFService";
-        private static readonly string logName = "WCFServiceLog";
+        private static readonly string source = ConfigHelper.GetString("EventLogSource");
+        private static readonly string logName = ConfigHelper.GetString("EventLogName");
+        private static readonly int attemptLimit = int.Parse(ConfigHelper.GetString("AttemptLimit"));
+        private static readonly int attemptTimeout = int.Parse(ConfigHelper.GetString("AttemptTimeout"));
 
-        private static readonly int attemptLimit = 2;
-        private static readonly TimeSpan attemptTimeSpan = new TimeSpan(0, 0, 1);
         private static readonly ConcurrentDictionary<int, int> attempts;
         private static readonly Timer timer;
 
@@ -24,7 +24,7 @@ namespace WCFService
             }
 
             attempts = new ConcurrentDictionary<int, int>();
-            timer = new Timer(DecreaseAttempts, null, attemptTimeSpan, attemptTimeSpan);
+            timer = new Timer(DecreaseAttempts, null, attemptTimeout, attemptTimeout);
         }
 
         private static void DecreaseAttempts(object state)

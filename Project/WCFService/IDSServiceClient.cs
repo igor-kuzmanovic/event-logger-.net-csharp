@@ -31,7 +31,7 @@ namespace WCFService
         {
             try
             {
-                if (State != CommunicationState.Faulted)
+                if (State == CommunicationState.Opened)
                 {
                     Close();
                 }
@@ -39,7 +39,6 @@ namespace WCFService
             catch (Exception e)
             {
                 Console.WriteLine("[ERROR] {0}", e.Message);
-                Console.WriteLine("[StackTrace] {0}", e.StackTrace);
             }
             finally
             {

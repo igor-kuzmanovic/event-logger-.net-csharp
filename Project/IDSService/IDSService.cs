@@ -9,7 +9,7 @@ namespace IDSService
     {
         public void Alarm(string message)
         {
-            if (SecurityHelper.GetName(OperationContext.Current) != "WCFService")
+            if (SecurityHelper.GetName(OperationContext.Current) != ConfigHelper.GetString("WCFServiceUser"))
             {
                 throw new FaultException("Unauthorized");
             }
