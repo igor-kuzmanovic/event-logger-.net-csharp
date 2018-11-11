@@ -1,64 +1,72 @@
 ﻿using Helpers;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading;
+using System.Linq;
 
 namespace WCFService
 {
     internal static class EventLogger
     {
-        private static readonly string source = ConfigHelper.GetString("EventLogSource");
-        private static readonly string logName = ConfigHelper.GetString("EventLogName");
-        private static readonly int attemptLimit = int.Parse(ConfigHelper.GetString("AttemptLimit"));
-        private static readonly int attemptTimeSpan = int.Parse(ConfigHelper.GetString("AttemptTimeSpan"));
+        private static readonly string source;
+        private static readonly string logName;
+        private static readonly int attemptLimit;
+        private static readonly int attemptTimeSpan;
 
-        private static readonly ConcurrentDictionary<int, int> attempts;
-        private static readonly Timer timer;
+        private static readonly ConcurrentDictionary<int, List<TimeSpan>> attempts;
 
         static EventLogger()
         {
+            // Get the source of the event log from the configuration file
+            source = ConfigHelper.GetString("EventLogSource");
+
+            // Get the name of the event log from the configuration file
+            logName = ConfigHelper.GetString("EventLogName");
+
+            // Get the failed attempt limit from the configuration file
+            attemptLimit = int.Parse(ConfigHelper.GetString("AttemptLimit"));
+
+            // Get the time span (in seconds) for the failed attempt limit from the configuration file
+            attemptTimeSpan = int.Parse(ConfigHelper.GetString("AttemptTimeSpan"));
+
             if (!EventLog.SourceExists(source))
             {
                 // If the event source doesn't exist, create it (Requires admin privileges!)
                 EventLog.CreateEventSource(source, logName);
             }
 
-            // Create a thread-safe dictionary for storing information about failed attemps to modify individual entries
-            attempts = new ConcurrentDictionary<int, int>();
-
-            // Start a timer that executes the DecreaseAttemps function every 'attemptTimeSpan' seconds
-            timer = new Timer(DecreaseAttempts, null, attemptTimeSpan, attemptTimeSpan);
+            // Create a thread-safe dictionary to store timestamps of failed attempts for each entry
+            attempts = new ConcurrentDictionary<int, List<TimeSpan>>();
         }
 
-        private static void DecreaseAttempts(object state)
-        {
-            // Go through the list of entries
-            foreach (int entryID in attempts.Keys)
-            {
-                if (attempts[entryID] > 0)
-                {
-                    // Decrease the amount of failed attemps on that entry by one
-                    attempts[entryID]--;
-                }
-            }
-        }
-
-        public static void IncreaseAttemps(int entryID)
+        public static void RecordFailedAttempt(int entryID)
         {
             // If the entry is not in the dictionary, add it
-            attempts.TryAdd(entryID, 0);
+            attempts.TryAdd(entryID, new List<TimeSpan>());
 
-            // Increase the number of failed attemps on that entry by one
-            attempts[entryID]++;
-
-            if (attempts[entryID] >= attemptLimit)
+            if (attempts[entryID].Count == attemptLimit)
             {
-                // If the number of failed attempts is over the limit invoke the alarm action
-                Alarm(entryID);
+                // If the failed attempt limit is reached, remove the oldest timestamp
+                attempts[entryID].RemoveAt(0);
+            }
 
-                // Reset the failed attempt counter to zero
-                attempts[entryID] = 0;
+            // Add the timestamp of the failed attempt
+            attempts[entryID].Add(TimeSpan.FromTicks(DateTime.Now.Ticks));
+
+            if (attempts[entryID].Count == attemptLimit)
+            {
+                // Calculate the difference in seconds (with fractals) between the newest and the oldest failed attempt
+                double timestampDifference = attempts[entryID].Last().TotalSeconds - attempts[entryID].First().TotalSeconds;
+
+                if (timestampDifference <= attemptTimeSpan)
+                {
+                    // If the difference is lower or equal to the attempt time span limit alarm the Intrusion Detection Service
+                    Alarm(entryID);
+
+                    // Clear the failed attempt timestamps to prevent flooding the Intrusion Detection Service
+                    attempts[entryID].Clear();
+                }
             }
         }
 

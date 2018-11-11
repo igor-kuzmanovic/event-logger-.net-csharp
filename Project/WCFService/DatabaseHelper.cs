@@ -10,12 +10,15 @@ namespace WCFService
 {
     internal static class DatabaseHelper
     {
-        private static readonly string path = ConfigHelper.GetString("DatabasePath");
+        private static readonly string path;
 
         public static SecureString PrivateKey { get; set; }
 
         static DatabaseHelper()
         {
+            // Get the database path from the configuration file
+            path = ConfigHelper.GetString("DatabasePath");
+
             if (!File.Exists(path))
             {
                 // If the database file doesn't exist, create it

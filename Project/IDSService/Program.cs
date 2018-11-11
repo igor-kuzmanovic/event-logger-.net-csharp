@@ -12,7 +12,8 @@ namespace IDSService
             // Get the name of the windows user running the application
             string userName = SecurityHelper.GetName(WindowsIdentity.GetCurrent());
 
-            if (userName != ConfigHelper.GetString("IDSServiceUser"))
+            // If the 'WCFServiceUser' is specified (not 'Any') check the user's name
+            if (ConfigHelper.GetString("IDSServiceUser") != "Any" && userName != ConfigHelper.GetString("IDSServiceUser"))
             {
                 // If it doesn't match the expected windows user's name, stop the program
                 Console.WriteLine("You are unauthorized to run the application");

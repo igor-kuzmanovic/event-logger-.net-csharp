@@ -77,8 +77,8 @@ namespace WCFService
                 // If the client lacks the 'Update' permission log the failed authorization attempt
                 EventLogger.AuthorizationFailure(clientName, "Update", Permissions.Update.ToString());
 
-                // Increase the number of failed attemps to modify the specified entry
-                EventLogger.IncreaseAttemps(entryID);
+                // Record the failed modification attempt
+                EventLogger.RecordFailedAttempt(entryID);
 
                 throw new FaultException("Unauthorized");
             }
@@ -113,8 +113,8 @@ namespace WCFService
                 // If the client lacks the 'Delete' permission log the failed authorization attempt
                 EventLogger.AuthorizationFailure(clientName, "Delete", Permissions.Delete.ToString());
 
-                // Increase the number of failed attempts to modify the specified entry
-                EventLogger.IncreaseAttemps(entryID);
+                // Record the failed modification attempt
+                EventLogger.RecordFailedAttempt(entryID);
 
                 throw new FaultException("Unauthorized");
             }

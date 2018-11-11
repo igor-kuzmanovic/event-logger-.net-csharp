@@ -12,7 +12,8 @@ namespace IDSService
             // Get the client's name from the current operation context
             string clientName = SecurityHelper.GetName(OperationContext.Current);
 
-            if (clientName != ConfigHelper.GetString("IDSServiceClient"))
+            // If the 'IDSServiceClient' is specified (not 'Any') check the client's name
+            if (ConfigHelper.GetString("IDSServiceClient") != "Any" && clientName != ConfigHelper.GetString("IDSServiceClient"))
             {
                 // If the client's name doesn't match the expected client's name deny the request
                 throw new FaultException("Unauthorized");
