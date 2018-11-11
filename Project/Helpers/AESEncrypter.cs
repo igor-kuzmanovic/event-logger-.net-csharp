@@ -13,9 +13,9 @@ namespace Helpers
 
             using (AesCryptoServiceProvider csp = new AesCryptoServiceProvider())
             {
-                // Hash the key to prevent sizing issues
                 using (SHA256CryptoServiceProvider shaCSP = new SHA256CryptoServiceProvider())
                 {
+                    // Hash the key to prevent sizing issues
                     csp.Key = shaCSP.ComputeHash(key);
                 }
 
@@ -65,9 +65,9 @@ namespace Helpers
 
             using (AesCryptoServiceProvider csp = new AesCryptoServiceProvider())
             {
-                // Hash the key to prevent sizing issues
                 using (SHA256CryptoServiceProvider shaCSP = new SHA256CryptoServiceProvider())
                 {
+                    // Hash the key to prevent sizing issues
                     csp.Key = shaCSP.ComputeHash(key);
                 }
 
