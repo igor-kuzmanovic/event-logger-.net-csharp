@@ -41,19 +41,6 @@ namespace WCFService
             };
         }
 
-        public static bool UserHasPermission(X509Certificate2 user, Permissions permission)
-        {
-            bool hasPermission = false;
-
-            // Get all the roles for the specified user
-            HashSet<Roles> userRoles = GetUserRoles(user);
-
-            // Check if any of those roles has the required permission
-            hasPermission = userRoles.Any(role => RoleHasPermission(role, permission));
-
-            return hasPermission;
-        }
-
         private static HashSet<Roles> GetUserRoles(X509Certificate2 user)
         {
             HashSet<Roles> roles = new HashSet<Roles>();
@@ -80,6 +67,19 @@ namespace WCFService
 
             // Check if the specified role contains the required permission
             hasPermission = rolePermissions[role].Contains(permission);
+
+            return hasPermission;
+        }
+
+        public static bool UserHasPermission(X509Certificate2 user, Permissions permission)
+        {
+            bool hasPermission = false;
+
+            // Get all the roles for the specified user
+            HashSet<Roles> userRoles = GetUserRoles(user);
+
+            // Check if any of those roles has the required permission
+            hasPermission = userRoles.Any(role => RoleHasPermission(role, permission));
 
             return hasPermission;
         }

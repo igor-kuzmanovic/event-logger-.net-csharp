@@ -40,6 +40,18 @@ namespace WCFService
             attempts = new ConcurrentDictionary<int, List<TimeSpan>>();
         }
 
+        private static void Alarm(int entryID)
+        {
+            using (IDSServiceClient client = new IDSServiceClient())
+            {
+                // Form an alarm message for the specified entry
+                string alarm = string.Format(ResourceHelper.GetString("Alarm"), entryID);
+
+                // Send the alarm message to the Intrusion Detection Service
+                client.Alarm(alarm);
+            }
+        }
+
         public static void RecordFailedAttempt(int entryID)
         {
             // If the entry is not in the dictionary, add it
@@ -67,18 +79,6 @@ namespace WCFService
                     // Clear the failed attempt timestamps to prevent flooding the Intrusion Detection Service
                     attempts[entryID].Clear();
                 }
-            }
-        }
-
-        public static void Alarm(int entryID)
-        {
-            using (IDSServiceClient client = new IDSServiceClient())
-            {
-                // Form an alarm message for the specified entry
-                string alarm = string.Format(ResourceHelper.GetString("Alarm"), entryID);
-
-                // Send the alarm message to the Intrusion Detection Service
-                client.Alarm(alarm);
             }
         }
 
