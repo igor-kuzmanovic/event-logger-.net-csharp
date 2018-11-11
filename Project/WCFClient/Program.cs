@@ -123,7 +123,7 @@ namespace WCFClient
                 byte[] encryptedEntries = client.ReadFile();
                 if (encryptedEntries.Any())
                 {
-                    serializedEntries.AddRange(AESEncrypter.Decrypt(encryptedEntries, StringConverter.ToString(key)).Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries));
+                    serializedEntries.AddRange(AESEncrypter.Decrypt(encryptedEntries, StringConverter.ToBytes(key)).Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries));
                 }
 
                 HashSet<EventEntry> entries = new HashSet<EventEntry>();

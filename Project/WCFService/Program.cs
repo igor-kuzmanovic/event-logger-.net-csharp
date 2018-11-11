@@ -10,12 +10,17 @@ namespace WCFService
     {
         private static void Main(string[] args)
         {
-            if (SecurityHelper.GetName(WindowsIdentity.GetCurrent()) == ConfigHelper.GetString("WCFServiceUser"))
+            // Get the name of the windows user running the application
+            string userName = SecurityHelper.GetName(WindowsIdentity.GetCurrent());
+
+            if (userName != ConfigHelper.GetString("WCFServiceUser"))
             {
-                Console.WriteLine("Unauthorized");
+                // If it doesn't match the expected windows user's name, stop the program 
+                Console.WriteLine("You are unauthorized to run the application");
             }
             else
             {
+                // Get the private key from the console
                 SecureString privateKey = InputHelper.GetKey();
                 WCFService.PrivateKey = privateKey;
                 DatabaseHelper.PrivateKey = privateKey;

@@ -9,9 +9,13 @@ namespace IDSService
     {
         private static void Main(string[] args)
         {
-            if (SecurityHelper.GetName(WindowsIdentity.GetCurrent()) == ConfigHelper.GetString("IDSServiceUser"))
+            // Get the name of the windows user running the application
+            string userName = SecurityHelper.GetName(WindowsIdentity.GetCurrent());
+
+            if (userName != ConfigHelper.GetString("IDSServiceUser"))
             {
-                Console.WriteLine("Unauthorized");
+                // If it doesn't match the expected windows user's name, stop the program
+                Console.WriteLine("You are unauthorized to run the application");
             }
             else
             {

@@ -9,12 +9,17 @@ namespace IDSService
     {
         public void Alarm(string message)
         {
-            if (SecurityHelper.GetName(OperationContext.Current) != ConfigHelper.GetString("WCFServiceUser"))
+            // Get the client's name from the current operation context
+            string clientName = SecurityHelper.GetName(OperationContext.Current);
+
+            if (clientName != ConfigHelper.GetString("IDSServiceClient"))
             {
+                // If the client's name doesn't match the expected client's name deny the request
                 throw new FaultException("Unauthorized");
             }
 
-            Console.WriteLine("[ALARM] {0}", message);
+            // Write the alarm message to the console
+            Console.WriteLine("[{0}] {1}", clientName, message);
         }
     }
 }

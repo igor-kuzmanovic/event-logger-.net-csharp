@@ -1,53 +1,66 @@
 ﻿using System;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace WCFServiceCommon
 {
     public class EventEntry
     {
-        public string ID { get; set; }
+        public DateTime Timestamp { get; set; }
+        public int ID { get; set; }
         public string UserID { get; set; }
-        public string Timestamp { get; set; }
         public string Content { get; set; }
 
         public EventEntry() { }
 
         public EventEntry(string serializedEntry)
         {
-            string pattern = @"\[([^\[\]]+)\]";
-            string[] entityData = new string[4];
-            int counter = 0;
+            // Split the serialized entry into strings ('[Timestamp][ID][UserID][Content]')
+            string[] properties = serializedEntry.Split(new char[] { '[', ']' }, StringSplitOptions.RemoveEmptyEntries);
 
-            foreach (Match m in Regex.Matches(serializedEntry, pattern))
-            {
-                entityData[counter++] = m.Groups[1].Value;
-            }
-
-            ID = entityData[0];
-            UserID = entityData[1];
-            Timestamp = entityData[2];
-            Content = entityData[3];
+            Timestamp = DateTime.ParseExact(properties[0], "MM.d.yyyy - h:m:s", CultureInfo.InvariantCulture);
+            ID = int.Parse(properties[1]);
+            UserID = properties[2];
+            Content = properties[3];
         }
 
-        public EventEntry(int id, string userID, DateTime timestamp, string content)
+        public EventEntry(DateTime timestamp, int id, string userID, string content)
         {
-            ID = id.ToString();
-            UserID = userID;
-            Timestamp = timestamp.ToString("MM.d.yyyy - h:m:s");
-            Content = content;
-        }
-
-        public EventEntry(string id, string userID, string timestamp, string content)
-        {
+            Timestamp = timestamp;
             ID = id;
             UserID = userID;
-            Timestamp = timestamp;
             Content = content;
+        }
+
+        public EventEntry(string timestamp, string id, string userID, string content)
+        {
+            Timestamp = DateTime.Parse(timestamp);
+            ID = int.Parse(id);
+            UserID = userID;
+            Content = content;
+        }
+
+        public static int GetId(string serializedEntry)
+        {
+            int id = 0;
+
+            // Split the serialized entry into strings ('[Timestamp][ID][UserID][Content]')
+            string[] properties = serializedEntry.Split(new char[] { '[', ']' }, StringSplitOptions.RemoveEmptyEntries);
+
+            // Parse the id
+            id = int.Parse(properties[1]);
+
+            return id;
         }
 
         public override string ToString()
         {
-            return $"[{ID}][{UserID}][{Timestamp}][{Content}]";
+            string serializedEntry = string.Empty;
+
+            // Serialize the entry into a string
+            serializedEntry = string.Format("[{0}][{1}][{2}][{3}]", Timestamp.ToString("MM.d.yyyy - h:m:s"), ID, UserID, Content);
+
+            return serializedEntry;
         }
     }
 }

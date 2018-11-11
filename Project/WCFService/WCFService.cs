@@ -13,98 +13,198 @@ namespace WCFService
 
         public byte[] CheckIn()
         {
-            X509Certificate2 certificate = SecurityHelper.GetCertificate(OperationContext.Current);
+            byte[] privateKey = null;
 
-            EventLogger.AuthenticationSuccess(SecurityHelper.GetName(certificate));
+            // Get the client's certificate from the current operation context
+            X509Certificate2 clientCertificate = SecurityHelper.GetCertificate(OperationContext.Current);
 
-            return RSAEncrypter.Encrypt(StringConverter.ToString(PrivateKey), certificate);
+            // Get the client's name from the certificate
+            string clientName = SecurityHelper.GetName(clientCertificate);
+
+            // Log the successful authentication
+            EventLogger.AuthenticationSuccess(clientName);
+
+            // Encrypt the private key with the client's certificate public key
+            privateKey = RSAEncrypter.Encrypt(StringConverter.ToString(PrivateKey), clientCertificate);
+
+            return privateKey;
         }
 
         public void Add(string content)
         {
-            X509Certificate2 certificate = SecurityHelper.GetCertificate(OperationContext.Current);
+            // Get the client's certificate from the current operation context
+            X509Certificate2 clientCertificate = SecurityHelper.GetCertificate(OperationContext.Current);
 
-            if (!RoleBasedAccessControl.UserHasPermission(certificate, Permissions.Add))
+            // Get the client's name from the certificate
+            string clientName = SecurityHelper.GetName(clientCertificate);
+
+            // Log the successful authentication
+            EventLogger.AuthenticationSuccess(clientName);
+
+            if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Add))
             {
-                EventLogger.AuthorizationFailure(SecurityHelper.GetName(certificate), "Add", Permissions.Add.ToString());
+                // If the client lacks the 'Add' permission log the failed authorization attempt
+                EventLogger.AuthorizationFailure(clientName, "Add", Permissions.Add.ToString());
 
                 throw new FaultException("Unauthorized");
             }
 
-            EventLogger.AuthorizationSuccess(SecurityHelper.GetName(certificate), "Add");
+            // Log the successful authorization
+            EventLogger.AuthorizationSuccess(clientName, "Add");
 
-            DatabaseHelper.Add(certificate.SerialNumber, content);
+            // Get client's ID represented by the serial number of his certificate
+            string userID = clientCertificate.SerialNumber;
+
+            // Execute the 'Add' operation
+            DatabaseHelper.Add(userID, content);
         }
 
         public bool Update(int entryID, string content)
         {
-            X509Certificate2 certificate = SecurityHelper.GetCertificate(OperationContext.Current);
+            bool result = false;
 
-            if (!RoleBasedAccessControl.UserHasPermission(certificate, Permissions.Update))
+            // Get the client's certificate from the current operation context
+            X509Certificate2 clientCertificate = SecurityHelper.GetCertificate(OperationContext.Current);
+
+            // Get the client's name from the certificate
+            string clientName = SecurityHelper.GetName(clientCertificate);
+
+            // Log the successful authentication
+            EventLogger.AuthenticationSuccess(clientName);
+
+            if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Update))
             {
-                EventLogger.AuthorizationFailure(SecurityHelper.GetName(certificate), "Update", Permissions.Update.ToString());
+                // If the client lacks the 'Update' permission log the failed authorization attempt
+                EventLogger.AuthorizationFailure(clientName, "Update", Permissions.Update.ToString());
+
+                // Increase the number of failed attemps to modify the specified entry
                 EventLogger.IncreaseAttemps(entryID);
 
                 throw new FaultException("Unauthorized");
             }
 
-            EventLogger.AuthorizationSuccess(SecurityHelper.GetName(certificate), "Update");
+            // Log the successful authorization
+            EventLogger.AuthorizationSuccess(clientName, "Update");
 
-            return DatabaseHelper.Update(entryID, certificate.SerialNumber, content);
+            // Get client's ID represented by the serial number of his certificate
+            string userID = clientCertificate.SerialNumber;
+
+            // Execute the 'Update' operation
+            result = DatabaseHelper.Update(entryID, userID, content);
+
+            return result;
         }
 
         public bool Delete(int entryID)
         {
-            X509Certificate2 certificate = SecurityHelper.GetCertificate(OperationContext.Current);
+            bool result = false;
 
-            if (!RoleBasedAccessControl.UserHasPermission(certificate, Permissions.Delete))
+            // Get the client's certificate from the current operation context
+            X509Certificate2 clientCertificate = SecurityHelper.GetCertificate(OperationContext.Current);
+
+            // Get the client's name from the certificate
+            string clientName = SecurityHelper.GetName(clientCertificate);
+
+            // Log the successful authentication
+            EventLogger.AuthenticationSuccess(clientName);
+
+            if (!RoleBasedAccessControl.UserHasPermission(clientCertificate, Permissions.Delete))
             {
-                EventLogger.AuthorizationFailure(SecurityHelper.GetName(certificate), "Delete", Permissions.Delete.ToString());
+                // If the client lacks the 'Delete' permission log the failed authorization attempt
+                EventLogger.AuthorizationFailure(clientName, "Delete", Permissions.Delete.ToString());
+
+                // Increase the number of failed attempts to modify the specified entry
                 EventLogger.IncreaseAttemps(entryID);
 
                 throw new FaultException("Unauthorized");
             }
 
-            EventLogger.AuthorizationSuccess(SecurityHelper.GetName(certificate), "Delete");
+            // Log the successful authorization
+            EventLogger.AuthorizationSuccess(clientName, "Delete");
 
-            return DatabaseHelper.Delete(entryID);
+            // Execute the 'Delete' operation
+            result = DatabaseHelper.Delete(entryID);
+
+            return result;
         }
 
         public EventEntry Read(int entryID, byte[] key)
         {
-            X509Certificate2 certificate = SecurityHelper.GetCertificate(OperationContext.Current);
+            EventEntry entry = null;
+
+            // Get the client's certificate from the current operation context
+            X509Certificate2 clientCertificate = SecurityHelper.GetCertificate(OperationContext.Current);
+
+            // Get the client's name from the certificate
+            string clientName = SecurityHelper.GetName(clientCertificate);
+
+            // Log the successful authentication
+            EventLogger.AuthenticationSuccess(clientName);
 
             if (StringConverter.ToString(key) != StringConverter.ToString(PrivateKey))
             {
-                EventLogger.AuthorizationFailure(SecurityHelper.GetName(certificate), "Read");
+                // If the key sent by the client doesn't match the service's key, log the unauthorized attempt
+                EventLogger.AuthorizationFailure(clientName, "Read");
 
                 throw new FaultException("Unauthorized");
             }
 
-            EventLogger.AuthorizationSuccess(SecurityHelper.GetName(certificate), "Read");
+            // Log the successful authorization
+            EventLogger.AuthorizationSuccess(clientName, "Read");
 
-            return DatabaseHelper.Read(entryID);
+            // Execute the 'Read' operation
+            entry = DatabaseHelper.Read(entryID);
+
+            return entry;
         }
 
         public HashSet<EventEntry> ReadAll(byte[] key)
         {
-            X509Certificate2 certificate = SecurityHelper.GetCertificate(OperationContext.Current);
+            HashSet<EventEntry> entries = null;
+
+            // Get the client's certificate from the current operation context
+            X509Certificate2 clientCertificate = SecurityHelper.GetCertificate(OperationContext.Current);
+
+            // Get the client's name from the certificate
+            string clientName = SecurityHelper.GetName(clientCertificate);
+
+            // Log the successful authentication
+            EventLogger.AuthenticationSuccess(clientName);
 
             if (StringConverter.ToString(key) != StringConverter.ToString(PrivateKey))
             {
-                EventLogger.AuthorizationFailure(SecurityHelper.GetName(certificate), "ReadAll");
+                // If the key sent by the client doesn't match the service's key, log the unauthorized attempt
+                EventLogger.AuthorizationFailure(clientName, "ReadAll");
 
                 throw new FaultException("Unauthorized");
             }
 
-            EventLogger.AuthorizationSuccess(SecurityHelper.GetName(certificate), "ReadAll");
+            // Log the successful authorization
+            EventLogger.AuthorizationSuccess(clientName, "ReadAll");
 
-            return DatabaseHelper.ReadAll();
+            // Execute the 'ReadAll' operation
+            entries = DatabaseHelper.ReadAll();
+
+            return entries;
         }
 
         public byte[] ReadFile()
         {
-            return DatabaseHelper.ReadFile();
+            byte[] fileData = null;
+
+            // Get the client's certificate from the current operation context
+            X509Certificate2 clientCertificate = SecurityHelper.GetCertificate(OperationContext.Current);
+
+            // Get the client's name from the certificate
+            string clientName = SecurityHelper.GetName(clientCertificate);
+
+            // Log the successful authentication
+            EventLogger.AuthenticationSuccess(clientName);
+
+            // Execute the 'ReadFile' operation
+            fileData = DatabaseHelper.ReadFile();
+
+            return fileData;
         }
     }
 }

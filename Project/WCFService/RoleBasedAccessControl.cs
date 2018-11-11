@@ -15,6 +15,7 @@ namespace WCFService
             rolePermissions = new Dictionary<Roles, HashSet<Permissions>>
             {
                 {
+                    // Give the Client role a permission to Add
                     Roles.Client,
                     new HashSet<Permissions>()
                     {
@@ -22,6 +23,7 @@ namespace WCFService
                     }
                 },
                 {
+                    // Give the Moderator role a permission to Update
                     Roles.Moderator,
                     new HashSet<Permissions>()
                     {
@@ -29,6 +31,7 @@ namespace WCFService
                     }
                 },
                 {
+                    // Give the Administrator role a permission to Delete
                     Roles.Administrator,
                     new HashSet<Permissions>()
                     {
@@ -40,21 +43,30 @@ namespace WCFService
 
         public static bool UserHasPermission(X509Certificate2 user, Permissions permission)
         {
-            bool result = false;
+            bool hasPermission = false;
 
-            result = GetUserRoles(user).Any(role => RoleHasPermission(role, permission));
+            // Get all the roles for the specified user
+            HashSet<Roles> userRoles = GetUserRoles(user);
 
-            return result;
+            // Check if any of those roles has the required permission
+            hasPermission = userRoles.Any(role => RoleHasPermission(role, permission));
+
+            return hasPermission;
         }
 
         private static HashSet<Roles> GetUserRoles(X509Certificate2 user)
         {
             HashSet<Roles> roles = new HashSet<Roles>();
 
-            foreach (string organizationalUnit in SecurityHelper.GetOrganizationalUnits(user))
+            // Get all the organizational units for the specified user
+            HashSet<string> organizationalUnits = SecurityHelper.GetOrganizationalUnits(user);
+
+            foreach (string organizationalUnit in organizationalUnits)
             {
+                // Try to parse the organizational units into roles
                 if (Enum.TryParse(organizationalUnit, out Roles role))
                 {
+                    // Add the parsed role into the set
                     roles.Add(role);
                 }
             }
@@ -64,7 +76,12 @@ namespace WCFService
 
         private static bool RoleHasPermission(Roles role, Permissions permission)
         {
-            return rolePermissions.ContainsKey(role) && rolePermissions[role].Contains(permission);
+            bool hasPermission = false;
+
+            // Check if the specified role contains the required permission
+            hasPermission = rolePermissions[role].Contains(permission);
+
+            return hasPermission;
         }
     }
 }
