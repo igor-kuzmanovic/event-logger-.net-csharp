@@ -16,7 +16,7 @@ namespace WCFService
             }
             else
             {
-                SecureString privateKey = InputHelper.InputPrivateKey();
+                SecureString privateKey = InputHelper.GetKey();
                 WCFService.PrivateKey = privateKey;
                 DatabaseHelper.PrivateKey = privateKey;
 

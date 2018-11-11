@@ -5,31 +5,39 @@ namespace Helpers
 {
     public static class InputHelper
     {
-        public static SecureString InputPrivateKey()
+        public static SecureString GetKey()
         {
-            SecureString privateKey = new SecureString();
+            SecureString key = new SecureString();
             ConsoleKeyInfo keyInfo;
 
             Console.Write("Enter the private key: ");
 
             do
             {
+                // Read a key from the console without printing it
                 keyInfo = Console.ReadKey(true);
-                if (keyInfo.Key == ConsoleKey.Backspace && privateKey.Length > 0)
+
+                if (keyInfo.Key == ConsoleKey.Backspace && key.Length > 0)
                 {
-                    privateKey.RemoveAt(privateKey.Length - 1);
+                    // If the pressed key is Backspace remove the last character from the key
+                    key.RemoveAt(key.Length - 1);
+
+                    // Remove the last star from the console
                     Console.Write("\b \b");
                 }
                 else if (char.IsLetterOrDigit(keyInfo.KeyChar))
                 {
-                    privateKey.AppendChar(keyInfo.KeyChar);
+                    // If the pressed key is a valid character append it to the key
+                    key.AppendChar(keyInfo.KeyChar);
+
+                    // Write a star to the console to reflect the key length
                     Console.Write("*");
                 }
-            } while (keyInfo.Key != ConsoleKey.Enter || privateKey.Length == 0);
+            } while (keyInfo.Key != ConsoleKey.Enter || key.Length == 0);
 
             Console.Clear();
 
-            return privateKey;
+            return key;
         }
     }
 }

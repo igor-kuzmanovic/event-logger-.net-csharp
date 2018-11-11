@@ -6,8 +6,9 @@ namespace Helpers
     {
         public static string GetString(string name)
         {
-            using (ResXResourceSet resx = new ResXResourceSet(@"Resources.resx"))
+            using (ResXResourceSet resx = new ResXResourceSet(ConfigHelper.GetString("ResourcePath")))
             {
+                // Opens the resource file and grabs the value from the provided key name
                 return resx.GetString(name);
             }
         }

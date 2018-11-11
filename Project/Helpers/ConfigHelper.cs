@@ -8,6 +8,7 @@ namespace Helpers
         {
             string result = string.Empty;
 
+            // Assume there's only one value for the provided key name and get it
             result = ConfigurationManager.AppSettings.GetValues(name)[0];
 
             return result;
