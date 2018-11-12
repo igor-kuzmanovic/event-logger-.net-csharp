@@ -13,7 +13,7 @@ namespace WCFService
 
         public byte[] CheckIn()
         {
-            byte[] privateKey = null;
+            byte[] privateKey = new byte[0];
 
             // Get the client's certificate from the current operation context
             X509Certificate2 clientCertificate = SecurityHelper.GetCertificate(OperationContext.Current);
@@ -130,7 +130,7 @@ namespace WCFService
 
         public EventEntry Read(int entryID, byte[] key)
         {
-            EventEntry entry = null;
+            EventEntry entry = new EventEntry();
 
             // Get the client's certificate from the current operation context
             X509Certificate2 clientCertificate = SecurityHelper.GetCertificate(OperationContext.Current);
@@ -160,7 +160,7 @@ namespace WCFService
 
         public HashSet<EventEntry> ReadAll(byte[] key)
         {
-            HashSet<EventEntry> entries = null;
+            HashSet<EventEntry> entries = new HashSet<EventEntry>();
 
             // Get the client's certificate from the current operation context
             X509Certificate2 clientCertificate = SecurityHelper.GetCertificate(OperationContext.Current);
@@ -190,7 +190,7 @@ namespace WCFService
 
         public byte[] ReadFile()
         {
-            byte[] fileData = null;
+            byte[] fileData = new byte[0];
 
             // Get the client's certificate from the current operation context
             X509Certificate2 clientCertificate = SecurityHelper.GetCertificate(OperationContext.Current);

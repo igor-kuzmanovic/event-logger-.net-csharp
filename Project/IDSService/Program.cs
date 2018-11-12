@@ -37,10 +37,11 @@ namespace IDSService
                 }
                 finally
                 {
-                    if (host != null)
+                    try
                     {
                         host.Close();
                     }
+                    catch { }
                 }
             }
 

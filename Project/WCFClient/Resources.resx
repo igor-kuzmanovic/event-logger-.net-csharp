@@ -117,13 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Event1" xml:space="preserve">
-    <value>An example event containing value {0}</value>
+  <data name="Accepted" xml:space="preserve">
+    <value>{0} - 202 - Accepted</value>
   </data>
-  <data name="Event2" xml:space="preserve">
-    <value>An example event containing value {0} and value {1}</value>
+  <data name="BadRequest" xml:space="preserve">
+    <value>{0} - 400 - Bad Request</value>
   </data>
-  <data name="Event3" xml:space="preserve">
-    <value>An example event containing value {0} and value {1} and value {2}</value>
+  <data name="Created" xml:space="preserve">
+    <value>{0} - 201 - Created</value>
+  </data>
+  <data name="Forbidden" xml:space="preserve">
+    <value>{0} - 403 - Forbidden</value>
+  </data>
+  <data name="Found" xml:space="preserve">
+    <value>{0} - 302 - Found</value>
+  </data>
+  <data name="InternalServerError" xml:space="preserve">
+    <value>{0} - 500 - Internal Server Error</value>
+  </data>
+  <data name="NoContent" xml:space="preserve">
+    <value>{0} - 204 - No Content</value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>{0} - 404 - NotFound</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>{0} - 200 - OK</value>
+  </data>
+  <data name="Unauthorized" xml:space="preserve">
+    <value>{0} - 401 - Unauthorized</value>
   </data>
 </root>

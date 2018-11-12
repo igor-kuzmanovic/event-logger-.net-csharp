@@ -26,8 +26,8 @@ namespace WCFClient
                 // Check in with the WCFService to receive the private key
                 byte[] encryptedKey = client.CheckIn();
 
-                // If the encrypted key is null, the service denied the request
-                if (encryptedKey != null)
+                // If the encrypted key is null or empty, the service denied the request
+                if (encryptedKey != null && encryptedKey.Length > 0)
                 {
                     // Decrypt the encrypted key
                     string privateKey = RSAEncrypter.Decrypt(encryptedKey, clientCertificate);
@@ -42,6 +42,22 @@ namespace WCFClient
                     privateKey = string.Empty;
 
                     Console.WriteLine("Private key retrieved from the service");
+
+                    try
+                    {
+                        // Try running some custom made tests using the provided key
+                        TestAdd(key, "OK", "John Doe");
+                        TestAdd(key, "NotFound", "Jane Doe");
+                        TestUpdate(key, 1, "Forbidden", "John Doe");
+                        TestDelete(key, 1);
+                        TestRead(key, 2);
+                        TestReadAll(key);
+                        TestReadFile(key);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("[ERROR] {0}", e.Message);
+                    }
                 }
                 else
                 {
@@ -49,18 +65,100 @@ namespace WCFClient
                 }
             }
 
-            // Run some custom made tests using the provided key
-            RunTests(key);
-
             Console.WriteLine("\nPress any key to exit...");
             Console.ReadKey(true);
         }
 
-        private static void RunTests(SecureString key)
+        private static void TestAdd(SecureString key, string eventType, string user)
         {
-            Console.WriteLine("\nStarting tests...");
+            Console.Write("\n===Testing ADD=====================================");
+            Console.WriteLine("===============================================\n");
 
-            Console.WriteLine("\nTesting [ReadAll]...\n");
+            using (WCFServiceClient client = new WCFServiceClient())
+            {
+                client.Add(string.Format(ResourceHelper.GetString(eventType), user));
+
+                HashSet<EventEntry> entries = client.ReadAll(StringConverter.ToBytes(key));
+
+                if (entries != null)
+                {
+                    if (!entries.Any()) Console.WriteLine("Entry list is empty");
+                    else foreach (var entry in entries) Console.WriteLine(entry.ToString());
+                }
+            }
+
+            Console.Write("\n===================================================");
+            Console.WriteLine("===============================================\n");
+        }
+
+        private static void TestUpdate(SecureString key, int entryID, string eventType, string user)
+        {
+            Console.Write("\n===Testing UPDATE==================================");
+            Console.WriteLine("===============================================\n");
+
+            using (WCFServiceClient client = new WCFServiceClient())
+            {
+                client.Update(entryID, string.Format(ResourceHelper.GetString(eventType), user));
+
+                HashSet<EventEntry> entries = client.ReadAll(StringConverter.ToBytes(key));
+
+                if (entries != null)
+                {
+                    if (!entries.Any()) Console.WriteLine("Entry list is empty");
+                    else foreach (var entry in entries) Console.WriteLine(entry.ToString());
+                }
+            }
+
+            Console.Write("\n===================================================");
+            Console.WriteLine("===============================================\n");
+        }
+
+        private static void TestDelete(SecureString key, int entryID)
+        {
+            Console.Write("\n===Testing DELETE==================================");
+            Console.WriteLine("===============================================\n");
+
+            using (WCFServiceClient client = new WCFServiceClient())
+            {
+                client.Delete(entryID);
+
+                HashSet<EventEntry> entries = client.ReadAll(StringConverter.ToBytes(key));
+
+                if (entries != null)
+                {
+                    if (!entries.Any()) Console.WriteLine("Entry list is empty");
+                    else foreach (var entry in entries) Console.WriteLine(entry.ToString());
+                }
+            }
+
+            Console.Write("\n===================================================");
+            Console.WriteLine("===============================================\n");
+        }
+
+        private static void TestRead(SecureString key, int entryID)
+        {
+            Console.Write("\n===Testing READ==================================");
+            Console.WriteLine("===============================================\n");
+
+            using (WCFServiceClient client = new WCFServiceClient())
+            {
+                EventEntry entry = client.Read(entryID, StringConverter.ToBytes(key));
+
+                if (entry != null)
+                {
+                    if (entry.ID == 0) Console.WriteLine("Entry not found");
+                    else Console.WriteLine(entry.ToString());
+                }
+            }
+
+            Console.Write("\n===================================================");
+            Console.WriteLine("===============================================\n");
+        }
+
+        private static void TestReadAll(SecureString key)
+        {
+            Console.Write("\n===Testing READ ALL================================");
+            Console.WriteLine("===============================================\n");
 
             using (WCFServiceClient client = new WCFServiceClient())
             {
@@ -69,77 +167,27 @@ namespace WCFClient
                 if (entries != null)
                 {
                     if (!entries.Any()) Console.WriteLine("Entry list is empty");
-                    foreach (var entry in entries) Console.WriteLine(entry.ToString());
+                    else foreach (var entry in entries) Console.WriteLine(entry.ToString());
                 }
             }
 
-            Console.WriteLine("\nTesting [Add]...\n");
+            Console.Write("\n===================================================");
+            Console.WriteLine("===============================================\n");
+        }
+
+        private static void TestReadFile(SecureString key)
+        {
+            Console.Write("\n===Testing READ FILE===============================");
+            Console.WriteLine("===============================================\n");
 
             using (WCFServiceClient client = new WCFServiceClient())
             {
-                client.Add(string.Format(ResourceHelper.GetString("Event1"), 1));
-                client.Add(string.Format(ResourceHelper.GetString("Event2"), 1, 2));
-
-                HashSet<EventEntry> entries = client.ReadAll(StringConverter.ToBytes(key));
-
-                if (entries != null)
-                {
-                    if (!entries.Any()) Console.WriteLine("Entry list is empty");
-                    foreach (var entry in entries) Console.WriteLine(entry.ToString());
-                }
-            }
-
-            Console.WriteLine("\nTesting [Update]...\n");
-
-            using (WCFServiceClient client = new WCFServiceClient())
-            {
-                client.Update(1, string.Format(ResourceHelper.GetString("Event3"), 1, 2, 3));
-
-                HashSet<EventEntry> entries = client.ReadAll(StringConverter.ToBytes(key));
-
-                if (entries != null)
-                {
-                    if (!entries.Any()) Console.WriteLine("Entry list is empty");
-                    foreach (var entry in entries) Console.WriteLine(entry.ToString());
-                }
-            }
-
-            Console.WriteLine("\nTesting [Delete]...\n");
-
-            using (WCFServiceClient client = new WCFServiceClient())
-            {
-                client.Delete(1);
-
-                HashSet<EventEntry> entries = client.ReadAll(StringConverter.ToBytes(key));
-
-                if (entries != null)
-                {
-                    if (!entries.Any()) Console.WriteLine("Entry list is empty");
-                    foreach (var entry in entries) Console.WriteLine(entry.ToString());
-                }
-            }
-
-            Console.WriteLine("\nTesting [Read]...\n");
-
-            using (WCFServiceClient client = new WCFServiceClient())
-            {
-                EventEntry e = client.Read(2, StringConverter.ToBytes(key));
-
-                if (e != null)
-                {
-                    Console.WriteLine(e.ToString());
-                }
-            }
-
-            Console.WriteLine("\nTesting [ReadFile]...\n");
-
-            using (WCFServiceClient client = new WCFServiceClient())
-            {
-                List<string> serializedEntries = new List<string>();
                 byte[] encryptedEntries = client.ReadFile();
 
                 if (encryptedEntries != null)
                 {
+                    List<string> serializedEntries = new List<string>();
+
                     if (encryptedEntries.Any())
                         serializedEntries.AddRange(AESEncrypter.Decrypt(encryptedEntries, StringConverter.ToBytes(key)).Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries));
 
@@ -148,11 +196,12 @@ namespace WCFClient
                         entries.Add(new EventEntry(serializedEntry));
 
                     if (!entries.Any()) Console.WriteLine("Entry list is empty");
-                    foreach (var entry in entries) Console.WriteLine(entry.ToString());
+                    else foreach (var entry in entries) Console.WriteLine(entry.ToString());
                 }
             }
 
-            Console.WriteLine("\nTests finished");
+            Console.Write("\n===================================================");
+            Console.WriteLine("===============================================\n");
         }
     }
 }

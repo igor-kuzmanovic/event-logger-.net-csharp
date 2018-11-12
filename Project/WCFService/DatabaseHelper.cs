@@ -144,16 +144,13 @@ namespace WCFService
                 if (id == entryID)
                 {
                     // If the specified entry is found create a new entry with the same ID and new data
-                    EventEntry newEntry = new EventEntry(DateTime.Now, id, userID, content);
+                    EventEntry updatedEntry = new EventEntry(DateTime.Now, id, userID, content);
 
                     // Serialize the updated entry
-                    string serializedNewEntry = newEntry.ToString();
+                    string updatedSerializedEntry = updatedEntry.ToString();
 
-                    // Remove the old entry from the list
-                    serializedEntries.Remove(serializedEntry);
-
-                    // Add the updated entry into the list
-                    serializedEntries.Add(serializedNewEntry);
+                    // Replace the old entry with the updated one
+                    serializedEntries = serializedEntries.Select(e => e.Replace(serializedEntry, updatedSerializedEntry)).ToList();
 
                     // Write the list back to the file
                     WriteToFile(serializedEntries);
@@ -196,7 +193,7 @@ namespace WCFService
 
         public static EventEntry Read(int entryID)
         {
-            EventEntry result = null; 
+            EventEntry result = new EventEntry();
 
             // Get the list of serialized entries from the file
             List<string> serializedEntries = ReadFromFile();
@@ -238,7 +235,7 @@ namespace WCFService
 
         public static byte[] ReadFile()
         {
-            byte[] fileData = null;
+            byte[] fileData = new byte[0];
 
             // Read the encrypted file and return the data to the caller
             fileData = File.ReadAllBytes(path);

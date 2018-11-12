@@ -9,7 +9,7 @@ namespace Helpers
     {
         public static byte[] Encrypt(string text, byte[] key)
         {
-            byte[] encryptedTextWithIV = null;
+            byte[] encryptedTextWithIV = new byte[0];
 
             using (AesCryptoServiceProvider csp = new AesCryptoServiceProvider())
             {

@@ -18,7 +18,7 @@ namespace WCFClient
 
         public byte[] CheckIn()
         {
-            byte[] result = null;
+            byte[] result = new byte[0];
             try
             {
                 result = channel.CheckIn();
@@ -72,7 +72,7 @@ namespace WCFClient
 
         public EventEntry Read(int entryID, byte[] key)
         {
-            EventEntry result = null;
+            EventEntry result = new EventEntry();
             try
             {
                 result = channel.Read(entryID, key);
@@ -86,7 +86,7 @@ namespace WCFClient
 
         public HashSet<EventEntry> ReadAll(byte[] key)
         {
-            HashSet<EventEntry> result = null;
+            HashSet<EventEntry> result = new HashSet<EventEntry>();
             try
             {
                 result = channel.ReadAll(key);
@@ -100,7 +100,7 @@ namespace WCFClient
 
         public byte[] ReadFile()
         {
-            byte[] result = null;
+            byte[] result = new byte[0];
             try
             {
                 result = channel.ReadFile();

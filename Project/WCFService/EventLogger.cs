@@ -42,11 +42,11 @@ namespace WCFService
 
         private static void Alarm(int entryID)
         {
+            // Form an alarm message for the specified entry
+            string alarm = string.Format(ResourceHelper.GetString("Alarm"), entryID);
+
             using (IDSServiceClient client = new IDSServiceClient())
             {
-                // Form an alarm message for the specified entry
-                string alarm = string.Format(ResourceHelper.GetString("Alarm"), entryID);
-
                 // Send the alarm message to the Intrusion Detection Service
                 client.Alarm(alarm);
             }
@@ -55,7 +55,7 @@ namespace WCFService
         public static void RecordFailedAttempt(int entryID)
         {
             // If the entry is not in the dictionary, add it
-            attempts.TryAdd(entryID, new List<TimeSpan>());
+            attempts.TryAdd(entryID, new List<TimeSpan>(attemptLimit));
 
             if (attempts[entryID].Count == attemptLimit)
             {

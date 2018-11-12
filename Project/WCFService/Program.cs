@@ -43,10 +43,11 @@ namespace WCFService
                 }
                 finally
                 {
-                    if (host != null)
+                    try
                     {
                         host.Close();
                     }
+                    catch { }
                 }
             }
 

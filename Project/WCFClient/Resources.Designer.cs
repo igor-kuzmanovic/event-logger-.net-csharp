@@ -61,29 +61,92 @@ namespace WCFClient {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An example event containing value {0}.
+        ///   Looks up a localized string similar to {0} - 202 - Accepted.
         /// </summary>
-        internal static string Event1 {
+        internal static string Accepted {
             get {
-                return ResourceManager.GetString("Event1", resourceCulture);
+                return ResourceManager.GetString("Accepted", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An example event containing value {0} and value {1}.
+        ///   Looks up a localized string similar to {0} - 400 - Bad Request.
         /// </summary>
-        internal static string Event2 {
+        internal static string BadRequest {
             get {
-                return ResourceManager.GetString("Event2", resourceCulture);
+                return ResourceManager.GetString("BadRequest", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An example event containing value {0} and value {1} and value {2}.
+        ///   Looks up a localized string similar to {0} - 201 - Created.
         /// </summary>
-        internal static string Event3 {
+        internal static string Created {
             get {
-                return ResourceManager.GetString("Event3", resourceCulture);
+                return ResourceManager.GetString("Created", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - 403 - Forbidden.
+        /// </summary>
+        internal static string Forbidden {
+            get {
+                return ResourceManager.GetString("Forbidden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - 302 - Found.
+        /// </summary>
+        internal static string Found {
+            get {
+                return ResourceManager.GetString("Found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - 500 - Internal Server Error.
+        /// </summary>
+        internal static string InternalServerError {
+            get {
+                return ResourceManager.GetString("InternalServerError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - 204 - No Content.
+        /// </summary>
+        internal static string NoContent {
+            get {
+                return ResourceManager.GetString("NoContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - 404 - NotFound.
+        /// </summary>
+        internal static string NotFound {
+            get {
+                return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - 200 - OK.
+        /// </summary>
+        internal static string OK {
+            get {
+                return ResourceManager.GetString("OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - 401 - Unauthorized.
+        /// </summary>
+        internal static string Unauthorized {
+            get {
+                return ResourceManager.GetString("Unauthorized", resourceCulture);
             }
         }
     }

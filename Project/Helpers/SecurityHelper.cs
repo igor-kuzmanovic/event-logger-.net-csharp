@@ -12,7 +12,7 @@ namespace Helpers
     {
         public static X509Certificate2 GetCertificate(ChannelFactory factory)
         {
-            X509Certificate2 certificate = null;
+            X509Certificate2 certificate = new X509Certificate2();
 
             // Get the certificate from the channel factory (a proxy for a service)
             certificate = factory.Credentials.ClientCertificate.Certificate;
@@ -22,7 +22,7 @@ namespace Helpers
 
         public static X509Certificate2 GetCertificate(OperationContext context)
         {
-            X509Certificate2 certificate = null;
+            X509Certificate2 certificate = new X509Certificate2();
 
             // Get the certificate from the security context of the operation context (a client calling a service method)
             certificate = (context.ServiceSecurityContext.AuthorizationContext.ClaimSets[0] as X509CertificateClaimSet).X509Certificate;

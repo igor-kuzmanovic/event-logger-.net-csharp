@@ -18,7 +18,7 @@ namespace WCFServiceCommon
             // Split the serialized entry into strings ('[Timestamp][ID][UserID][Content]')
             string[] properties = serializedEntry.Split(new char[] { '[', ']' }, StringSplitOptions.RemoveEmptyEntries);
 
-            Timestamp = DateTime.ParseExact(properties[0], "MM.d.yyyy - h:m:s", CultureInfo.InvariantCulture);
+            Timestamp = DateTime.Parse(properties[0]);
             ID = int.Parse(properties[1]);
             UserID = properties[2];
             Content = properties[3];
@@ -28,14 +28,6 @@ namespace WCFServiceCommon
         {
             Timestamp = timestamp;
             ID = id;
-            UserID = userID;
-            Content = content;
-        }
-
-        public EventEntry(string timestamp, string id, string userID, string content)
-        {
-            Timestamp = DateTime.Parse(timestamp);
-            ID = int.Parse(id);
             UserID = userID;
             Content = content;
         }
@@ -58,7 +50,7 @@ namespace WCFServiceCommon
             string serializedEntry = string.Empty;
 
             // Serialize the entry into a string
-            serializedEntry = string.Format("[{0}][{1}][{2}][{3}]", Timestamp.ToString("MM.d.yyyy - h:m:s"), ID, UserID, Content);
+            serializedEntry = string.Format("[{0}][{1}][{2}][{3}]", Timestamp.ToString(), ID, UserID, Content);
 
             return serializedEntry;
         }

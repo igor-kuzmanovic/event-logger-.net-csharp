@@ -67,7 +67,7 @@ namespace Helpers
 
         public static byte[] ToBytes(string text)
         {
-            byte[] textBytes = null;
+            byte[] textBytes = new byte[0];
 
             // Convert the string into character bytes
             textBytes = Encoding.Unicode.GetBytes(text);
@@ -77,7 +77,7 @@ namespace Helpers
 
         public static byte[] ToBytes(SecureString secureText)
         {
-            byte[] textBytes = null;
+            byte[] textBytes = new byte[0];
 
             // Copies the contents of the secure text into unsafe memory
             IntPtr secureStringPointer = Marshal.SecureStringToGlobalAllocUnicode(secureText);

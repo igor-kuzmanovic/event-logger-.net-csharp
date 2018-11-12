@@ -9,7 +9,7 @@ namespace Helpers
     {
         public static byte[] Encrypt(string text, X509Certificate2 certificate)
         {
-            byte[] encryptedText = null;
+            byte[] encryptedText = new byte[0];
 
             // Grab the public key from the certificate
             RSACryptoServiceProvider csp = certificate.PublicKey.Key as RSACryptoServiceProvider;
