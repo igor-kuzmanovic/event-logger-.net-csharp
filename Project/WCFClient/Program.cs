@@ -38,7 +38,7 @@ namespace WCFClient
                     // Convert the key into a secure key
                     key = StringConverter.ToSecureString(privateKey);
 
-                    // Clear the unsecure key from security reasons
+                    // Clear the unsecure key for security reasons
                     privateKey = string.Empty;
 
                     Console.WriteLine("Private key retrieved from the service");
@@ -66,8 +66,11 @@ namespace WCFClient
             {
                 HashSet<EventEntry> entries = client.ReadAll(StringConverter.ToBytes(key));
 
-                if (!entries.Any()) Console.WriteLine("Entry list is empty");
-                foreach (var entry in entries) Console.WriteLine(entry.ToString());
+                if (entries != null)
+                {
+                    if (!entries.Any()) Console.WriteLine("Entry list is empty");
+                    foreach (var entry in entries) Console.WriteLine(entry.ToString());
+                }
             }
 
             Console.WriteLine("\nTesting [Add]...\n");
@@ -79,8 +82,11 @@ namespace WCFClient
 
                 HashSet<EventEntry> entries = client.ReadAll(StringConverter.ToBytes(key));
 
-                if (!entries.Any()) Console.WriteLine("Entry list is empty");
-                foreach (var entry in entries) Console.WriteLine(entry.ToString());
+                if (entries != null)
+                {
+                    if (!entries.Any()) Console.WriteLine("Entry list is empty");
+                    foreach (var entry in entries) Console.WriteLine(entry.ToString());
+                }
             }
 
             Console.WriteLine("\nTesting [Update]...\n");
@@ -91,8 +97,11 @@ namespace WCFClient
 
                 HashSet<EventEntry> entries = client.ReadAll(StringConverter.ToBytes(key));
 
-                if (!entries.Any()) Console.WriteLine("Entry list is empty");
-                foreach (var entry in entries) Console.WriteLine(entry.ToString());
+                if (entries != null)
+                {
+                    if (!entries.Any()) Console.WriteLine("Entry list is empty");
+                    foreach (var entry in entries) Console.WriteLine(entry.ToString());
+                }
             }
 
             Console.WriteLine("\nTesting [Delete]...\n");
@@ -103,8 +112,11 @@ namespace WCFClient
 
                 HashSet<EventEntry> entries = client.ReadAll(StringConverter.ToBytes(key));
 
-                if (!entries.Any()) Console.WriteLine("Entry list is empty");
-                foreach (var entry in entries) Console.WriteLine(entry.ToString());
+                if (entries != null)
+                {
+                    if (!entries.Any()) Console.WriteLine("Entry list is empty");
+                    foreach (var entry in entries) Console.WriteLine(entry.ToString());
+                }
             }
 
             Console.WriteLine("\nTesting [Read]...\n");
@@ -112,7 +124,11 @@ namespace WCFClient
             using (WCFServiceClient client = new WCFServiceClient())
             {
                 EventEntry e = client.Read(2, StringConverter.ToBytes(key));
-                Console.WriteLine(e.ToString());
+
+                if (e != null)
+                {
+                    Console.WriteLine(e.ToString());
+                }
             }
 
             Console.WriteLine("\nTesting [ReadFile]...\n");
@@ -121,19 +137,19 @@ namespace WCFClient
             {
                 List<string> serializedEntries = new List<string>();
                 byte[] encryptedEntries = client.ReadFile();
-                if (encryptedEntries.Any())
-                {
-                    serializedEntries.AddRange(AESEncrypter.Decrypt(encryptedEntries, StringConverter.ToBytes(key)).Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries));
-                }
 
-                HashSet<EventEntry> entries = new HashSet<EventEntry>();
-                foreach (string serializedEntry in serializedEntries)
+                if (encryptedEntries != null)
                 {
-                    entries.Add(new EventEntry(serializedEntry));
-                }
+                    if (encryptedEntries.Any())
+                        serializedEntries.AddRange(AESEncrypter.Decrypt(encryptedEntries, StringConverter.ToBytes(key)).Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries));
 
-                if (!entries.Any()) Console.WriteLine("Entry list is empty");
-                foreach (var entry in entries) Console.WriteLine(entry.ToString());
+                    HashSet<EventEntry> entries = new HashSet<EventEntry>();
+                    foreach (string serializedEntry in serializedEntries)
+                        entries.Add(new EventEntry(serializedEntry));
+
+                    if (!entries.Any()) Console.WriteLine("Entry list is empty");
+                    foreach (var entry in entries) Console.WriteLine(entry.ToString());
+                }
             }
 
             Console.WriteLine("\nTests finished");
