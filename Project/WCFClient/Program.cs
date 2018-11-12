@@ -16,6 +16,7 @@ namespace WCFClient
             Console.ReadKey(true);
             Console.Clear();
 
+            // Get the key for accessing the database from the service
             SecureString key = GetKey();
 
             if (key.Length > 0)
@@ -33,7 +34,7 @@ namespace WCFClient
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("[ERROR] {0}, {1}", e.Message, e.TargetSite.Name);
+                    Console.WriteLine("[ERROR] {0}", e.Message);
                 }
             }
 
@@ -80,7 +81,7 @@ namespace WCFClient
             }
             catch (Exception e)
             {
-                Console.WriteLine("[ERROR] {0}, {1}", e.Message, e.TargetSite.Name);
+                Console.WriteLine("[ERROR] {0}", e.Message);
             }
 
             return key;
