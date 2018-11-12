@@ -12,12 +12,17 @@ namespace WCFService
     {
         private static readonly string path;
 
+        private static readonly object fileLock;
+
         public static SecureString PrivateKey { get; set; }
 
         static DatabaseHelper()
         {
             // Get the database path from the configuration file
             path = ConfigHelper.GetString("DatabasePath");
+
+            // Initiate a lock for thread-safe file access
+            fileLock = new object();
 
             if (!File.Exists(path))
             {
@@ -30,8 +35,13 @@ namespace WCFService
         {
             List<string> entries = new List<string>();
 
+            byte[] encryptedFile = null;
+
             // Read the whole file into a byte array
-            byte[] encryptedFile = File.ReadAllBytes(path);
+            lock (fileLock)
+            {
+                encryptedFile = File.ReadAllBytes(path);
+            }
 
             if (encryptedFile.Any())
             {
@@ -69,7 +79,10 @@ namespace WCFService
             Array.Clear(privateKeyBytes, 0, privateKeyBytes.Length);
 
             // Overwrite the existing file with the encryped and serialized entries
-            File.WriteAllBytes(path, encryptedFile);
+            lock (fileLock)
+            {
+                File.WriteAllBytes(path, encryptedFile);
+            }
         }
 
         private static int GetFreeID()
@@ -238,7 +251,10 @@ namespace WCFService
             byte[] fileData = new byte[0];
 
             // Read the encrypted file and return the data to the caller
-            fileData = File.ReadAllBytes(path);
+            lock (fileLock)
+            {
+                fileData = File.ReadAllBytes(path);
+            }
 
             return fileData;
         }
