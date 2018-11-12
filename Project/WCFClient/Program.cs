@@ -29,13 +29,13 @@ namespace WCFClient
                 // If the encrypted key is null or empty, the service denied the request
                 if (encryptedKey != null && encryptedKey.Length > 0)
                 {
-                    // Decrypt the encrypted key
+                    // Decrypt the encrypted key data
                     string privateKey = RSAEncrypter.Decrypt(encryptedKey, clientCertificate);
 
-                    // Clear the encrypted key for security reasons
+                    // Clear the encrypted key data for security reasons
                     Array.Clear(encryptedKey, 0, encryptedKey.Length);
 
-                    // Convert the key into a secure key
+                    // Convert the decrypted key into a secure string
                     key = StringConverter.ToSecureString(privateKey);
 
                     // Clear the unsecure key for security reasons
@@ -46,17 +46,17 @@ namespace WCFClient
                     try
                     {
                         // Try running some custom made tests using the provided key
+                        TestReadFile(key);
                         TestAdd(key, "OK", "John Doe");
                         TestAdd(key, "NotFound", "Jane Doe");
                         TestUpdate(key, 1, "Forbidden", "John Doe");
                         TestDelete(key, 1);
                         TestRead(key, 2);
                         TestReadAll(key);
-                        TestReadFile(key);
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine("[ERROR] {0}", e.Message);
+                        Console.WriteLine("[ERROR] {0}, {1}", e.Message, e.TargetSite.Name);
                     }
                 }
                 else

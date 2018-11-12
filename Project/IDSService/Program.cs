@@ -33,7 +33,7 @@ namespace IDSService
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("[ERROR] {0}", e.Message);
+                    Console.WriteLine("[ERROR] {0}, {1}", e.Message, e.TargetSite.Name);
                 }
                 finally
                 {
