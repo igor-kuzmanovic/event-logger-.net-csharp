@@ -16,57 +16,74 @@ namespace WCFClient
             Console.ReadKey(true);
             Console.Clear();
 
-            SecureString key = new SecureString();
+            SecureString key = GetKey();
 
-            using (WCFServiceClient client = new WCFServiceClient())
+            if (key.Length > 0)
             {
-                // Get client's certificate from the client credentials
-                X509Certificate2 clientCertificate = SecurityHelper.GetCertificate(client);
-
-                // Check in with the WCFService to receive the private key
-                byte[] encryptedKey = client.CheckIn();
-
-                // If the encrypted key is null or empty, the service denied the request
-                if (encryptedKey != null && encryptedKey.Length > 0)
+                try
                 {
-                    // Decrypt the encrypted key data
-                    string privateKey = RSAEncrypter.Decrypt(encryptedKey, clientCertificate);
-
-                    // Clear the encrypted key data for security reasons
-                    Array.Clear(encryptedKey, 0, encryptedKey.Length);
-
-                    // Convert the decrypted key into a secure string
-                    key = StringConverter.ToSecureString(privateKey);
-
-                    // Clear the unsecure key for security reasons
-                    privateKey = string.Empty;
-
-                    Console.WriteLine("Private key retrieved from the service");
-
-                    try
-                    {
-                        // Try running some custom made tests using the provided key
-                        TestReadFile(key);
-                        TestAdd(key, "OK", "John Doe");
-                        TestAdd(key, "NotFound", "Jane Doe");
-                        TestUpdate(key, 1, "Forbidden", "John Doe");
-                        TestDelete(key, 1);
-                        TestRead(key, 2);
-                        TestReadAll(key);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine("[ERROR] {0}, {1}", e.Message, e.TargetSite.Name);
-                    }
+                    // Try running some custom made tests using the provided key
+                    TestReadFile(key);
+                    TestAdd(key, "OK", "John Doe");
+                    TestAdd(key, "NotFound", "Jane Doe");
+                    TestUpdate(key, 1, "Forbidden", "John Doe");
+                    TestDelete(key, 1);
+                    TestRead(key, 2);
+                    TestReadAll(key);
                 }
-                else
+                catch (Exception e)
                 {
-                    Console.WriteLine("Unable to retrieve the private key from the service");
+                    Console.WriteLine("[ERROR] {0}, {1}", e.Message, e.TargetSite.Name);
                 }
             }
 
             Console.WriteLine("\nPress any key to exit...");
             Console.ReadKey(true);
+        }
+
+        private static SecureString GetKey()
+        {
+            SecureString key = new SecureString();
+
+            try
+            {
+                using (WCFServiceClient client = new WCFServiceClient())
+                {
+                    // Get client's certificate from the client credentials
+                    X509Certificate2 clientCertificate = SecurityHelper.GetCertificate(client);
+
+                    // Check in with the WCFService to receive the private key
+                    byte[] encryptedKey = client.CheckIn();
+
+                    // If the encrypted key is null or empty, the service denied the request
+                    if (encryptedKey != null && encryptedKey.Length > 0)
+                    {
+                        // Decrypt the encrypted key data
+                        string privateKey = RSAEncrypter.Decrypt(encryptedKey, clientCertificate);
+
+                        // Clear the encrypted key data for security reasons
+                        Array.Clear(encryptedKey, 0, encryptedKey.Length);
+
+                        // Convert the decrypted key into a secure string
+                        key = StringConverter.ToSecureString(privateKey);
+
+                        // Clear the unsecure key for security reasons
+                        privateKey = string.Empty;
+
+                        Console.WriteLine("Private key retrieved from the service");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Unable to retrieve the private key from the service");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[ERROR] {0}, {1}", e.Message, e.TargetSite.Name);
+            }
+
+            return key;
         }
 
         private static void TestAdd(SecureString key, string eventType, string user)

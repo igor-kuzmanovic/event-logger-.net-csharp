@@ -22,7 +22,7 @@ namespace WCFService
             else
             {
                 // Get the private key from the console
-                SecureString privateKey = InputHelper.GetKey();
+                SecureString privateKey = GetKey();
                 WCFService.PrivateKey = privateKey;
                 DatabaseHelper.PrivateKey = privateKey;
 
@@ -53,6 +53,45 @@ namespace WCFService
 
             Console.WriteLine("\nPress any key to exit...");
             Console.ReadKey(true);
+        }
+
+        private static SecureString GetKey()
+        {
+            SecureString key = new SecureString();
+
+            Console.Write("Enter the private key: ");
+
+            do
+            {
+                // Read a key from the console without printing it
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+
+                if (keyInfo.Key == ConsoleKey.Enter && key.Length > 0)
+                {
+                    // If 'Enter' key is pressed and the key contains at least one character finish reading the keys
+                    break;
+                }
+                else if (keyInfo.Key == ConsoleKey.Backspace && key.Length > 0)
+                {
+                    // If the pressed key is Backspace remove the last character from the key
+                    key.RemoveAt(key.Length - 1);
+
+                    // Remove the last star from the console
+                    Console.Write("\b \b");
+                }
+                else if (char.IsLetterOrDigit(keyInfo.KeyChar))
+                {
+                    // If the pressed key is a valid character append it to the key
+                    key.AppendChar(keyInfo.KeyChar);
+
+                    // Write a star to the console to reflect the key length
+                    Console.Write("*");
+                }
+            } while (true);
+
+            Console.Clear();
+
+            return key;
         }
     }
 }

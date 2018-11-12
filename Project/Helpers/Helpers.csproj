@@ -47,7 +47,6 @@
   <ItemGroup>
     <Compile Include="AESEncrypter.cs" />
     <Compile Include="ConfigHelper.cs" />
-    <Compile Include="InputHelper.cs" />
     <Compile Include="ResourceHelper.cs" />
     <Compile Include="RSAEncrypter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
