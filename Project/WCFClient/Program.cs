@@ -94,15 +94,18 @@ namespace WCFClient
 
             using (WCFServiceClient client = new WCFServiceClient())
             {
-                client.Add(string.Format(ResourceHelper.GetString(eventType), user));
+                bool result = client.Add(string.Format(ResourceHelper.GetString(eventType), user));
 
-                HashSet<EventEntry> entries = client.ReadAll(StringConverter.ToBytes(key));
+				if (result == true)
+				{
+					HashSet<EventEntry> entries = client.ReadAll(StringConverter.ToBytes(key));
 
-                if (entries != null)
-                {
-                    if (!entries.Any()) Console.WriteLine("Entry list is empty");
-                    else foreach (var entry in entries) Console.WriteLine(entry.ToString());
-                }
+					if (entries != null)
+					{
+						if (!entries.Any()) Console.WriteLine("Entry list is empty");
+						else foreach (var entry in entries) Console.WriteLine(entry.ToString());
+					}
+				}
             }
 
             Console.Write("\n===================================================");
@@ -116,15 +119,18 @@ namespace WCFClient
 
             using (WCFServiceClient client = new WCFServiceClient())
             {
-                client.Update(entryID, string.Format(ResourceHelper.GetString(eventType), user));
+                bool result =client.Update(entryID, string.Format(ResourceHelper.GetString(eventType), user));
 
-                HashSet<EventEntry> entries = client.ReadAll(StringConverter.ToBytes(key));
+				if (result == true)
+				{
+					HashSet<EventEntry> entries = client.ReadAll(StringConverter.ToBytes(key));
 
-                if (entries != null)
-                {
-                    if (!entries.Any()) Console.WriteLine("Entry list is empty");
-                    else foreach (var entry in entries) Console.WriteLine(entry.ToString());
-                }
+					if (entries != null)
+					{
+						if (!entries.Any()) Console.WriteLine("Entry list is empty");
+						else foreach (var entry in entries) Console.WriteLine(entry.ToString());
+					}
+				}
             }
 
             Console.Write("\n===================================================");
@@ -138,15 +144,18 @@ namespace WCFClient
 
             using (WCFServiceClient client = new WCFServiceClient())
             {
-                client.Delete(entryID);
+                bool result = client.Delete(entryID);
 
-                HashSet<EventEntry> entries = client.ReadAll(StringConverter.ToBytes(key));
+				if (result == true)
+				{
+					HashSet<EventEntry> entries = client.ReadAll(StringConverter.ToBytes(key));
 
-                if (entries != null)
-                {
-                    if (!entries.Any()) Console.WriteLine("Entry list is empty");
-                    else foreach (var entry in entries) Console.WriteLine(entry.ToString());
-                }
+					if (entries != null)
+					{
+						if (!entries.Any()) Console.WriteLine("Entry list is empty");
+						else foreach (var entry in entries) Console.WriteLine(entry.ToString());
+					}
+				}
             }
 
             Console.Write("\n===================================================");

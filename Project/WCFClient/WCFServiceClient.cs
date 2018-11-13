@@ -19,6 +19,7 @@ namespace WCFClient
         public byte[] CheckIn()
         {
             byte[] result = new byte[0];
+			
             try
             {
                 result = channel.CheckIn();
@@ -27,24 +28,30 @@ namespace WCFClient
             {
                 Console.WriteLine("[CheckIn] ERROR = {0}", e.Message);
             }
+			
             return result;
         }
 
-        public void Add(string content)
+        public bool Add(string content)
         {
+			bool result = false;
+			
             try
             {
-                channel.Add(content);
+                result = channel.Add(content);
             }
             catch (Exception e)
             {
                 Console.WriteLine("[Add] ERROR = {0}", e.Message);
             }
+			
+			return result;
         }
 
         public bool Update(int entryID, string content)
         {
             bool result = false;
+			
             try
             {
                 result = channel.Update(entryID, content);
@@ -53,12 +60,14 @@ namespace WCFClient
             {
                 Console.WriteLine("[Update] ERROR = {0}", e.Message);
             }
+			
             return result;
         }
 
         public bool Delete(int entryID)
         {
             bool result = false;
+			
             try
             {
                 result = channel.Delete(entryID);
@@ -67,12 +76,14 @@ namespace WCFClient
             {
                 Console.WriteLine("[Delete] ERROR = {0}", e.Message);
             }
+			
             return result;
         }
 
         public EventEntry Read(int entryID, byte[] key)
         {
             EventEntry result = new EventEntry();
+			
             try
             {
                 result = channel.Read(entryID, key);
@@ -81,12 +92,14 @@ namespace WCFClient
             {
                 Console.WriteLine("[Read] ERROR = {0}", e.Message);
             }
+			
             return result;
         }
 
         public HashSet<EventEntry> ReadAll(byte[] key)
         {
             HashSet<EventEntry> result = new HashSet<EventEntry>();
+			
             try
             {
                 result = channel.ReadAll(key);
@@ -95,12 +108,14 @@ namespace WCFClient
             {
                 Console.WriteLine("[ReadAll] ERROR = {0}", e.Message);
             }
+			
             return result;
         }
 
         public byte[] ReadFile()
         {
             byte[] result = new byte[0];
+			
             try
             {
                 result = channel.ReadFile();
@@ -109,6 +124,7 @@ namespace WCFClient
             {
                 Console.WriteLine("[ReadFile] ERROR = {0}", e.Message);
             }
+			
             return result;
         }
 

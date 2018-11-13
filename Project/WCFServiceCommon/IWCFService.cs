@@ -10,7 +10,7 @@ namespace WCFServiceCommon
         byte[] CheckIn();
 
         [OperationContract]
-        void Add(string content);
+        bool Add(string content);
 
         [OperationContract]
         bool Update(int entryID, string content);

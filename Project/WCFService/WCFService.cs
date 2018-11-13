@@ -30,8 +30,10 @@ namespace WCFService
             return privateKey;
         }
 
-        public void Add(string content)
+        public bool Add(string content)
         {
+			bool result = false;
+			
             // Get the client's certificate from the current operation context
             X509Certificate2 clientCertificate = SecurityHelper.GetCertificate(OperationContext.Current);
 
@@ -56,7 +58,9 @@ namespace WCFService
             string userID = clientCertificate.SerialNumber;
 
             // Execute the 'Add' operation
-            DatabaseHelper.Add(userID, content);
+            result = DatabaseHelper.Add(userID, content);
+			
+			return result;
         }
 
         public bool Update(int entryID, string content)

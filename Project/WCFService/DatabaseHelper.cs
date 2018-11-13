@@ -118,8 +118,10 @@ namespace WCFService
             return freeID;
         }
 
-        public static void Add(string userID, string content)
+        public static bool Add(string userID, string content)
         {
+			bool result = false;
+			
             // Get all the serialized entries from the file
             List<string> serializedEntries = ReadFromFile();
 
@@ -139,7 +141,11 @@ namespace WCFService
 
                 // Write the new list of entries into the file
                 WriteToFile(serializedEntries);
+				
+				result = true;
             }
+			
+			return result;
         }
 
         public static bool Update(int entryID, string userID, string content)
