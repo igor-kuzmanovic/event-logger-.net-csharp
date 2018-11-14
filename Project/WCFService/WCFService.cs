@@ -132,66 +132,6 @@ namespace WCFService
             return result;
         }
 
-        public EventEntry Read(int entryID, byte[] key)
-        {
-            EventEntry entry = new EventEntry();
-
-            // Get the client's certificate from the current operation context
-            X509Certificate2 clientCertificate = SecurityHelper.GetCertificate(OperationContext.Current);
-
-            // Get the client's name from the certificate
-            string clientName = SecurityHelper.GetName(clientCertificate);
-
-            // Log the successful authentication
-            EventLogger.AuthenticationSuccess(clientName);
-
-            if (StringConverter.ToString(key) != StringConverter.ToString(PrivateKey))
-            {
-                // If the key sent by the client doesn't match the service's key, log the unauthorized attempt
-                EventLogger.AuthorizationFailure(clientName, "Read");
-
-                throw new FaultException("Unauthorized");
-            }
-
-            // Log the successful authorization
-            EventLogger.AuthorizationSuccess(clientName, "Read");
-
-            // Execute the 'Read' operation
-            entry = DatabaseHelper.Read(entryID);
-
-            return entry;
-        }
-
-        public HashSet<EventEntry> ReadAll(byte[] key)
-        {
-            HashSet<EventEntry> entries = new HashSet<EventEntry>();
-
-            // Get the client's certificate from the current operation context
-            X509Certificate2 clientCertificate = SecurityHelper.GetCertificate(OperationContext.Current);
-
-            // Get the client's name from the certificate
-            string clientName = SecurityHelper.GetName(clientCertificate);
-
-            // Log the successful authentication
-            EventLogger.AuthenticationSuccess(clientName);
-
-            if (StringConverter.ToString(key) != StringConverter.ToString(PrivateKey))
-            {
-                // If the key sent by the client doesn't match the service's key, log the unauthorized attempt
-                EventLogger.AuthorizationFailure(clientName, "ReadAll");
-
-                throw new FaultException("Unauthorized");
-            }
-
-            // Log the successful authorization
-            EventLogger.AuthorizationSuccess(clientName, "ReadAll");
-
-            // Execute the 'ReadAll' operation
-            entries = DatabaseHelper.ReadAll();
-
-            return entries;
-        }
-
         public byte[] ReadFile()
         {
             byte[] fileData = new byte[0];

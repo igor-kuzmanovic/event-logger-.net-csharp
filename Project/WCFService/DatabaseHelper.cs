@@ -210,48 +210,6 @@ namespace WCFService
             return result;
         }
 
-        public static EventEntry Read(int entryID)
-        {
-            EventEntry result = new EventEntry();
-
-            // Get the list of serialized entries from the file
-            List<string> serializedEntries = ReadFromFile();
-
-            foreach (string serializedEntry in serializedEntries)
-            {
-                // Get the ID of the serialized entry
-                int id = EventEntry.GetId(serializedEntry);
-
-                if (id == entryID)
-                {
-                    // If the specified entry is found, return it's data back to the caller
-                    result = new EventEntry(serializedEntry);
-                    break;
-                }
-            }
-
-            return result;
-        }
-
-        public static HashSet<EventEntry> ReadAll()
-        {
-            HashSet<EventEntry> entries = new HashSet<EventEntry>();
-
-            // Get the list of serialized entries from the file
-            List<string> serializedEntries = ReadFromFile();
-
-            foreach (string serializedEntry in serializedEntries)
-            {
-                // Create a deserialized object for each entry
-                EventEntry entry = new EventEntry(serializedEntry);
-
-                // Add it to the list of entries
-                entries.Add(entry);
-            }
-
-            return entries;
-        }
-
         public static byte[] ReadFile()
         {
             byte[] fileData = new byte[0];

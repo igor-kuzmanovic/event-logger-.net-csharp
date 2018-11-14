@@ -80,38 +80,6 @@ namespace WCFClient
             return result;
         }
 
-        public EventEntry Read(int entryID, byte[] key)
-        {
-            EventEntry result = new EventEntry();
-			
-            try
-            {
-                result = channel.Read(entryID, key);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("[Read] ERROR = {0}", e.Message);
-            }
-			
-            return result;
-        }
-
-        public HashSet<EventEntry> ReadAll(byte[] key)
-        {
-            HashSet<EventEntry> result = new HashSet<EventEntry>();
-			
-            try
-            {
-                result = channel.ReadAll(key);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("[ReadAll] ERROR = {0}", e.Message);
-            }
-			
-            return result;
-        }
-
         public byte[] ReadFile()
         {
             byte[] result = new byte[0];

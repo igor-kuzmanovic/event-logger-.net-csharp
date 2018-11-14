@@ -124,7 +124,7 @@ namespace WCFClient {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} - 404 - NotFound.
+        ///   Looks up a localized string similar to {0} - 404 - Not Found.
         /// </summary>
         internal static string NotFound {
             get {

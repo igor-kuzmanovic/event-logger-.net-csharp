@@ -42,13 +42,10 @@ namespace WCFService
 
         private static void Alarm(int entryID)
         {
-            // Form an alarm message for the specified entry
-            string alarm = string.Format(ResourceHelper.GetString("Alarm"), entryID);
-
             using (IDSServiceClient client = new IDSServiceClient())
             {
-                // Send the alarm message to the Intrusion Detection Service
-                client.Alarm(alarm);
+                // Alarm the Intrusion Detection Service by sending the ID of the entry
+                client.Alarm(entryID);
             }
         }
 
@@ -109,7 +106,7 @@ namespace WCFService
         public static void AuthorizationFailure(string username, string action, string permission)
         {
             // Form an authorization failure message
-            string authorizationFailure = string.Format(ResourceHelper.GetString("AuthorizationFailurePermission"), username, action, permission);
+            string authorizationFailure = string.Format(ResourceHelper.GetString("AuthorizationFailure"), username, action, permission);
 
             using (EventLog log = new EventLog(logName, Environment.MachineName, source))
             {
@@ -118,15 +115,15 @@ namespace WCFService
             }
         }
 
-        public static void AuthorizationFailure(string username, string action)
+        public static void FileAccess(string username)
         {
-            // Form an authentication failure message
-            string authorizationFailure = string.Format(ResourceHelper.GetString("AuthorizationFailureKey"), username, action);
+            // Form a file access message
+            string fileAccess = string.Format(ResourceHelper.GetString("FileAccess"), username);
 
             using (EventLog log = new EventLog(logName, Environment.MachineName, source))
             {
                 // Write the entry into the windows log
-                log.WriteEntry(authorizationFailure, EventLogEntryType.FailureAudit);
+                log.WriteEntry(fileAccess, EventLogEntryType.Information);
             }
         }
     }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ServiceModel;
+﻿using System.ServiceModel;
 
 namespace WCFServiceCommon
 {
@@ -17,12 +16,6 @@ namespace WCFServiceCommon
 
         [OperationContract]
         bool Delete(int entryID);
-
-        [OperationContract]
-        EventEntry Read(int entryID, byte[] key);
-
-        [OperationContract]
-        HashSet<EventEntry> ReadAll(byte[] key);
 
         [OperationContract]
         byte[] ReadFile();

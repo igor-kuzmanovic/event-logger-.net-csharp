@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WCFService {
+namespace IDSService {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace WCFService {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WCFService.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("IDSService.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,38 +61,11 @@ namespace WCFService {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User {0} successfully authenticated.
+        ///   Looks up a localized string similar to Entry {0} has too many failed modification attempts.
         /// </summary>
-        internal static string AuthenticationSuccess {
+        internal static string Alarm {
             get {
-                return ResourceManager.GetString("AuthenticationSuccess", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User {0} failed to authorize for {1}, lacks {2} permission.
-        /// </summary>
-        internal static string AuthorizationFailure {
-            get {
-                return ResourceManager.GetString("AuthorizationFailure", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User {0} successfully authorized for {1}.
-        /// </summary>
-        internal static string AuthorizationSuccess {
-            get {
-                return ResourceManager.GetString("AuthorizationSuccess", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User {0} requested the database file.
-        /// </summary>
-        internal static string FileAccess {
-            get {
-                return ResourceManager.GetString("FileAccess", resourceCulture);
+                return ResourceManager.GetString("Alarm", resourceCulture);
             }
         }
     }

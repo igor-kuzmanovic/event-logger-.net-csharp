@@ -6,6 +6,6 @@ namespace IDSServiceCommon
     public interface IIDSService
     {
         [OperationContract]
-        void Alarm(string message);
+        void Alarm(int entryID);
     }
 }
