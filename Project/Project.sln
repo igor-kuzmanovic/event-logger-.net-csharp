@@ -45,6 +45,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{B12D2579-8592-4697-A4C9-D09D5FF396EF}"
 	ProjectSection(SolutionItems) = preProject
 		Documentation\ConfigurationGuide.html = Documentation\ConfigurationGuide.html
+		Documentation\Dokumentacija.pdf = Documentation\Dokumentacija.pdf
+		Documentation\Projekat 28.pdf = Documentation\Projekat 28.pdf
 	EndProjectSection
 EndProject
 Global
