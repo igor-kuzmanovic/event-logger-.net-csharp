@@ -99,7 +99,7 @@ namespace WCFClient
                 Console.WriteLine("[4] Read File");
                 Console.WriteLine("[5] [Test] Update Loop");
                 Console.WriteLine("[6] [Test] Delete Loop");
-                ConsoleKeyInfo keyInfo = Console.ReadKey();
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
 
                 try
                 {
