@@ -23,7 +23,7 @@ namespace IDSService
             string message = string.Format(ResourceHelper.GetString("Alarm"), entryID);
 
             // Write the alarm message to the console
-            Console.WriteLine("[{0}] {1}", clientName, message);
+            Console.WriteLine("[{0}][{1}] {2}", DateTime.Now, clientName, message);
         }
     }
 }
