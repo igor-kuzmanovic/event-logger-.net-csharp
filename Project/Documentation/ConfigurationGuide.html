@@ -65,7 +65,9 @@
         <li>Input the WCFService's password: 'wcfservice'</li>
         <li>(Non-Admin) <pre><code>cd C:\Program Files (x86)\Windows Resource Kits\Tools</code></pre></li>
         <li>(Non-Admin) <pre><code>winhttpcertcfg -g -c LOCAL_MACHINE\My -s WCFService -a WCFService</code></pre></li>
-        <li>(IMPORTANT) Start WCFService.exe once as an Administrator to create a custom windows event log</li>
+        <li>(IMPORTANT) Start WCFService.exe once as an Administrator to create a custom windows event log <br> - or - <br></li>
+        <li>Run PowerShell as an Administrator</li>
+        <li><pre><code>New-EventLog -LogName WCFServiceLog -Source WCFService</code></pre></li>      
     </ul>
     <br>
 
